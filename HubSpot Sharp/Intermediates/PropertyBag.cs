@@ -7,8 +7,8 @@
     using HubSpot_Sharp;
 
     [DataContract]
-    public class PropertyBag<T> : HubSpotBaseModel
-        where T : HubSpotBaseModel, new()
+    public class PropertyBag<T> : HubSpotObject, IDisposable
+        where T : HubSpotObject, new()
     {
         [DataMember(Name = "properties")]
         public T Properties { get; set; }
@@ -30,9 +30,19 @@
             return Properties;
         }
 
-        public static IList<T> UnpackBags(IList<PropertyBag<T>> bag)
+        public static IList<PropertyBag<T>> PackMany(IEnumerable<T> inputs)
+        {
+            return inputs.Select(Pack).ToList();
+        }
+
+        public static IList<T> UnpackMany(IList<PropertyBag<T>> bag)
         {
             return bag.Select(item => item.Unpack()).ToList();
+        }
+
+        public void Dispose()
+        {
+            Unpack();
         }
     }
 }

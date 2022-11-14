@@ -4,6 +4,7 @@
     using System.Threading;
 
     using HubSpot_Sharp.Authentication;
+    using HubSpot_Sharp.Options;
     using HubSpot_Sharp.Serialization;
 
     using RestSharp;
@@ -47,14 +48,14 @@
             {
                 if ((int)response.StatusCode != 429)
                 {
-                    throw HubSpotException.FromResponse(response, request);
+                    throw new HubSpotException(response, request);
                 }
 
                 switch (options.RateLimit)
                 {
                     case RateLimitOptions.Error:
                         {
-                            throw HubSpotException.FromResponse(response, request);
+                            throw new HubSpotException(response, request);
                         }
                     case RateLimitOptions.RetrySearch:
                         {

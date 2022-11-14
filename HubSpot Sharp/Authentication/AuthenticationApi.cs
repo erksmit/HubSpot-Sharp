@@ -4,6 +4,7 @@
     using System.Linq;
 
     using HubSpot_Sharp;
+    using HubSpot_Sharp.Options;
 
     using RestSharp;
 
@@ -23,7 +24,7 @@
             return client.Execute<TokenInformation>(options);
         }
 
-        public TokenExchangeResponse ExchangeTokens(GrantRequestForm data)
+        public TokenExchangeResponse ExchangeTokens(GrantRequestOptions data)
         {
             const string Path = "/oauth/v1/token";
             var options = new RequestOptions(Path, Method.Post, entity: data, tokenLess: true);
@@ -33,8 +34,7 @@
         public void DeleteRefreshToken(string token)
         {
             var path = $"/oauth/v1/refresh-tokens/{token}";
-            var options = new RequestOptions(path, Method.Delete);
-            client.Execute(options);
+            client.Execute(path, Method.Delete);
         }
 
         public static string GetOauthUrl(string clientId, string redirectUrl, IList<string> scopes, IList<string>? optionalScopes = null)

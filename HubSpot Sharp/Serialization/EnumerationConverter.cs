@@ -12,12 +12,7 @@
     /// </summary>
     public class EnumerationConverter : JsonConverter<IList<string>>
     {
-        public override IList<string> ReadJson(
-            JsonReader reader,
-            Type objectType,
-            IList<string>? existingValue,
-            bool hasExistingValue,
-            JsonSerializer serializer)
+        public override IList<string> ReadJson(JsonReader reader, Type objectType, IList<string>? existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
             string? json = (string?)reader.Value;
             if (string.IsNullOrEmpty(json))

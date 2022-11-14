@@ -8,7 +8,7 @@
 
     [DataContract]
     public class SearchResults<T>
-        where T : HubSpotBaseModel, new()
+        where T : HubSpotObject, new()
     {
         [DataMember(Name = "total")]
         public int Total { get; set; }
@@ -19,6 +19,6 @@
         [DataMember(Name = "results")]
         public IList<PropertyBag<T>> Results { get; set; }
 
-        public IList<T> UnpackResults() => PropertyBag<T>.UnpackBags(Results);
+        public IList<T> UnpackResults() => PropertyBag<T>.UnpackMany(this.Results);
     }
 }
