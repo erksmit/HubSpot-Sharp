@@ -1,23 +1,43 @@
-﻿namespace HubSpot_Sharp
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="HubSpotObject.cs" company="">
+//   
+// </copyright>
+// <summary>
+//   The hub spot object.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+using System.Reflection;
+using System.Runtime.Serialization;
+
+using HubSpot_Sharp.Serialization;
+
+namespace HubSpot_Sharp
 {
-    using System.Runtime.Serialization;
-
-    using HubSpot_Sharp.Serialization;
-
-    using Newtonsoft.Json;
-
+    /// <summary>
+    /// Represents an object in the HubSpot CRM.
+    /// </summary>
     [DataContract]
-    public class HubSpotObject
+    public abstract class HubSpotObject
     {
-        [DataMember(Name = "id")]
+        /// <summary>
+        /// Gets or sets the id of the object.
+        /// </summary>
+        [DeserializeOnly]
         public long? Id { get; set; }
-        
-        [DataMember(Name = "createdate")]
-        [JsonConverter(typeof(ReadOnlyDateConverter))]
-        public DateTime Created { get; set; }
 
+        /// <summary>
+        /// Gets or sets the timestamp of when the object was created.
+        /// </summary>
+        [DataMember(Name = "createdate")]
+        [DeserializeOnly]
+        public DateTime? Created { get; set; }
+
+        /// <summary>
+        /// Gets or sets the timestamp of when the object was last modified.
+        /// </summary>
         [DataMember(Name = "hs_lastmodifieddate")]
-        [JsonConverter(typeof(ReadOnlyDateConverter))]
-        public DateTime LastModified { get; set; }
+        [DeserializeOnly]
+        public DateTime? LastModified { get; set; }
     }
 }

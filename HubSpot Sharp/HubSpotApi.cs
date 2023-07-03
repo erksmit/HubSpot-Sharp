@@ -1,27 +1,66 @@
-﻿namespace HubSpot_Sharp
-{
-    using HubSpot_Sharp.Authentication;
-    using HubSpot_Sharp.CRM;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="HubSpotApi.cs" company="">
+//   
+// </copyright>
+// <summary>
+//   Provides Api objects for interacting with the HubSpot Api.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
+using HubSpot_Sharp.AccountActivity;
+using HubSpot_Sharp.Authentication;
+using HubSpot_Sharp.CRM;
+using HubSpot_Sharp.UserProvisioning;
+using HubSpot_Sharp.Webhook;
+
+namespace HubSpot_Sharp
+{
     /// <summary>
     /// Provides Api objects for interacting with the HubSpot Api.
     /// </summary>
     public class HubSpotApi
     {
-        public AuthenticationApi Authentication { get; }
-
-        public CrmApi Crm { get; }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HubSpotApi"/> class with a <see cref="HubSpotToken"/> private access- or
+        /// Oauth token
+        /// </summary>
+        /// <param name="token">
+        /// The token.
+        /// </param>
+        public HubSpotApi(HubSpotToken token)
+            : this(new HubSpotClient(token))
+        {
+        }
 
         /// <summary>
-        /// Creates a new <see cref="HubSpotApi" /> with a <see cref="HubSpotToken" /> private access- or Oauth token
+        /// Initializes a new instance of the <see cref="HubSpotApi"/> class.
         /// </summary>
-        public HubSpotApi(HubSpotToken token) : this(new HubSpotClient(token))
-        { }
-
+        /// <param name="client">
+        /// The client.
+        /// </param>
         public HubSpotApi(HubSpotClient client)
         {
             Authentication = new AuthenticationApi(client);
             Crm = new CrmApi(client);
+            Webhook = new WebhookApi(client);
+            AccountActivity = new AccountActivityApi(client);
+            UserProvisioning = new UserProvisioningApi(client);
         }
+
+        /// <summary>
+        /// Gets the authentication api.
+        /// </summary>
+        public AuthenticationApi Authentication { get; }
+
+        /// <summary>
+        /// Gets the CRM api.
+        /// </summary>
+        public CrmApi Crm { get; }
+
+        public WebhookApi Webhook { get; }
+
+        public AccountActivityApi AccountActivity { get; }
+
+        public UserProvisioningApi UserProvisioning { get; }
     }
 }

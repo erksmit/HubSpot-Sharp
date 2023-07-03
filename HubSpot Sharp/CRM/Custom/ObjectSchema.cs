@@ -1,8 +1,16 @@
-﻿namespace HubSpot_Sharp.CRM.Custom
-{
-    using System.Collections.Generic;
-    using System.Runtime.Serialization;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ObjectSchema.cs" company="">
+//   
+// </copyright>
+// <summary>
+//   Represents a schema used to create a custom HubSpot object.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
+using System.Runtime.Serialization;
+
+namespace HubSpot_Sharp.CRM.Custom
+{
     /// <summary>
     /// Represents a schema used to create a custom HubSpot object.
     /// </summary>
@@ -10,51 +18,43 @@
     public class ObjectSchema
     {
         /// <summary>
-        /// The internal name used to identify this object.
+        /// Gets or sets the internal name used to identify this object.
         /// </summary>
-        [DataMember(Name = "name")]
         public string Name { get; set; }
 
         /// <summary>
-        /// The display labels for the object.
+        /// Gets or sets the display labels for the object.
         /// </summary>
-        [DataMember(Name = "labels")]
         public ObjectLabels Labels { get; set; }
 
         /// <summary>
-        /// The property used for naming individual custom object records.
+        /// Gets or sets the property used for naming individual custom object records.
         /// </summary>
-        [DataMember(Name = "primaryDisplayProperty")]
         public string PrimaryDisplayProperty { get; set; }
 
         /// <summary>
-        /// The properties that appear on individual records under the primaryDisplayProperty.
+        /// Gets or sets the properties that appear on individual records under the primary display property.
         /// </summary>
-        [DataMember(Name = "secondaryDisplayProperties")]
         public IList<string> SecondaryDisplayProperties { get; set; }
 
         /// <summary>
-        /// The properties that are indexed for searching in HubSpot.
+        /// Gets or sets the properties that are indexed for searching in HubSpot.
         /// </summary>
-        [DataMember(Name = "searchableProperties")]
         public IList<string> SearchableProperties { get; set; }
 
         /// <summary>
-        /// The properties that are required when creating a new custom object record.
+        /// Gets or sets the properties that are required when creating a new custom object record.
         /// </summary>
-        [DataMember(Name = "requiredProperties")]
         public IList<string> RequiredProperties { get; set; }
 
         /// <summary>
-        /// The properties of this object
+        /// Gets or sets the properties of this object
         /// </summary>
-        [DataMember(Name = "properties")]
         public IList<ObjectProperty> Properties { get; set; }
 
         /// <summary>
-        /// Other HubSpot objects to associate with this object type.
+        /// Gets or sets the Other HubSpot objects to associate with this object type.
         /// </summary>
-        [DataMember(Name = "associatedObjects")]
         public IList<string> AssociatedObjects { get; set; }
     }
 }

@@ -3,6 +3,8 @@
 namespace HubSpot_Sharp.CRM.Ticket
 {
     [DataContract]
+    [AssociationId("TICKET")]
+    [ApiPathName("tickets")]
     public class Ticket : HubSpotObject
     {
         [DataMember(Name = "hs_pipeline")]
@@ -17,7 +19,6 @@ namespace HubSpot_Sharp.CRM.Ticket
         [DataMember(Name = "hubspot_owner_id")]
         public long OwnerId { get; set; }
         
-        [DataMember(Name = "subject")]
         public string Subject { get; set; }
     }
 }

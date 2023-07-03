@@ -1,11 +1,25 @@
-﻿namespace HubSpot_Sharp.Search
-{
-    using System.Runtime.Serialization;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="PagingModel.cs" company="">
+//   
+// </copyright>
+// <summary>
+//   The paging model.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
+using System.Runtime.Serialization;
+
+namespace HubSpot_Sharp.Search
+{
+    /// <summary>
+    /// The pagination model that contains the offset for further requests.
+    /// </summary>
     [DataContract]
     public class PagingModel
     {
-        [DataMember(Name = "next")]
-        public NextModel Next { get; set; }
+        /// <summary>
+        /// Gets or sets the next model that has information about the next page.
+        /// </summary>
+        public PagingNextModel Next { get; set; }
     }
 }

@@ -3,6 +3,8 @@
 namespace HubSpot_Sharp.CRM.Quote
 {
     [DataContract]
+    [AssociationId("QUOTE")]
+    [ApiPathName("quotes")]
     public class Quote : HubSpotObject
     {
         [DataMember(Name = "hs_quote_amount")]

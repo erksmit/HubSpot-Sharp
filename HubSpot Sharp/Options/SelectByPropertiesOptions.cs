@@ -1,37 +1,78 @@
-﻿using HubSpot_Sharp.Intermediates;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="SelectByPropertiesOptions.cs" company="">
+//   
+// </copyright>
+// <summary>
+//   The select by properties options.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+using System.Runtime.Serialization;
+
+using HubSpot_Sharp.Intermediates;
 
 namespace HubSpot_Sharp.Options
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Runtime.Serialization;
-
+    /// <summary>
+    /// The request form for a Select by unique property request
+    /// </summary>
     [DataContract]
     public class SelectByPropertiesOptions
     {
-        [DataMember(Name = "properties")]
-        public IList<string> PropertiesToRead { get; set; }
-
-        [DataMember(Name = "idProperty")]
-        public string IdProperty { get; set; }
-
-        [DataMember(Name = "inputs")]
-        public IList<IdInput> Inputs { get; set; }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SelectByPropertiesOptions" /> class.
+        /// </summary>
         public SelectByPropertiesOptions()
         {
         }
 
-        public SelectByPropertiesOptions(IEnumerable<string> inputs)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SelectByPropertiesOptions"/> class.
+        /// </summary>
+        /// <param name="idProperty">
+        /// the name of the unique property that will be used to identify the records.
+        /// </param>
+        /// <param name="inputs">
+        /// the unique property values to read the records of.
+        /// </param>
+        public SelectByPropertiesOptions(string idProperty, IEnumerable<string> inputs)
         {
             Inputs = inputs.Select(i => new IdInput(i)).ToList();
         }
 
-        public SelectByPropertiesOptions(string id, IEnumerable<string> inputs, IList<string> propertiesToRead)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SelectByPropertiesOptions"/> class.
+        /// </summary>
+        /// <param name="idProperty">
+        /// the name of the unique property that will be used to identify the records.
+        /// </param>
+        /// <param name="inputs">
+        /// the unique property values to read the records of.
+        /// </param>
+        /// <param name="propertiesToRead">
+        /// The properties to read.
+        /// </param>
+        public SelectByPropertiesOptions(string idProperty, IEnumerable<string> inputs, IList<string> propertiesToRead)
         {
-            IdProperty = id;
+            IdProperty = idProperty;
             Inputs = inputs.Select(i => new IdInput(i)).ToList();
             PropertiesToRead = propertiesToRead;
         }
+
+        /// <summary>
+        /// Gets or sets the object properties that will be read.
+        /// </summary>
+        [DataMember(Name = "properties")]
+        public IList<string> PropertiesToRead { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of the unique property that will be used to identify the records.
+        /// </summary>
+        public string IdProperty { get; set; }
+
+        /// <summary>
+        /// Gets or sets the unique property values to read the records of.
+        /// </summary>
+        public IList<IdInput> Inputs { get; set; }
     }
 }

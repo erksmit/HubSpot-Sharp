@@ -1,44 +1,62 @@
-﻿namespace HubSpot_Sharp
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="HubSpotException.cs" company="">
+//   
+// </copyright>
+// <summary>
+//   The hub spot exception.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+using System.Net;
+
+using HubSpot_Sharp.Serialization;
+
+namespace HubSpot_Sharp
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Net;
-
-    using Newtonsoft.Json;
-    using Newtonsoft.Json.Converters;
-    using Newtonsoft.Json.Serialization;
-
-    using RestSharp;
-
+    /// <summary>
+    /// Represents an error that occurred during a request to the HubSpot API.
+    /// </summary>
     public class HubSpotException : Exception
     {
-        public HttpStatusCode StatusCode { get; private set; }
-
-        public string RawJsonResponse { get; private set; }
-
         /// <summary>
-        /// The request that resulted in this error
+        /// Initializes a new instance of the <see cref="HubSpotException"/> class.
         /// </summary>
-        public RestRequest? Request { get; private set; }
-
-        public HubSpotExceptionBody Contents { get; private set; }
-
-        public HubSpotException(RestResponseBase response, RestRequest? request = null) : base(response.StatusDescription)
+        /// <param name="response">
+        /// The response of the faulty request.
+        /// </param>
+        public HubSpotException(HttpResponseMessage response)
+            : base(response.ReasonPhrase)
         {
-            Contents = JsonConvert.DeserializeObject<HubSpotExceptionBody>(response.Content!, SerializerSettings)!;
-            this.StatusCode = response.StatusCode;
-            RawJsonResponse = response.Content!;
-            Request = request;
+            string contents = response.Content.ReadAsStringAsync().Result;
+            Contents = Serializer.DeserializeJson<HubSpotExceptionBody>(contents);
+            StatusCode = response.StatusCode;
+            RawJsonResponse = contents;
+            Request = response.RequestMessage;
         }
 
-        private static JsonSerializerSettings SerializerSettings { get; } = new()
-        {
-            ContractResolver = new CamelCasePropertyNamesContractResolver(),
-            Converters = new List<JsonConverter>
-                {
-                    new StringEnumConverter()
-                },
-            NullValueHandling = NullValueHandling.Ignore
-        };
+        /// <summary>
+        /// Gets the status code of the request.
+        /// </summary>
+        public HttpStatusCode StatusCode { get; }
+
+        /// <summary>
+        /// Gets the raw json response that was returned.
+        /// </summary>
+        public string RawJsonResponse { get; }
+
+        /// <summary>
+        /// Gets the request that resulted in this error.
+        /// </summary>
+        public HttpRequestMessage? Request { get; }
+
+        /// <summary>
+        /// Gets the information contained in the body of the response.
+        /// </summary>
+        public HubSpotExceptionBody Contents { get; }
+
+        /// <summary>
+        /// Gets the serializer.
+        /// </summary>
+        private static HubSpotSerializer Serializer { get; } = new ();
     }
 }

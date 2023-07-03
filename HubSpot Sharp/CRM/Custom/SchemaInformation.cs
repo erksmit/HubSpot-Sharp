@@ -1,28 +1,31 @@
-﻿namespace HubSpot_Sharp.CRM.Custom
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="SchemaInformation.cs" company="">
+//   
+// </copyright>
+// <summary>
+//   The schema information.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+
+using System.Runtime.Serialization;
+
+namespace HubSpot_Sharp.CRM.Custom
 {
-    using System.Runtime.Serialization;
-
-    using HubSpot_Sharp;
-
+    /// <summary>
+    /// Additional information about an objectSchema obtainable after creation.
+    /// </summary>
     [DataContract]
-    public class SchemaInformation : HubSpotObject
+    public class SchemaInformation : ObjectSchema
     {
         /// <summary>
-        /// A unique name for the schema's object type.
+        /// Gets or sets An assigned unique ID for the object, including portal ID and object name.
         /// </summary>
-        [DataMember(Name = "name")]
-        public string Name { get; set; }
-
-        /// <summary>
-        /// An assigned unique ID for the object, including portal ID and object name.
-        /// </summary>
-        [DataMember(Name = "fullyQualifiedName")]
         public string FullyQualifiedName { get; set; }
 
         /// <summary>
-        /// The id used to identify the schema in future requests
+        /// Gets or sets The id used to identify the schema in future requests
         /// </summary>
-        [DataMember(Name = "objectTypeId")]
         public string ObjectTypeId { get; set; }
     }
 }

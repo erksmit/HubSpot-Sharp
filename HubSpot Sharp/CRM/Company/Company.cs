@@ -1,25 +1,47 @@
-﻿namespace HubSpot_Sharp.CRM.Company
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Company.cs" company="">
+//   
+// </copyright>
+// <summary>
+//   The base class for a company in HubSpot.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+using System.Runtime.Serialization;
+
+namespace HubSpot_Sharp.CRM.Company
 {
-    using System.Runtime.Serialization;
-
-    using HubSpot_Sharp;
-
+    /// <summary>
+    /// The base class for a company in HubSpot.
+    /// </summary>
     [DataContract]
+    [AssociationId("COMPANY")]
+    [ApiPathName("companies")]
     public class Company : HubSpotObject
     {
-        [DataMember(Name = "name")]
+        /// <summary>
+        /// Gets or sets the name of the company.
+        /// </summary>
         public string Name { get; set; }
 
-        [DataMember(Name = "domain")]
+        /// <summary>
+        /// Gets or sets the domain url of the company.
+        /// </summary>
         public string Domain { get; set; }
 
-        [DataMember(Name = "website")]
+        /// <summary>
+        /// Gets or sets the website of the company.
+        /// </summary>
         public string Website { get; set; }
 
-        [DataMember(Name = "description")]
+        /// <summary>
+        /// Gets or sets the description of the company.
+        /// </summary>
         public string Description { get; set; }
 
-        [DataMember(Name = "country")]
+        /// <summary>
+        /// Gets or sets the country the company resides in.
+        /// </summary>
         public string Country { get; set; }
     }
 }

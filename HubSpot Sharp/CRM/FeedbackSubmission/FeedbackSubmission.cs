@@ -3,6 +3,8 @@
 namespace HubSpot_Sharp.CRM.FeedbackSubmission
 {
     [DataContract]
+    [AssociationId("FEEDBACKSUBMISSION")]
+    [ApiPathName("feedback_submissions")]
     public class FeedbackSubmission : HubSpotObject
     {
         [DataMember(Name = "hs_content")]

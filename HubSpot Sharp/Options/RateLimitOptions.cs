@@ -1,4 +1,13 @@
-﻿namespace HubSpot_Sharp.Options
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="RateLimitOptions.cs" company="">
+//   
+// </copyright>
+// <summary>
+//   Specifies what to do when a rateLimit is hit
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace HubSpot_Sharp.Options
 {
     /// <summary>
     /// Specifies what to do when a rateLimit is hit

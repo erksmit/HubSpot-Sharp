@@ -1,7 +1,16 @@
-﻿namespace HubSpot_Sharp.CRM.Custom
-{
-    using System.Runtime.Serialization;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ObjectLabels.cs" company="">
+//   
+// </copyright>
+// <summary>
+//   Display names of an object schema.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
+using System.Runtime.Serialization;
+
+namespace HubSpot_Sharp.CRM.Custom
+{
     /// <summary>
     /// Display names of a <see cref="ObjectSchema" />.
     /// </summary>
@@ -9,15 +18,13 @@
     public class ObjectLabels
     {
         /// <summary>
-        /// The display name to use for one instance of the object.
+        /// Gets or sets the display name to use for one instance of the object.
         /// </summary>
-        [DataMember(Name = "singular")]
         public string Singular { get; set; }
 
         /// <summary>
-        /// The display name to use for multiple of the object.
+        /// Gets or sets the display name to use for multiple of the object.
         /// </summary>
-        [DataMember(Name = "plural")]
         public string Plural { get; set; }
     }
 }

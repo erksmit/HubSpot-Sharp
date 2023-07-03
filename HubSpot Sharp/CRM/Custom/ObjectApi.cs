@@ -1,33 +1,85 @@
-﻿namespace HubSpot_Sharp.CRM.Custom
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ObjectApi.cs" company="">
+//   
+// </copyright>
+// <summary>
+//   The object api.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+using HubSpot_Sharp.Intermediates;
+using HubSpot_Sharp.Options;
+using HubSpot_Sharp.Search;
+
+namespace HubSpot_Sharp.CRM.Custom
 {
-    using System.Collections.Generic;
-
-    using HubSpot_Sharp;
-    using HubSpot_Sharp.Intermediates;
-    using HubSpot_Sharp.Options;
-    using HubSpot_Sharp.Search;
-
-    using RestSharp;
-
+    /// <summary>
+    /// Contains functions for interacting with custom object endpoints.
+    /// </summary>
     public class ObjectApi
     {
         /// <summary>
-        /// Contains functions for interacting with custom object endpoints.
+        /// The HubSpot client to make requests with.
         /// </summary>
         private readonly HubSpotClient client;
 
-        /// <param name="client">The HubSpot client to make requests with.</param>
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ObjectApi"/> class.
+        /// The object api.
+        /// </summary>
+        /// <param name="client">
+        /// The HubSpot client to make requests with.
+        /// </param>
         public ObjectApi(HubSpotClient client)
         {
             this.client = client;
         }
 
+        /// <summary>
+        /// Gets the associations of a custom object.
+        /// </summary>
+        /// <param name="objectType">
+        /// The type id of the object to get associations for.
+        /// </param>
+        /// <param name="objectId">
+        /// The id of the custom object.
+        /// </param>
+        /// <param name="toObjectType">
+        /// The type id of the associated object.
+        /// </param>
+        /// <returns>
+        /// A list of associations.
+        /// </returns>
         public ListResult<Association> GetAssociations(string objectType, long objectId, string toObjectType)
         {
             var path = $"/crm/v3/objects/{objectType}/{objectId}/associations/{toObjectType}";
-            return this.client.Execute<ListResult<Association>>(path);
+            return client.Execute<ListResult<Association>>(path);
         }
 
+        /// <inheritdoc cref="GetAssociations(string, long, string)" />
+        public ListResult<Association> GetAssociations<TToObject>(string objectType, long objectId) where TToObject : HubSpotObject
+        {
+            return GetAssociations(objectType, objectId, AssociationIdAttribute.GetId<TToObject>());
+        }
+
+        /// <summary>
+        /// Associate a custom object with another object
+        /// </summary>
+        /// <param name="objectType">
+        /// The type of the custom object
+        /// </param>
+        /// <param name="objectId">
+        /// The id of the object.
+        /// </param>
+        /// <param name="toObjectType">
+        /// The type of the object to associate to.
+        /// </param>
+        /// <param name="toObjectId">
+        /// The id of the object to associate to.
+        /// </param>
+        /// <param name="associationType">
+        /// The name of the association.
+        /// </param>
         public void Associate(
             string objectType,
             long objectId,
@@ -37,9 +89,38 @@
         {
             var path =
                 $"/crm/v3/objects/{objectType}/{objectId}/associations/{toObjectType}/{toObjectId}/{associationType}";
-            this.client.Execute(path, Method.Put);
+            client.Execute(path, HttpMethod.Put);
         }
 
+        /// <inheritdoc cref="Associate(string, long, string, long, string)"/>
+        public void Associate<TToObject>(
+            string objectType,
+            long objectId,
+            long toObjectId,
+            string associationType)
+        {
+            Associate(objectType, objectId, AssociationIdAttribute.GetId<TToObject>(), toObjectId, associationType);
+        }
+
+
+        /// <summary>
+        /// Removes an association between a custom object and another object.
+        /// </summary>
+        /// <param name="objectType">
+        /// The type of the custom object
+        /// </param>
+        /// <param name="objectId">
+        /// The id of the object.
+        /// </param>
+        /// <param name="toObjectType">
+        /// The type of the object to associate to.
+        /// </param>
+        /// <param name="toObjectId">
+        /// The id of the object to associate to.
+        /// </param>
+        /// <param name="associationType">
+        /// The name of the association.
+        /// </param>
         public void RemoveAssociation(
             string objectType,
             long objectId,
@@ -49,106 +130,239 @@
         {
             var path =
                 $"/crm/v3/objects/{objectType}/{objectId}/associations/{toObjectType}/{toObjectId}/{associationType}";
-            this.client.Execute(path, Method.Delete);
+            client.Execute(path, HttpMethod.Delete);
+        }
+
+        /// <inheritdoc cref="RemoveAssociation(string, long, string, long, string)"/>
+        public void RemoveAssociation<TToObjectType>(
+            string objectType,
+            long objectId,
+            long toObjectId,
+            string associationType) where TToObjectType : HubSpotObject
+        {
+            RemoveAssociation(objectType, objectId, AssociationIdAttribute.GetId<TToObjectType>(), toObjectId, associationType);
         }
 
         /// <summary>
         /// Creates a custom object of the specified type
         /// </summary>
-        public void Create<T>(T obj)
-            where T : HubSpotObject, ICustomHubSpotObject, new()
+        /// <typeparam name="T">The custom object's type
+        /// </typeparam>
+        /// <param name="objectType">
+        /// The object's Type id.
+        /// </param>
+        /// <param name="obj">
+        /// The object to create.
+        /// </param>
+        /// <returns>
+        /// The created <typeparamref name="T"/>
+        /// </returns>
+        public T Create<T>(string objectType, T obj)
+            where T : HubSpotObject, new()
         {
-            var path = "/crm/v3/objects/" + obj.ObjectId;
-            using var pack = PropertyBag<T>.Pack(obj);
-            this.client.Execute<T>(path, Method.Post, pack);
+            var path = "/crm/v3/objects/" + objectType;
+            var pack = new PropertyBag<T>(obj);
+            return client.Execute<PropertyBag<T>>(path, HttpMethod.Post, pack).Unpack();
         }
 
-        public T Read<T>(string objectType, long objectId) where T : HubSpotObject, new()
+        /// <summary>
+        /// Read a custom object.
+        /// </summary>
+        /// <param name="objectType">
+        /// The object type id.
+        /// </param>
+        /// <param name="objectId">
+        /// The id of the object.
+        /// </param>
+        /// <typeparam name="T">The object type to read.
+        /// </typeparam>
+        /// <returns>
+        /// The retrieved <typeparamref name="T"/>
+        /// </returns>
+        public T Read<T>(string objectType, long objectId)
+            where T : HubSpotObject, new()
         {
             var path = $"/crm/v3/objects/{objectType}/{objectId}";
-            return this.client.Execute<PropertyBag<T>>(path).Unpack();
+            return client.Execute<PropertyBag<T>>(path).Unpack();
         }
 
-        public T Read<T>(long objectId) where T : HubSpotObject, ICustomHubSpotObject, new()
-        {
-            string objectType = new T().ObjectId;
-            return this.Read<T>(objectType, objectId);
-        }
-
-        public ListResult<PropertyBag<T>> List<T>(string objectType, int limit = 10, string? after = null, IList<string>? properties = null) where T : HubSpotObject, new()
+        /// <summary>
+        /// List all custom objects of a type.
+        /// </summary>
+        /// <param name="objectType">
+        /// The object type to list.
+        /// </param>
+        /// <param name="limit">
+        /// How many objects to read.
+        /// </param>
+        /// <param name="after">
+        /// The offset to begin reading at.
+        /// </param>
+        /// <param name="properties">
+        /// The properties to return.
+        /// </param>
+        /// <typeparam name="T">The type of the object to read.
+        /// </typeparam>
+        /// <returns>
+        /// A list of the retrieved objects.
+        /// </returns>
+        public ListResult<PropertyBag<T>> List<T>(
+            string objectType,
+            int limit = 100,
+            string? after = null,
+            IList<string>? properties = null)
+            where T : HubSpotObject, new()
         {
             var path = $"/crm/v3/objects/{objectType}";
             var options = new RequestOptions(path);
             options.AddParam("limit", limit);
             if (after != null)
+            {
                 options.AddParam("after", after);
+            }
+
             if (properties != null)
+            {
                 options.AddParam("properties", string.Join(",", properties));
-            return this.client.Execute<ListResult<PropertyBag<T>>>(options);
-        }
-        public ListResult<PropertyBag<T>> List<T>(int limit = 10, string? after = null, IList<string>? properties = null) where T : HubSpotObject, ICustomHubSpotObject, new()
-        {
-            string objectType = new T().ObjectId;
-            return this.List<T>(objectType, limit, after, properties);
+            }
+
+            return client.Execute<ListResult<PropertyBag<T>>>(options);
         }
 
-        public T Update<T>(T obj) where T : HubSpotObject, ICustomHubSpotObject, new()
+        /// <summary>
+        /// Update a custom object.
+        /// </summary>
+        /// <param name="objectId">
+        /// The object type id.
+        /// </param>
+        /// <param name="obj">
+        /// The object to update.
+        /// </param>
+        /// <typeparam name="T">The type of the object to update
+        /// </typeparam>
+        /// <returns>
+        /// The updated object.
+        /// </returns>
+        public T Update<T>(string objectId, T obj)
+            where T : HubSpotObject, new()
         {
-            var path = $"/crm/v3/objects/{obj.ObjectId}/{obj.Id}";
-            using var pack = PropertyBag<T>.Pack(obj);
-            return this.client.Execute<PropertyBag<T>>(path, Method.Patch, pack).Unpack();
+            var path = $"/crm/v3/objects/{objectId}/{obj.Id}";
+            var pack = new PropertyBag<T>(obj);
+            return client.Execute<PropertyBag<T>>(path, HttpMethod.Patch, pack).Unpack();
         }
 
+        /// <summary>
+        /// Archives a custom object, it will be deleted after 90 days.
+        /// </summary>
+        /// <param name="objectType">
+        /// The object type id.
+        /// </param>
+        /// <param name="objectId">
+        /// The id of the object to archive.
+        /// </param>
         public void Archive(string objectType, long objectId)
         {
             var path = $"/crm/v3/objects/{objectType}/{objectId}";
-            this.client.Execute(path, Method.Delete);
+            client.Execute(path, HttpMethod.Delete);
         }
-        public void Archive<T>(T obj) where T : HubSpotObject, ICustomHubSpotObject => this.Archive(obj.ObjectId, obj.Id!.Value);
 
-        public BatchResult<PropertyBag<T>> CreateBatch<T>(ListInputs<PropertyBag<T>> objects)
-            where T : HubSpotObject, ICustomHubSpotObject, new()
+        /// <summary>
+        /// Creates a batch of custom objects.
+        /// </summary>
+        /// <param name="objectType">
+        /// The object type id.
+        /// </param>
+        /// <param name="objects">
+        /// The objects to create.
+        /// </param>
+        /// <typeparam name="T">The type of the objects.
+        /// </typeparam>
+        /// <returns>
+        /// A list of the created objects.
+        /// </returns>
+        public BatchResult<PropertyBag<T>> CreateBatch<T>(string objectType, ListInputs<PropertyBag<T>> objects)
+            where T : HubSpotObject, new()
         {
-            var objectType = new T().ObjectId;
             var path = $"/crm/v3/objects/{objectType}/batch/create";
-            return this.client.Execute<BatchResult<PropertyBag<T>>>(path, Method.Post, objects);
+            return client.Execute<BatchResult<PropertyBag<T>>>(path, HttpMethod.Post, objects);
         }
 
-        public BatchResult<PropertyBag<T>> CreateBatch<T>(IList<T> objects)
-            where T : HubSpotObject, ICustomHubSpotObject, new()
+        /// <inheritdoc cref="CreateBatch{T}(string, ListInputs{PropertyBag{T}})"/>
+        public BatchResult<PropertyBag<T>> CreateBatch<T>(string objectType, IList<T> objects)
+            where T : HubSpotObject, new()
         {
-            return this.CreateBatch(new ListInputs<PropertyBag<T>>(PropertyBag<T>.PackMany(objects)));
+            return CreateBatch(objectType, new ListInputs<PropertyBag<T>>(PropertyBag<T>.PackMany(objects)));
         }
 
-        public BatchResult<PropertyBag<T>> ReadByProperties<T>(SelectByPropertiesOptions options)
-            where T : HubSpotObject, ICustomHubSpotObject, new()
+        /// <summary>
+        /// Reads a set of custom objects using a set of unique property values.
+        /// </summary>
+        /// <param name="objectType">
+        /// The object type id.
+        /// </param>
+        /// <param name="options">
+        /// The selection parameters used to identify the objects.
+        /// </param>
+        /// <typeparam name="T">The type of the custom object.
+        /// </typeparam>
+        /// <returns>
+        /// A list of the retrieved objects.
+        /// </returns>
+        public BatchResult<PropertyBag<T>> ReadByProperties<T>(string objectType, SelectByPropertiesOptions options)
+            where T : HubSpotObject, new()
         {
-            var objectType = new T().ObjectId;
             var path = $"/crm/v3/objects/{objectType}/batch/read";
-            return this.client.Execute<BatchResult<PropertyBag<T>>>(path, Method.Post, options);
+            return client.Execute<BatchResult<PropertyBag<T>>>(path, HttpMethod.Post, options);
         }
 
-        public BatchResult<PropertyBag<T>> UpdateBatch<T>(ListInputs<PropertyBag<T>> objects)
-            where T : HubSpotObject, ICustomHubSpotObject, new()
+        /// <summary>
+        /// Updates a batch of custom objects
+        /// </summary>
+        /// <param name="objectType">
+        /// The object type id.
+        /// </param>
+        /// <param name="objects">
+        /// The objects to update.
+        /// </param>
+        /// <typeparam name="T">The type of the objects.
+        /// </typeparam>
+        /// <returns>
+        /// A list of the updated objects.
+        /// </returns>
+        public BatchResult<PropertyBag<T>> UpdateBatch<T>(string objectType, ListInputs<PropertyBag<T>> objects)
+            where T : HubSpotObject, new()
         {
-            var objectType = new T().ObjectId;
             var path = $"/crm/v3/objects/{objectType}/batch/update";
-            return this.client.Execute<BatchResult<PropertyBag<T>>>(path, Method.Post, objects);
+            return client.Execute<BatchResult<PropertyBag<T>>>(path, HttpMethod.Post, objects);
         }
 
-        public BatchResult<PropertyBag<T>> UpdateBatch<T>(IList<T> objects)
-            where T : HubSpotObject, ICustomHubSpotObject, new()
+        /// <inheritdoc cref="UpdateBatch{T}(string, ListInputs{PropertyBag{T}})"/>
+        public BatchResult<PropertyBag<T>> UpdateBatch<T>(string objectType, IList<T> objects)
+            where T : HubSpotObject, new()
         {
-            return this.UpdateBatch(new ListInputs<PropertyBag<T>>(PropertyBag<T>.PackMany(objects)));
+            return UpdateBatch(objectType, new ListInputs<PropertyBag<T>>(PropertyBag<T>.PackMany(objects)));
         }
 
-        public SearchResults<T> Search<T>(SearchOptions options)
-            where T : HubSpotObject, ICustomHubSpotObject, new()
+        /// <summary>
+        /// Searches for custom objects.
+        /// </summary>
+        /// <param name="objectType">
+        /// The object type id.
+        /// </param>
+        /// <param name="options">
+        /// The search options.
+        /// </param>
+        /// <typeparam name="T">The type of the custom object.
+        /// </typeparam>
+        /// <returns>
+        /// A list of search results.
+        /// </returns>
+        public SearchResults<T> Search<T>(string objectType, SearchOptions options)
+            where T : HubSpotObject, new()
         {
-            var objectType = new T().ObjectId;
             var path = $"/crm/v3/objects/{objectType}/search";
-            var requestOptions = new RequestOptions(path, Method.Post, options, RateLimitOptions.RetrySearch);
-            return this.client.Execute<SearchResults<T>>(requestOptions);
+            var requestOptions = new RequestOptions(path, HttpMethod.Post, options, RateLimitOptions.RetrySearch);
+            return client.Execute<SearchResults<T>>(requestOptions);
         }
     }
 }

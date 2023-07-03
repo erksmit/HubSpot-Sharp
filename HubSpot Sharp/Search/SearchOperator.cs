@@ -1,7 +1,19 @@
-﻿namespace HubSpot_Sharp.Search
-{
-    using System.Runtime.Serialization;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="SearchOperator.cs" company="">
+//   
+// </copyright>
+// <summary>
+//   The search operator.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
+using System.Runtime.Serialization;
+
+namespace HubSpot_Sharp.Search
+{
+    /// <summary>
+    /// The operation a search filter performs.
+    /// </summary>
     [DataContract]
     public enum SearchOperator
     {

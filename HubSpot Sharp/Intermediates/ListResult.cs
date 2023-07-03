@@ -1,17 +1,33 @@
-﻿namespace HubSpot_Sharp.Intermediates
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ListResult.cs" company="">
+//   
+// </copyright>
+// <summary>
+//   The list result.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+using HubSpot_Sharp.Search;
+
+namespace HubSpot_Sharp.Intermediates
 {
-    using System.Collections.Generic;
-    using System.Runtime.Serialization;
-
-    using HubSpot_Sharp.Search;
-
-    [DataContract]
-    public class ListResult<T> where T : new()
+    /// <summary>
+    /// A List of results from List requests.
+    /// </summary>
+    /// <typeparam name="T">
+    /// The type of the results.
+    /// </typeparam>
+    public class ListResult<T>
+        where T : new()
     {
-        [DataMember(Name = "results")]
+        /// <summary>
+        /// Gets or sets the List of results.
+        /// </summary>
         public IList<T> Results { get; set; }
 
-        [DataMember(Name = "paging")]
-        public PagingModel? Paging { get; set; }
+        /// <summary>
+        /// Gets or sets the paging object if there are more results available.
+        /// </summary>
+        public PagingModel Paging { get; set; }
     }
 }

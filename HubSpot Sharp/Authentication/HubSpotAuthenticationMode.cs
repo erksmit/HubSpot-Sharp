@@ -1,12 +1,30 @@
-﻿namespace HubSpot_Sharp.Authentication
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="HubSpotAuthenticationMode.cs" company="">
+//   
+// </copyright>
+// <summary>
+//   The hub spot authentication mode.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+using System.Runtime.Serialization;
+
+namespace HubSpot_Sharp.Authentication
 {
+    /// <summary>
+    /// The authentication mode of a HubSpot app
+    /// </summary>
+    [DataContract]
     public enum HubSpotAuthenticationMode
     {
         /// <summary>
-        /// Not supported yet
+        /// Authentication using an OAuth refresh token
         /// </summary>
         OAuth,
 
+        /// <summary>
+        /// Private access token authentication
+        /// </summary>
         PrivateAccessToken
     }
 }

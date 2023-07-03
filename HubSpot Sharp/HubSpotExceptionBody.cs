@@ -1,20 +1,40 @@
-﻿using System.Runtime.Serialization;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="HubSpotExceptionBody.cs" company="">
+//   
+// </copyright>
+// <summary>
+//   The hub spot exception body.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+using System.Runtime.Serialization;
 
 namespace HubSpot_Sharp
 {
+    /// <summary>
+    /// Represents the information contained in the body of a json error response
+    /// </summary>
     [DataContract]
     public class HubSpotExceptionBody
     {
-        [DataMember(Name = "status")]
+        /// <summary>
+        /// Gets or sets the status of the error.
+        /// </summary>
         public string Status { get; set; }
 
-        [DataMember(Name = "message")]
+        /// <summary>
+        /// Gets or sets the message that HubSpot returned.
+        /// </summary>
         public string Message { get; set; }
 
-        [DataMember(Name = "category")]
+        /// <summary>
+        /// Gets or sets the category of the error.
+        /// </summary>
         public string Category { get; set; }
 
-        [DataMember(Name = "subCategory")]
+        /// <summary>
+        /// Gets or sets the sub category of the error.
+        /// </summary>
         public string SubCategory { get; set; }
     }
 }
