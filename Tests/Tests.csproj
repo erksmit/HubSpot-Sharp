@@ -37,10 +37,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="appConfig.json" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Update="CompanyTests.cs">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Compile>

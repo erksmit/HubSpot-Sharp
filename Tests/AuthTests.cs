@@ -15,7 +15,7 @@ namespace Tests
     /// Tests for the OAuth api.
     /// </summary>
     [TestClass]
-    public class OAuthTests
+    public class AuthTests
     {
         /// <summary>
         /// The authentication api.
