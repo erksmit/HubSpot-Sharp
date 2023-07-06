@@ -17,7 +17,7 @@ using HubSpot_Sharp.Search;
 namespace Tests
 {
     /// <summary>
-    /// Tests the company api.
+    /// Tests the company await api.
     /// </summary>
     [TestClass]
     public class CompanyTests
@@ -54,7 +54,7 @@ namespace Tests
         };
 
         /// <summary>
-        /// The company api.
+        /// The company await api.
         /// </summary>
         private readonly CompanyApi api = Config.Api.Crm.Company;
 
@@ -62,12 +62,12 @@ namespace Tests
         /// Tests creating a company.
         /// </summary>
         [TestMethod]
-        public void Create()
+        public async Task Create()
         {
             Company? createdCompany = null;
             try
             {
-                createdCompany = api.Create(sampleCompany);
+                createdCompany = await api.Create(sampleCompany);
             }
             catch (HubSpotException e)
             {
@@ -76,8 +76,8 @@ namespace Tests
             finally
             {
                 if (createdCompany?.Id != null)
-                {
-                    api.Archive((long)createdCompany.Id);
+                { 
+                    await api.Archive((long)createdCompany.Id);
                 }
             }
         }
@@ -86,18 +86,18 @@ namespace Tests
         /// Tests deleting a company.
         /// </summary>
         [TestMethod]
-        public void Delete()
+        public async Task Delete()
         {
-            Company createdCompany = api.Create(sampleCompany);
+            Company createdCompany = await api.Create(sampleCompany);
 
             if (createdCompany.Id == null)
                 Assert.Fail("Created company did not have an id");
 
-            api.Archive((long)createdCompany.Id);
+            await api.Archive((long)createdCompany.Id);
 
             try
             {
-                api.Read<Company>((long)createdCompany.Id);
+                await api.Read<Company>((long)createdCompany.Id);
                 Assert.Fail("Retrieved company that was deleted");
             }
             catch (HubSpotException e)
@@ -110,12 +110,12 @@ namespace Tests
         /// Tests updating a company's properties.
         /// </summary>
         [TestMethod]
-        public void Update()
+        public async Task Update()
         {
             const string UpdatedName = "Cool updated test company";
             const string UpdatedDomain = "updatedDomain.com";
 
-            Company createdCompany = api.Create(sampleCompany);
+            Company createdCompany = await api.Create(sampleCompany);
 
             createdCompany.Name = UpdatedName;
             createdCompany.Domain = UpdatedDomain;
@@ -124,7 +124,7 @@ namespace Tests
                 Assert.Fail("Created company did not have an id");
             long id = (long)createdCompany.Id;
 
-            Company updatedCompany = api.Update(createdCompany);
+            Company updatedCompany = await api.Update(createdCompany);
             try
             {
                 Assert.AreEqual(UpdatedName, updatedCompany.Name);
@@ -132,7 +132,7 @@ namespace Tests
             }
             finally
             {
-                api.Archive(id);
+                await api.Archive(id);
             }
         }
 
@@ -140,13 +140,13 @@ namespace Tests
         /// Tests batch creation and deletion of companies.
         /// </summary>
         [TestMethod]
-        public void BatchCreateAndDelete()
+        public async Task BatchCreateAndDelete()
         {
-            var results = api.CreateBatch(sampleCompanies).GetResults();
+            var results = (await api.CreateBatch(sampleCompanies)).GetResults();
 
             var options = new ListInputs<IdInput>(results.Select(c => new IdInput(c.Id.ToString())).ToList());
 
-            api.ArchiveBatch(options);
+            await api.ArchiveBatch(options);
 
             // verify they are all deleted
             foreach (var result in results)
@@ -155,7 +155,7 @@ namespace Tests
                 {
                     if (result.Id == null)
                         Assert.Fail("Created company did not have an id");
-                    api.Read<Company>((long)result.Id);
+                    await api.Read<Company>((long)result.Id);
                     Assert.Fail("Retrieved company that was deleted");
                 }
                 catch (HubSpotException e)
@@ -169,15 +169,15 @@ namespace Tests
         /// Tests batch updating a company.
         /// </summary>
         [TestMethod]
-        public void BatchUpdate()
+        public async Task BatchUpdate()
         {
-            var createdCompanies = api.CreateBatch(sampleCompanies).GetResults();
+            var createdCompanies = (await api.CreateBatch(sampleCompanies)).GetResults();
             foreach (var company in createdCompanies)
             {
                 company.Name += " updated";
             }
 
-            var updatedCompanies = api.UpdateBatch(createdCompanies).GetResults();
+            var updatedCompanies = (await api.UpdateBatch(createdCompanies)).GetResults();
             try
             {
                 foreach (var result in updatedCompanies)
@@ -189,7 +189,7 @@ namespace Tests
             {
                 var cleanup =
                     new ListInputs<IdInput>(updatedCompanies.Select(c => new IdInput(c.Id.ToString())).ToList());
-                api.ArchiveBatch(cleanup);
+                await api.ArchiveBatch(cleanup);
             }
         }
 
@@ -197,9 +197,9 @@ namespace Tests
         /// Tests the search endpoint by searching for some companies.
         /// </summary>
         [TestMethod]
-        public void Search()
+        public async Task Search()
         {
-            var createResults = api.CreateBatch(sampleCompanies).GetResults();
+            var createResults = (await api.CreateBatch(sampleCompanies)).GetResults();
             var options = new SearchOptions
             {
                 FilterGroups = new List<FilterGroup>
@@ -222,7 +222,7 @@ namespace Tests
 
             // lets wait 20 seconds for HubSpot to process the creation
             Thread.Sleep(20000);
-            var results = api.Search<Company>(options).GetResults();
+            var results = (await api.Search<Company>(options)).GetResults();
             try
             {
                 foreach (var company in results)
@@ -243,7 +243,7 @@ namespace Tests
             {
                 var cleanup =
                     new ListInputs<IdInput>(createResults.Select(c => new IdInput(c.Id.ToString())).ToList());
-                api.ArchiveBatch(cleanup);
+                await api.ArchiveBatch(cleanup);
             }
         }
 
@@ -251,9 +251,9 @@ namespace Tests
         /// Tests getting some companies by their unique property values.
         /// </summary>
         [TestMethod]
-        public void GetByProperties()
+        public async Task GetByProperties()
         {
-            var createResults = api.CreateBatch(sampleCompanies).Results;
+            var createResults = (await api.CreateBatch(sampleCompanies)).Results;
             List<IdInput> ids = createResults.Select(c => new IdInput(c.Id.ToString() ?? throw new AssertFailedException("Created company did not have an id."))).ToList();
             var options = new SelectByPropertiesOptions
             {
@@ -265,26 +265,26 @@ namespace Tests
                     "name"
                 }
             };
-            var result = api.ReadByProperties<Company>(options);
+            var result = await api.ReadByProperties<Company>(options);
             foreach (var company in PropertyBag<Company>.UnpackMany(result.Results))
             {
                 Assert.IsTrue(sampleCompanies.Any(c => c.Name == company.Name));
             }
 
             var cleanup = new ListInputs<IdInput>(createResults.Select(c => new IdInput(c.Id.ToString() ?? throw new AssertFailedException("Created company did not have an id."))).ToList());
-            api.ArchiveBatch(cleanup);
+            await api.ArchiveBatch(cleanup);
         }
 
         /// <summary>
         /// Tests creating a <see cref="HubSpotException"/> and checks if the contents serialized.
         /// </summary>
         [TestMethod]
-        public void Error()
+        public async Task Error()
         {
             try
             {
                 // lets do something wrong
-                api.Search<Company>(null!);
+                await api.Search<Company>(null!);
                 Assert.Fail("Search did not fail");
             }
             catch (HubSpotException e)

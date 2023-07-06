@@ -50,16 +50,16 @@ namespace HubSpot_Sharp.CRM.Custom
         /// <returns>
         /// A list of associations.
         /// </returns>
-        public ListResult<Association> GetAssociations(string objectType, long objectId, string toObjectType)
+        public async Task<ListResult<Association>> GetAssociations(string objectType, long objectId, string toObjectType)
         {
             var path = $"/crm/v3/objects/{objectType}/{objectId}/associations/{toObjectType}";
-            return client.Execute<ListResult<Association>>(path);
+            return await client.Execute<ListResult<Association>>(path);
         }
 
         /// <inheritdoc cref="GetAssociations(string, long, string)" />
-        public ListResult<Association> GetAssociations<TToObject>(string objectType, long objectId) where TToObject : HubSpotObject
+        public async Task<ListResult<Association>> GetAssociations<TToObject>(string objectType, long objectId) where TToObject : HubSpotObject
         {
-            return GetAssociations(objectType, objectId, AssociationIdAttribute.GetId<TToObject>());
+            return await GetAssociations(objectType, objectId, AssociationIdAttribute.GetId<TToObject>());
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace HubSpot_Sharp.CRM.Custom
         /// <param name="associationType">
         /// The name of the association.
         /// </param>
-        public void Associate(
+        public async Task Associate(
             string objectType,
             long objectId,
             string toObjectType,
@@ -89,17 +89,17 @@ namespace HubSpot_Sharp.CRM.Custom
         {
             var path =
                 $"/crm/v3/objects/{objectType}/{objectId}/associations/{toObjectType}/{toObjectId}/{associationType}";
-            client.Execute(path, HttpMethod.Put);
+            await client.Execute(path, HttpMethod.Put);
         }
 
         /// <inheritdoc cref="Associate(string, long, string, long, string)"/>
-        public void Associate<TToObject>(
+        public async Task Associate<TToObject>(
             string objectType,
             long objectId,
             long toObjectId,
             string associationType)
         {
-            Associate(objectType, objectId, AssociationIdAttribute.GetId<TToObject>(), toObjectId, associationType);
+            await Associate(objectType, objectId, AssociationIdAttribute.GetId<TToObject>(), toObjectId, associationType);
         }
 
 
@@ -121,7 +121,7 @@ namespace HubSpot_Sharp.CRM.Custom
         /// <param name="associationType">
         /// The name of the association.
         /// </param>
-        public void RemoveAssociation(
+        public async Task RemoveAssociation(
             string objectType,
             long objectId,
             string toObjectType,
@@ -130,17 +130,17 @@ namespace HubSpot_Sharp.CRM.Custom
         {
             var path =
                 $"/crm/v3/objects/{objectType}/{objectId}/associations/{toObjectType}/{toObjectId}/{associationType}";
-            client.Execute(path, HttpMethod.Delete);
+            await client.Execute(path, HttpMethod.Delete);
         }
 
         /// <inheritdoc cref="RemoveAssociation(string, long, string, long, string)"/>
-        public void RemoveAssociation<TToObjectType>(
+        public async Task RemoveAssociation<TToObjectType>(
             string objectType,
             long objectId,
             long toObjectId,
             string associationType) where TToObjectType : HubSpotObject
         {
-            RemoveAssociation(objectType, objectId, AssociationIdAttribute.GetId<TToObjectType>(), toObjectId, associationType);
+            await RemoveAssociation(objectType, objectId, AssociationIdAttribute.GetId<TToObjectType>(), toObjectId, associationType);
         }
 
         /// <summary>
@@ -157,12 +157,12 @@ namespace HubSpot_Sharp.CRM.Custom
         /// <returns>
         /// The created <typeparamref name="T"/>
         /// </returns>
-        public T Create<T>(string objectType, T obj)
+        public async Task<T> Create<T>(string objectType, T obj)
             where T : HubSpotObject, new()
         {
             var path = "/crm/v3/objects/" + objectType;
             var pack = new PropertyBag<T>(obj);
-            return client.Execute<PropertyBag<T>>(path, HttpMethod.Post, pack).GetProperties();
+            return (await client.Execute<PropertyBag<T>>(path, HttpMethod.Post, pack)).GetProperties();
         }
 
         /// <summary>
@@ -179,11 +179,11 @@ namespace HubSpot_Sharp.CRM.Custom
         /// <returns>
         /// The retrieved <typeparamref name="T"/>
         /// </returns>
-        public T Read<T>(string objectType, long objectId)
+        public async Task<T> Read<T>(string objectType, long objectId)
             where T : HubSpotObject, new()
         {
             var path = $"/crm/v3/objects/{objectType}/{objectId}";
-            return client.Execute<PropertyBag<T>>(path).GetProperties();
+            return (await client.Execute<PropertyBag<T>>(path)).GetProperties();
         }
 
         /// <summary>
@@ -206,7 +206,7 @@ namespace HubSpot_Sharp.CRM.Custom
         /// <returns>
         /// A list of the retrieved objects.
         /// </returns>
-        public ListResult<PropertyBag<T>> List<T>(
+        public async Task<ListResult<PropertyBag<T>>> List<T>(
             string objectType,
             int limit = 100,
             string? after = null,
@@ -226,7 +226,7 @@ namespace HubSpot_Sharp.CRM.Custom
                 options.AddParam("properties", string.Join(",", properties));
             }
 
-            return client.Execute<ListResult<PropertyBag<T>>>(options);
+            return await client.Execute<ListResult<PropertyBag<T>>>(options);
         }
 
         /// <summary>
@@ -243,12 +243,12 @@ namespace HubSpot_Sharp.CRM.Custom
         /// <returns>
         /// The updated object.
         /// </returns>
-        public T Update<T>(string objectId, T obj)
+        public async Task<T> Update<T>(string objectId, T obj)
             where T : HubSpotObject, new()
         {
             var path = $"/crm/v3/objects/{objectId}/{obj.Id}";
             var pack = new PropertyBag<T>(obj);
-            return client.Execute<PropertyBag<T>>(path, HttpMethod.Patch, pack).GetProperties();
+            return (await client.Execute<PropertyBag<T>>(path, HttpMethod.Patch, pack)).GetProperties();
         }
 
         /// <summary>
@@ -260,10 +260,10 @@ namespace HubSpot_Sharp.CRM.Custom
         /// <param name="objectId">
         /// The id of the object to archive.
         /// </param>
-        public void Archive(string objectType, long objectId)
+        public async Task Archive(string objectType, long objectId)
         {
             var path = $"/crm/v3/objects/{objectType}/{objectId}";
-            client.Execute(path, HttpMethod.Delete);
+            await client.Execute(path, HttpMethod.Delete);
         }
 
         /// <summary>
@@ -280,18 +280,18 @@ namespace HubSpot_Sharp.CRM.Custom
         /// <returns>
         /// A list of the created objects.
         /// </returns>
-        public BatchResult<PropertyBag<T>> CreateBatch<T>(string objectType, ListInputs<PropertyBag<T>> objects)
+        public async Task<BatchResult<PropertyBag<T>>> CreateBatch<T>(string objectType, ListInputs<PropertyBag<T>> objects)
             where T : HubSpotObject, new()
         {
             var path = $"/crm/v3/objects/{objectType}/batch/create";
-            return client.Execute<BatchResult<PropertyBag<T>>>(path, HttpMethod.Post, objects);
+            return await client.Execute<BatchResult<PropertyBag<T>>>(path, HttpMethod.Post, objects);
         }
 
         /// <inheritdoc cref="CreateBatch{T}(string, ListInputs{PropertyBag{T}})"/>
-        public BatchResult<PropertyBag<T>> CreateBatch<T>(string objectType, IList<T> objects)
+        public async Task<BatchResult<PropertyBag<T>>> CreateBatch<T>(string objectType, IList<T> objects)
             where T : HubSpotObject, new()
         {
-            return CreateBatch(objectType, new ListInputs<PropertyBag<T>>(PropertyBag<T>.PackMany(objects)));
+            return await CreateBatch(objectType, new ListInputs<PropertyBag<T>>(PropertyBag<T>.PackMany(objects)));
         }
 
         /// <summary>
@@ -308,11 +308,11 @@ namespace HubSpot_Sharp.CRM.Custom
         /// <returns>
         /// A list of the retrieved objects.
         /// </returns>
-        public BatchResult<PropertyBag<T>> ReadByProperties<T>(string objectType, SelectByPropertiesOptions options)
+        public async Task<BatchResult<PropertyBag<T>>> ReadByProperties<T>(string objectType, SelectByPropertiesOptions options)
             where T : HubSpotObject, new()
         {
             var path = $"/crm/v3/objects/{objectType}/batch/read";
-            return client.Execute<BatchResult<PropertyBag<T>>>(path, HttpMethod.Post, options);
+            return await client.Execute<BatchResult<PropertyBag<T>>>(path, HttpMethod.Post, options);
         }
 
         /// <summary>
@@ -329,18 +329,18 @@ namespace HubSpot_Sharp.CRM.Custom
         /// <returns>
         /// A list of the updated objects.
         /// </returns>
-        public BatchResult<PropertyBag<T>> UpdateBatch<T>(string objectType, ListInputs<PropertyBag<T>> objects)
+        public async Task<BatchResult<PropertyBag<T>>> UpdateBatch<T>(string objectType, ListInputs<PropertyBag<T>> objects)
             where T : HubSpotObject, new()
         {
             var path = $"/crm/v3/objects/{objectType}/batch/update";
-            return client.Execute<BatchResult<PropertyBag<T>>>(path, HttpMethod.Post, objects);
+            return await client.Execute<BatchResult<PropertyBag<T>>>(path, HttpMethod.Post, objects);
         }
 
         /// <inheritdoc cref="UpdateBatch{T}(string, ListInputs{PropertyBag{T}})"/>
-        public BatchResult<PropertyBag<T>> UpdateBatch<T>(string objectType, IList<T> objects)
+        public async Task<BatchResult<PropertyBag<T>>> UpdateBatch<T>(string objectType, IList<T> objects)
             where T : HubSpotObject, new()
         {
-            return UpdateBatch(objectType, new ListInputs<PropertyBag<T>>(PropertyBag<T>.PackMany(objects)));
+            return await UpdateBatch(objectType, new ListInputs<PropertyBag<T>>(PropertyBag<T>.PackMany(objects)));
         }
 
         /// <summary>
@@ -357,12 +357,12 @@ namespace HubSpot_Sharp.CRM.Custom
         /// <returns>
         /// A list of search results.
         /// </returns>
-        public SearchResults<T> Search<T>(string objectType, SearchOptions options)
+        public async Task<SearchResults<T>> Search<T>(string objectType, SearchOptions options)
             where T : HubSpotObject, new()
         {
             var path = $"/crm/v3/objects/{objectType}/search";
             var requestOptions = new RequestOptions(path, HttpMethod.Post, options, RateLimitOptions.RetrySearch);
-            return client.Execute<SearchResults<T>>(requestOptions);
+            return await client.Execute<SearchResults<T>>(requestOptions);
         }
     }
 }

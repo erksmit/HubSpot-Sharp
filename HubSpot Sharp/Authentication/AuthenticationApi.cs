@@ -41,40 +41,41 @@ namespace HubSpot_Sharp.Authentication
         /// <returns>
         /// A <see cref="PrivateTokenInformation"/> containing information about the private app.
         /// </returns>
-        public PrivateTokenInformation GetPrivateTokenInformation(PrivateTokenInfoOptions token)
+        public async Task<PrivateTokenInformation> GetPrivateTokenInformation(PrivateTokenInfoOptions token)
         {
             const string Path = "/oauth/v2/private-apps/get/access-token-info";
             var options = new RequestOptions(Path, HttpMethod.Post, entity: token, tokenLess: true);
-            return client.Execute<PrivateTokenInformation>(options);
+            return await client.Execute<PrivateTokenInformation>(options);
         }
+
         /// <inheritdoc cref="GetPrivateTokenInformation(PrivateTokenInfoOptions)"/>
-        public PrivateTokenInformation GetPrivateTokenInformation(string token)
+        public async Task<PrivateTokenInformation> GetPrivateTokenInformation(string token)
         {
-            return GetPrivateTokenInformation(new PrivateTokenInfoOptions(token));
+            return await GetPrivateTokenInformation(new PrivateTokenInfoOptions(token));
         }
 
         /// <summary>
-        /// Gets infromation about an access token of an app
+        /// Gets information about an access token of an app
         /// </summary>
         /// <param name="accessToken">The token to get information on.</param>
         /// <returns>A <see cref="OAuthTokenInformation"/> containing information about the token.</returns>
-        public OAuthTokenInformation GetAccessTokenInformation(string accessToken)
+        public async Task<OAuthTokenInformation> GetAccessTokenInformation(string accessToken)
         {
             var path = $"/oauth/v1/access-tokens/{accessToken}";
             var options = new RequestOptions(path, tokenLess: true);
-            return client.Execute<OAuthTokenInformation>(options);
+            return await client.Execute<OAuthTokenInformation>(options);
         }
 
         /// <summary>
-        /// Gets infromation about a refresh token of an app
+        /// Gets information about a refresh token of an app
         /// </summary>
         /// <param name="accessToken">The token to get information on.</param>
         /// <returns>A <see cref="OAuthTokenInformation"/> containing information about the token.</returns>
-        public OAuthTokenInformation GetRefreshTokenInformation(string refreshToken)
+        public async Task<OAuthTokenInformation> GetRefreshTokenInformation(string refreshToken)
         {
             var path = $"/oauth/v1/refresh-tokens/{refreshToken}";
             var options = new RequestOptions(path, tokenLess: true);
-            return client.Execute<OAuthTokenInformation>(options);
+            return await client.Execute<OAuthTokenInformation>(options);
         }
 
         /// <summary>
@@ -86,11 +87,11 @@ namespace HubSpot_Sharp.Authentication
         /// <returns>
         /// A <see cref="TokenExchangeResponse"/> containing the acquired tokens.
         /// </returns>
-        public TokenExchangeResponse ExchangeTokens(GrantRequestOptions data)
+        public async Task<TokenExchangeResponse> ExchangeTokens(GrantRequestOptions data)
         {
             const string Path = "/oauth/v1/token";
             var options = new RequestOptions(Path, HttpMethod.Post, formContent: data, tokenLess: true);
-            return client.Execute<TokenExchangeResponse>(options);
+            return await client.Execute<TokenExchangeResponse>(options);
         }
 
         /// <summary>
@@ -99,10 +100,10 @@ namespace HubSpot_Sharp.Authentication
         /// <param name="token">
         /// The token to delete.
         /// </param>
-        public void DeleteRefreshToken(string token)
+        public async Task DeleteRefreshToken(string token)
         {
             var path = $"/oauth/v1/refresh-tokens/{token}";
-            client.Execute(path, HttpMethod.Delete);
+            await client.Execute(path, HttpMethod.Delete);
         }
 
         /// <summary>

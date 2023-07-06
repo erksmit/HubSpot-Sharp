@@ -26,7 +26,7 @@ namespace Tests
         /// Tests whether the api is able to retrieve information on the configured private access token.
         /// </summary>
         [TestMethod]
-        public void ValidatePrivateAccessToken()
+        public async Task ValidatePrivateAccessToken()
         {
             // TODO: request returns 404, does this endpoint still exist???
             if (Config.PrivateAccessToken == null)
@@ -34,7 +34,7 @@ namespace Tests
                 Assert.Fail("Private Access Token is not configured");
             }
 
-            var info = api.GetPrivateTokenInformation(Config.PrivateAccessToken);
+            var info = await api.GetPrivateTokenInformation(Config.PrivateAccessToken);
             Assert.IsNotNull(info);
         }
 
@@ -42,14 +42,14 @@ namespace Tests
         /// Tests whether the refresh token is valid and information can be retrieved on it.
         /// </summary>
         [TestMethod]
-        public void ValidateRefreshToken()
+        public async Task ValidateRefreshToken()
         {
             if (Config.RefreshToken == null)
             {
                 Assert.Fail("Refresh Token is not configured");
             }
 
-            var info = api.GetRefreshTokenInformation(Config.RefreshToken);
+            var info = await api.GetRefreshTokenInformation(Config.RefreshToken);
             Assert.IsNotNull(info.Token);
         }
 
@@ -57,7 +57,7 @@ namespace Tests
         /// Tests performing a toke exchange request which exchanges a refresh token for an access token
         /// </summary>
         [TestMethod]
-        public void OAuthAuthorize()
+        public async Task OAuthAuthorize()
         {
             if (Config.RefreshToken == null)
             {
@@ -87,9 +87,9 @@ namespace Tests
                 ClientSecret = Config.ClientSecret,
                 RedirectUri = Config.RedirectUri
             };
-            var response = api.ExchangeTokens(authForm);
+            var response = await api.ExchangeTokens(authForm);
 
-            var info = api.GetAccessTokenInformation(response.AccessToken);
+            var info = await api.GetAccessTokenInformation(response.AccessToken);
             Assert.IsNotNull(info.Token);
         }
 
@@ -97,7 +97,7 @@ namespace Tests
         /// Tests performing OAuth authentication using the <see cref="OAuthTokenRefresher"/>.
         /// </summary>
         [TestMethod]
-        public void ManagedOAuth()
+        public async Task ManagedOAuth()
         {
             if (Config.RefreshToken == null)
             {
@@ -132,7 +132,7 @@ namespace Tests
             manager.Start();
             Thread.Sleep(5000);
             manager.Stop();
-            var info = api.GetAccessTokenInformation(token.AccessToken);
+            var info = await api.GetAccessTokenInformation(token.AccessToken);
             Assert.IsNotNull(info.Token);
         }
     }

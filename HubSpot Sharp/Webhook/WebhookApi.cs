@@ -15,46 +15,46 @@ namespace HubSpot_Sharp.Webhook
             this.client = client;
         }
 
-        public WebhookSettings GetSettings(int appId)
+        public async Task<WebhookSettings> GetSettings(int appId)
         {
             var path = $"/webhooks/v3/{appId}/settings";
-            return client.Execute<WebhookSettings>(path);
+            return await client.Execute<WebhookSettings>(path);
         }
 
-        public WebhookSettings UpdateSettings(int appId, WebhookSettings settings)
+        public async Task<WebhookSettings> UpdateSettings(int appId, WebhookSettings settings)
         {
             var path = $"/webhooks/v3/{appId}/settings";
-            return client.Execute<WebhookSettings>(path, HttpMethod.Put, settings);
+            return await client.Execute<WebhookSettings>(path, HttpMethod.Put, settings);
         }
 
-        public void DeleteSettings(int appId)
+        public async Task DeleteSettings(int appId)
         {
             var path = $"/webhooks/v3/{appId}/settings";
-            client.Execute(path, HttpMethod.Delete);
+            await client.Execute(path, HttpMethod.Delete);
         }
 
-        public ListResult<WebhookSubscription> GetSubscriptions(int appId)
+        public async Task<ListResult<WebhookSubscription>> GetSubscriptions(int appId)
         {
             var path = $"/webhooks/v3/{appId}/subscriptions";
-            return client.Execute<ListResult<WebhookSubscription>>(path);
+            return await client.Execute<ListResult<WebhookSubscription>>(path);
         }
 
-        public WebhookSubscription UpdateSubScription(int appId, WebhookSubscription subscription)
+        public async Task<WebhookSubscription> UpdateSubScription(int appId, WebhookSubscription subscription)
         {
             var path = $"/webhooks/v3/{appId}/subscriptions";
-            return client.Execute<WebhookSubscription>(path, HttpMethod.Post, subscription);
+            return await client.Execute<WebhookSubscription>(path, HttpMethod.Post, subscription);
         }
 
-        public WebhookSubscription GetSubscription(int appId, int subscriptionId)
+        public async Task<WebhookSubscription> GetSubscription(int appId, int subscriptionId)
         {
             var path = $"/webhooks/v3/{appId}/subscriptions/{subscriptionId}";
-            return client.Execute<WebhookSubscription>(path);
+            return await client.Execute<WebhookSubscription>(path);
         }
 
-        public void DeleteSubscription(int appId, int subscriptionId)
+        public async Task DeleteSubscription(int appId, int subscriptionId)
         {
             var path = $"/webhooks/v3/{appId}/subscriptions/{subscriptionId}";
-            client.Execute(path, HttpMethod.Delete);
+            await client.Execute(path, HttpMethod.Delete);
         }
 
         public bool IsV3RequestValid(ValidationInformationV3 headers, string clientSecret)

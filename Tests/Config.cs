@@ -51,7 +51,7 @@
 
             if (AuthMethod == HubSpotAuthenticationMode.OAuth)
             {
-                var response = Api.Authentication.ExchangeTokens(
+                var response =Api.Authentication.ExchangeTokens(
                     new GrantRequestOptions
                     {
                         ClientId = ClientId,
@@ -59,7 +59,7 @@
                         RedirectUri = RedirectUri,
                         RefreshToken = RefreshToken,
                         GrantType = GrantType.RefreshToken
-                    });
+                    }).GetAwaiter().GetResult();
                 token.AccessToken = response.AccessToken;
             }
         }

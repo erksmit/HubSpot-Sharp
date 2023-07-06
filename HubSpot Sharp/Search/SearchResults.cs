@@ -23,7 +23,7 @@ namespace HubSpot_Sharp.Search
     public class SearchResults<T>
         where T : HubSpotObject, new()
     {
-        public SearchResults(int total, IList<PropertyBag<T>> results, PagingModel paging = null)
+        public SearchResults(int total, IList<PropertyBag<T>> results, PagingModel? paging = null)
         {
             Total = total;
             Results = results;

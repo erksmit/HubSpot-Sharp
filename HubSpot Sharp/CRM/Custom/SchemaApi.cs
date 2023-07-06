@@ -42,9 +42,9 @@ namespace HubSpot_Sharp.CRM.Custom
         /// <returns>
         /// A <see cref="SchemaInformation"/> with information about the created schema.
         /// </returns>
-        public SchemaInformation Create(ObjectSchema schema)
+        public async Task<SchemaInformation> Create(ObjectSchema schema)
         {
-            return client.Execute<SchemaInformation>("/crm/v3/schemas", HttpMethod.Post, schema);
+            return await client.Execute<SchemaInformation>("/crm/v3/schemas", HttpMethod.Post, schema);
         }
 
         /// <summary>
@@ -56,10 +56,10 @@ namespace HubSpot_Sharp.CRM.Custom
         /// <returns>
         /// The schema object.
         /// </returns>
-        public SchemaInformation Get(string objectType)
+        public async Task<SchemaInformation> Get(string objectType)
         {
             var path = "/crm/v3/schemas/" + objectType;
-            return client.Execute<SchemaInformation>(path);
+            return await client.Execute<SchemaInformation>(path);
         }
 
         /// <summary>
@@ -68,9 +68,9 @@ namespace HubSpot_Sharp.CRM.Custom
         /// <returns>
         /// A list containing all object schemas, it will never have paging.
         /// </returns>
-        public ListResult<SchemaInformation> GetAll()
+        public async Task<ListResult<SchemaInformation>> GetAll()
         {
-            return client.Execute<ListResult<SchemaInformation>>("/crm/v3/schemas");
+            return await client.Execute<ListResult<SchemaInformation>>("/crm/v3/schemas");
         }
 
         /// <summary>
@@ -85,10 +85,10 @@ namespace HubSpot_Sharp.CRM.Custom
         /// <returns>
         /// The updated schema.
         /// </returns>
-        public SchemaInformation Update(ObjectSchema schema, string objectType)
+        public async Task<SchemaInformation> Update(ObjectSchema schema, string objectType)
         {
             var path = "/crm/v3/schemas/" + objectType;
-            return client.Execute<SchemaInformation>(path, HttpMethod.Patch, schema);
+            return await client.Execute<SchemaInformation>(path, HttpMethod.Patch, schema);
         }
 
         /// <summary>
@@ -97,10 +97,10 @@ namespace HubSpot_Sharp.CRM.Custom
         /// <param name="objectType">
         /// The object type id for the schema.
         /// </param>
-        public void Archive(string objectType)
+        public async Task Archive(string objectType)
         {
             var path = "/crm/v3/schemas/" + objectType;
-            client.Execute(path, HttpMethod.Delete);
+            await client.Execute(path, HttpMethod.Delete);
         }
 
         /// <summary>
@@ -109,10 +109,10 @@ namespace HubSpot_Sharp.CRM.Custom
         /// <param name="objectType">
         /// The object type id for the schema.
         /// </param>
-        public void Purge(string objectType)
+        public async Task Purge(string objectType)
         {
             var path = $"/crm/v3/schemas/{objectType}/purge";
-            client.Execute(path, HttpMethod.Delete);
+            await client.Execute(path, HttpMethod.Delete);
         }
     }
 }

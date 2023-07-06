@@ -52,14 +52,14 @@
         /// <summary>
         /// Initiates the refresh process and continue refreshing the token when it expires.
         /// </summary>
-        public void Start()
+        public async void Start()
         {
             if(IsActive)
                 throw new InvalidOperationException("Token refresher was already running");
 
             IsActive = true;
             cancellation = new CancellationTokenSource();
-            OnRefresh();
+            await OnRefresh();
         }
 
         /// <summary>
@@ -74,7 +74,7 @@
         /// <summary>
         /// Refreshes the token and runs the function again when the token expires.
         /// </summary>
-        private void OnRefresh()
+        private async Task OnRefresh()
         {
             var requestForm = new GrantRequestOptions()
             {
@@ -85,13 +85,13 @@
                 RefreshToken = Token.RefreshToken
             };
 
-            var response = Api.Authentication.ExchangeTokens(requestForm);
+            var response = await Api.Authentication.ExchangeTokens(requestForm);
             Token.AccessToken = response.AccessToken;
 
             // let's refresh 30 seconds early to be safe
             Token.ExpiresAt = DateTime.Now + TimeSpan.FromSeconds(response.ExpiresIn - 30);
             
-            Task.Delay(Token.ExpiresAt - DateTime.Now, cancellation.Token).ContinueWith(_ => OnRefresh());
+            _ = Task.Delay(Token.ExpiresAt - DateTime.Now, cancellation.Token).ContinueWith(_ => OnRefresh());
         }
     }
 }

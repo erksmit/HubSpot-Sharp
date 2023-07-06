@@ -52,7 +52,7 @@ namespace HubSpot_Sharp
         /// <summary>
         /// The base url for the HubSpot api.
         /// </summary>
-        public static string BaseUrl => @"https://api.hubapi.com";
+        public const string BaseUrl = @"https://api.hubapi.com";
 
         /// <summary>
         /// Gets or sets the token used for authentication.
@@ -68,7 +68,7 @@ namespace HubSpot_Sharp
         /// <returns>
         /// The request body.
         /// </returns>
-        private string SendRequest(RequestOptions options)
+        private async Task<string> SendRequest(RequestOptions options)
         {
             var request = new HttpRequestMessage(options.Method, options.EndPointPath);
             if (options.TokenLess == false)
@@ -88,13 +88,13 @@ namespace HubSpot_Sharp
                 request.Content = new StringContent(form, Encoding.UTF8, mediaType: "application/x-www-form-urlencoded");
             }
             
-            var response = client.Send(request);
+            var response = await client.SendAsync(request);
 
-            string responseData = response.Content.ReadAsStringAsync().Result;
+            string responseData = await response.Content.ReadAsStringAsync();
 
             if (response.IsSuccessStatusCode == false)
             {
-                // statuscode 429 indicates a ratelimit error
+                // statuscode 429 indicates a rateLimit error
                 if ((int)response.StatusCode != 429)
                 {
                     throw new HubSpotException(response);
@@ -114,7 +114,7 @@ namespace HubSpot_Sharp
 
                         // try again, but error if it times out again
                         options.RateLimit = RateLimitOptions.Error;
-                        return SendRequest(options);
+                        return await SendRequest(options);
                     }
 
                     case RateLimitOptions.RetryRolling:
@@ -122,7 +122,7 @@ namespace HubSpot_Sharp
                         // the rolling ratelimit is generally not hit, but in the future it would be a good idea to ensure this ratelimit wont ever be hit
                         Thread.Sleep(10000);
                         options.RateLimit = RateLimitOptions.Error;
-                        return SendRequest(options);
+                        return await SendRequest(options);
                     }
 
                     default:
@@ -139,9 +139,9 @@ namespace HubSpot_Sharp
         /// <param name="options">
         /// The options for the request.
         /// </param>
-        public void Execute(RequestOptions options)
+        public async Task Execute(RequestOptions options)
         {
-            SendRequest(options);
+            await SendRequest(options);
         }
 
         /// <summary>
@@ -156,11 +156,11 @@ namespace HubSpot_Sharp
         /// <param name="entity">
         /// The content of the request.
         /// </param>
-        public void Execute(string path, HttpMethod? method = null, object? entity = null)
+        public async Task Execute(string path, HttpMethod? method = null, object? entity = null)
         {
             method ??= HttpMethod.Get;
             var options = new RequestOptions(path, method, entity);
-            Execute(options);
+            await Execute(options);
         }
 
         /// <summary>
@@ -175,9 +175,9 @@ namespace HubSpot_Sharp
         /// <returns>
         /// The response object
         /// </returns>
-        public T Execute<T>(RequestOptions options)
+        public async Task<T> Execute<T>(RequestOptions options)
         {
-            var json = SendRequest(options);
+            var json = await SendRequest(options);
             return serializer.DeserializeJson<T>(json);
         }
 
@@ -199,11 +199,11 @@ namespace HubSpot_Sharp
         /// <returns>
         /// The response object
         /// </returns>
-        public T Execute<T>(string path, HttpMethod? method = null, object? entity = null)
+        public async Task<T> Execute<T>(string path, HttpMethod? method = null, object? entity = null)
         {
             method ??= HttpMethod.Get;
             var options = new RequestOptions(path, method, entity);
-            return Execute<T>(options);
+            return await Execute<T>(options);
         }
 
         void IDisposable.Dispose() => client.Dispose();
