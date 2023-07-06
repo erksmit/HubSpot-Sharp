@@ -22,26 +22,31 @@ namespace HubSpot_Sharp.CRM.Company
         /// <summary>
         /// Gets or sets the name of the company.
         /// </summary>
+        [DataMember]
         public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the domain url of the company.
         /// </summary>
+        [DataMember]
         public string Domain { get; set; }
 
         /// <summary>
         /// Gets or sets the website of the company.
         /// </summary>
+        [DataMember]
         public string Website { get; set; }
 
         /// <summary>
         /// Gets or sets the description of the company.
         /// </summary>
+        [DataMember]
         public string Description { get; set; }
 
         /// <summary>
         /// Gets or sets the country the company resides in.
         /// </summary>
+        [DataMember]
         public string Country { get; set; }
     }
 }

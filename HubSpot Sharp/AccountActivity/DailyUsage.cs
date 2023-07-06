@@ -1,20 +1,39 @@
 ﻿using System.Runtime.Serialization;
 
+using Newtonsoft.Json;
+
 namespace HubSpot_Sharp.AccountActivity
 {
     [DataContract]
     public class DailyUsage
     {
-        public string Name { get; set; }
+        [JsonConstructor]
+        internal DailyUsage(string name, long usageLimit, long currentUsage, DateTime collectedAt, string fetchStatus, DateTime resetsAt)
+        {
+            Name = name;
+            UsageLimit = usageLimit;
+            CurrentUsage = currentUsage;
+            CollectedAt = collectedAt;
+            FetchStatus = fetchStatus;
+            ResetsAt = resetsAt;
+        }
 
-        public long UsageLimit { get; set; }
-
-        public long CurrentUsage { get; set; }
-
-        public DateTime CollectedAt { get; set; }
-
-        public string FetchStatus { get; set; }
-
-        public DateTime ResetsAt { get; set; }
+        [DataMember]
+        public string Name { get; }
+        
+        [DataMember]
+        public long UsageLimit { get; }
+        
+        [DataMember]
+        public long CurrentUsage { get; }
+        
+        [DataMember]
+        public DateTime CollectedAt { get; }
+        
+        [DataMember]
+        public string FetchStatus { get; }
+        
+        [DataMember]
+        public DateTime ResetsAt { get; }
     }
 }

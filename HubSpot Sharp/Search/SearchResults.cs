@@ -23,20 +23,30 @@ namespace HubSpot_Sharp.Search
     public class SearchResults<T>
         where T : HubSpotObject, new()
     {
-        /// <summary>
-        /// Gets or sets the total amount of search results.
-        /// </summary>
-        public int Total { get; set; }
+        public SearchResults(int total, IList<PropertyBag<T>> results, PagingModel paging = null)
+        {
+            Total = total;
+            Results = results;
+            Paging = paging;
+        }
 
         /// <summary>
-        /// Gets or sets the paging object for further pagination.
+        /// Gets the total amount of search results.
         /// </summary>
-        public PagingModel Paging { get; set; }
+        [DataMember]
+        public int Total { get; }
 
         /// <summary>
-        /// Gets or sets the results of the request.
+        /// Gets the results of the request.
         /// </summary>
-        public IList<PropertyBag<T>> Results { get; set; }
+        [DataMember]
+        private IList<PropertyBag<T>> Results { get; }
+
+        /// <summary>
+        /// Gets the paging object for further pagination.
+        /// </summary>
+        [DataMember]
+        public PagingModel? Paging { get; }
 
         /// <summary>
         /// Unpacks the results of the search request.
@@ -44,6 +54,6 @@ namespace HubSpot_Sharp.Search
         /// <returns>
         /// The unpacked objects.
         /// </returns>
-        public IList<T> UnpackResults() => PropertyBag<T>.UnpackMany(Results);
+        public IList<T> GetResults() => PropertyBag<T>.UnpackMany(Results);
     }
 }

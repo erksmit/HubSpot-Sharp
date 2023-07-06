@@ -68,11 +68,13 @@ namespace HubSpot_Sharp.Options
         /// <summary>
         /// Gets or sets the name of the unique property that will be used to identify the records.
         /// </summary>
+        [DataMember]
         public string IdProperty { get; set; }
 
         /// <summary>
         /// Gets or sets the unique property values to read the records of.
         /// </summary>
+        [DataMember]
         public IList<IdInput> Inputs { get; set; }
     }
 }

@@ -7,11 +7,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Runtime.Serialization;
+
 namespace HubSpot_Sharp.Intermediates
 {
     /// <summary>
     /// A string id input for a request
     /// </summary>
+    [DataContract]
     public class IdInput
     {
         /// <summary>
@@ -35,6 +38,7 @@ namespace HubSpot_Sharp.Intermediates
         /// <summary>
         /// Gets or sets the id.
         /// </summary>
+        [DataMember]
         public string Id { get; set; }
     }
 }

@@ -14,7 +14,7 @@ namespace HubSpot_Sharp.Options
     /// <summary>
     /// The request options.
     /// </summary>
-    [DataContract]
+    
     public class RequestOptions
     {
         /// <summary>
@@ -60,8 +60,7 @@ namespace HubSpot_Sharp.Options
             params (string name, string value)[] queryParams)
         {
             EndPointPath = endPointPath;
-            method ??= HttpMethod.Get;
-            Method = method;
+            Method = method ?? HttpMethod.Get;
             RateLimit = rateLimit;
             Entity = entity;
             FormContent = formContent;

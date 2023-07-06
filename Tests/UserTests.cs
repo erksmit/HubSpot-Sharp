@@ -35,8 +35,6 @@ namespace Tests
         public void AccountTest()
         {
             var details = accountActivityApi.GetAccountDetails();
-            var securityActivity = accountActivityApi.GetSecurityActivity(20899155);
-            var loginActivity = accountActivityApi.GetLoginActivity(20899155);
 
             var all = userProvisioningApi.GetAll();
             var teams = userProvisioningApi.GetTeams();

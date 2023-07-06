@@ -14,7 +14,6 @@ namespace HubSpot_Sharp.Authentication
     /// <summary>
     /// The authentication mode of a HubSpot app
     /// </summary>
-    [DataContract]
     public enum HubSpotAuthenticationMode
     {
         /// <summary>

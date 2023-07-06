@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Intrinsics.Arm;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using HubSpot_Sharp.Intermediates;
 using HubSpot_Sharp.Serialization;
 
 namespace Tests
 {
-    [DataContract]
+
     public class SimpleProperties
     {
         public int NumberProp { get; set; }
@@ -20,13 +13,13 @@ namespace Tests
         public DateTime DateProp { get; set; }
     }
     
-    [DataContract]
+    
     public class ReferenceProperty
     {
         public SimpleProperties Props { get; set; }
     }
 
-    [DataContract]
+    
     public class DeserializeOnlyProperties
     {
         public int Prop1 { get; set; }
@@ -35,17 +28,25 @@ namespace Tests
         public int Prop2 { get; set;}
     }
 
-    [DataContract]
+    
     public class ListProperty
     {
         public IList<int> Ints { get; set; }
     }
 
-    [DataContract]
+    
     public class EnumerationProperty
     {
         [HubSpotEnumeration]
         public IList<string> Enumeration { get; set; }
+    }
+
+    
+    public class HubSpotObjectChild : HubSpotObject
+    {
+        public string Name { get; set; }
+
+        public string Value { get; set; }
     }
 
     [TestClass]
@@ -106,6 +107,20 @@ namespace Tests
 
             // this check is flawed
             Assert.IsTrue(parsedObject.Ints.All(ints.Contains), "Parsed object did not contain a number it was supposed to.");
+        }
+
+        [TestMethod]
+        public void PropertyBagSerialization()
+        {
+            var bag = new PropertyBag<HubSpotObjectChild>(
+                new HubSpotObjectChild
+                {
+                    Id = 1,
+                    Name = "foo",
+                    Value = "bar"
+                });
+            var json = serializer.SerializeJson(bag);
+            var parsedObject = serializer.DeserializeJson<PropertyBag<HubSpotObjectChild>>(json);
         }
     }
 }

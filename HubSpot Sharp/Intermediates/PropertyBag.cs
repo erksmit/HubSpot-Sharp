@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Runtime.Serialization;
+
 namespace HubSpot_Sharp.Intermediates
 {
     /// <summary>
@@ -15,37 +17,36 @@ namespace HubSpot_Sharp.Intermediates
     /// <typeparam name="T">
     /// The type of the contained object
     /// </typeparam>
+    [DataContract]
     public class PropertyBag<T>
-        where T : HubSpotObject, new()
+        where T : HubSpotObject
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PropertyBag{T}" /> class.
-        /// </summary>
-        public PropertyBag()
-        {
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertyBag{T}"/> class using the provided object.
         /// </summary>
-        /// <param name="obj">
+        /// <param name="properties">
         /// The object to put in the bag.
         /// </param>
-        public PropertyBag(T obj)
+        /// <param name="id">
+        /// The id of the object in the bag.
+        /// </param>
+        public PropertyBag(T properties, long? id = null)
         {
-            Id = obj.Id;
-            Properties = obj;
+            Id = id ?? properties.Id;
+            Properties = properties;
         }
 
         /// <summary>
-        /// Gets or sets the id of the contained <typeparamref name="T" />.
+        /// Gets the id of the contained <typeparamref name="T" />.
         /// </summary>
-        public long? Id { get; set; }
+        [DataMember]
+        public long? Id { get; }
 
         /// <summary>
-        /// Gets or sets the contained object.
+        /// Gets the contained object.
         /// </summary>
-        public T Properties { get; set; }
+        [DataMember]
+        public T Properties { get; }
 
         /// <summary>
         /// Sets the id of the contained <typeparamref name="T" /> and returns it
@@ -53,9 +54,9 @@ namespace HubSpot_Sharp.Intermediates
         /// <returns>
         /// The contained <typeparamref name="T" />.
         /// </returns>
-        public T Unpack()
+        public T GetProperties()
         {
-            Properties.Id = (long)Id;
+            Properties.Id ??= Id;
             return Properties;
         }
 
@@ -84,7 +85,16 @@ namespace HubSpot_Sharp.Intermediates
         /// </returns>
         public static IList<T> UnpackMany(IEnumerable<PropertyBag<T>> bag)
         {
-            return bag.Select(item => item.Unpack()).ToList();
+            return bag.Select(item => item.GetProperties()).ToList();
+        }
+    }
+
+    public static class PropertyBagEnumerableExtensions
+    {
+        
+        public static IList<T> UnpackMany<T>(this IEnumerable<PropertyBag<T>> bag) where T : HubSpotObject
+        {
+            return PropertyBag<T>.UnpackMany(bag);
         }
     }
 }

@@ -7,11 +7,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Runtime.Serialization;
+
 namespace HubSpot_Sharp.Intermediates
 {
     /// <summary>
     /// A string name input for certain requests
     /// </summary>
+    [DataContract]
     public class NameInput
     {
         /// <summary>
@@ -35,6 +38,7 @@ namespace HubSpot_Sharp.Intermediates
         /// <summary>
         /// Gets or sets the name.
         /// </summary>
+        [DataMember]
         public string Name { get; set; }
     }
 }

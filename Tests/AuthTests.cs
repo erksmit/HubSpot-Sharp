@@ -28,6 +28,7 @@ namespace Tests
         [TestMethod]
         public void ValidatePrivateAccessToken()
         {
+            // TODO: request returns 404, does this endpoint still exist???
             if (Config.PrivateAccessToken == null)
             {
                 Assert.Fail("Private Access Token is not configured");

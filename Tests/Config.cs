@@ -1,11 +1,4 @@
-﻿
-using HubSpot_Sharp.Authentication;
-
-using Microsoft.Extensions.Configuration;
-
-[assembly: Parallelize(Scope = ExecutionScope.ClassLevel)]
-
-namespace Tests
+﻿namespace Tests
 {
 
     using HubSpot_Sharp.Authentication;
@@ -24,6 +17,8 @@ namespace Tests
         public static string? RedirectUri { get; private set; }
         public static string? RefreshToken { get; private set; }
 
+        public static HubSpotAuthenticationMode AuthMethod { get; private set; }
+
         [AssemblyInitialize]
         public static void SetupTests(TestContext context)
         {
@@ -35,13 +30,38 @@ namespace Tests
             ClientSecret = config.GetValue<string>("clientSecret");
             RedirectUri = config.GetValue<string>("redirectUri");
             RefreshToken = config.GetValue<string>("refreshToken");
+            AuthMethod = Enum.Parse<HubSpotAuthenticationMode>(config.GetValue<string>("authMethod"));
 
-            var token = new HubSpotToken
+            HubSpotToken token = AuthMethod switch
             {
-                AccessToken = PrivateAccessToken
+                HubSpotAuthenticationMode.PrivateAccessToken => new HubSpotToken
+                {
+                    AccessToken = PrivateAccessToken,
+                    Mode = HubSpotAuthenticationMode.PrivateAccessToken
+                },
+                HubSpotAuthenticationMode.OAuth => new HubSpotToken
+                {
+                    RefreshToken = RefreshToken,
+                    Mode = HubSpotAuthenticationMode.OAuth
+                },
+                _ => throw new ArgumentOutOfRangeException("Unknown authentication mode configuration")
             };
-            var client = new HubSpotClient(token);
-            Api = new HubSpotApi(client);
+
+            Api = new HubSpotApi(token);
+
+            if (AuthMethod == HubSpotAuthenticationMode.OAuth)
+            {
+                var response = Api.Authentication.ExchangeTokens(
+                    new GrantRequestOptions
+                    {
+                        ClientId = ClientId,
+                        ClientSecret = ClientSecret,
+                        RedirectUri = RedirectUri,
+                        RefreshToken = RefreshToken,
+                        GrantType = GrantType.RefreshToken
+                    });
+                token.AccessToken = response.AccessToken;
+            }
         }
     }
 }

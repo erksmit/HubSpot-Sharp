@@ -19,6 +19,7 @@ namespace HubSpot_Sharp.CRM.Ticket
         [DataMember(Name = "hubspot_owner_id")]
         public long OwnerId { get; set; }
         
+        [DataMember]
         public string Subject { get; set; }
     }
 }

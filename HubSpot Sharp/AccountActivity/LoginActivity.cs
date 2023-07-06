@@ -1,26 +1,52 @@
 ﻿using System.Runtime.Serialization;
 
+using Newtonsoft.Json;
+
 namespace HubSpot_Sharp.AccountActivity
 {
+    
     [DataContract]
     public class LoginActivity
     {
-        public string Id { get; set; }
+        [JsonConstructor]
+        internal LoginActivity(string id, DateTime loginAt, long userId, string email, string countryCode, string regionCode, string ipAddress, string userAgent, bool loginSucceeded)
+        {
+            Id = id;
+            LoginAt = loginAt;
+            UserId = userId;
+            Email = email;
+            CountryCode = countryCode;
+            RegionCode = regionCode;
+            IpAddress = ipAddress;
+            UserAgent = userAgent;
+            LoginSucceeded = loginSucceeded;
+        }
 
-        public DateTime LoginAt { get; set; }
-
-        public long UserId { get; set; }
-
-        public string Email { get; set; }
-
-        public string CountryCode { get; set; }
-
-        public string RegionCode { get; set; }
-
-        public string IpAddress { get; set; }
-
-        public string UserAgent { get; set; }
+        [DataMember]
+        public string Id { get; }
+        
+        [DataMember]
+        public DateTime LoginAt { get; }
+        
+        [DataMember]
+        public long UserId { get; }
+        
+        [DataMember]
+        public string Email { get; }
+        
+        [DataMember]
+        public string CountryCode { get; }
+        
+        [DataMember]
+        public string RegionCode { get; }
+        
+        [DataMember]
+        public string IpAddress { get; }
+        
+        [DataMember]
+        public string UserAgent { get; }
   
-        public bool LoginSucceeded { get; set; }
+        [DataMember]
+        public bool LoginSucceeded { get; }
     }
 }

@@ -16,16 +16,29 @@ namespace HubSpot_Sharp.Intermediates
     /// The object type contained withing the batch result
     /// </typeparam>
     public class BatchResult<T>
-        where T : new()
     {
-        /// <summary>
-        /// Gets or sets the status indicating whether the operation was completed or is still pending.
-        /// </summary>
-        public string Status { get; set; }
+        public BatchResult(string status, IList<T> results)
+        {
+            Status = status;
+            Results = results;
+        }
 
         /// <summary>
-        /// Gets or sets the results of the request.
+        /// Gets the status indicating whether the operation was completed or is still pending.
         /// </summary>
-        public IList<T> Results { get; set; }
+        public string Status { get; }
+
+        /// <summary>
+        /// Gets the results of the request.
+        /// </summary>
+        public IList<T> Results { get; }
+    }
+
+    public static class BatchResultExtensions
+    {
+        public static IList<T> GetResults<T>(this BatchResult<PropertyBag<T>> result) where T : HubSpotObject
+        {
+            return result.Results.UnpackMany();
+        }
     }
 }

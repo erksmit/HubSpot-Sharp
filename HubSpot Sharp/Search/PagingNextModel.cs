@@ -20,11 +20,13 @@ namespace HubSpot_Sharp.Search
         /// <summary>
         /// Gets or sets the offset for the next page.
         /// </summary>
+        [DataMember]
         public string After { get; set; }
 
         /// <summary>
         /// Gets or sets the link that can be used to request the next page, this is not used in the api.
         /// </summary>
+        [DataMember]
         public string Link { get; set; }
     }
 }

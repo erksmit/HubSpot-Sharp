@@ -14,7 +14,7 @@ namespace HubSpot_Sharp
     /// <summary>
     /// Represents the information contained in the body of a json error response
     /// </summary>
-    [DataContract]
+    
     public class HubSpotExceptionBody
     {
         /// <summary>

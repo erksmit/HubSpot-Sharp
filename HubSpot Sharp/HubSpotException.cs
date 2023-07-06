@@ -28,10 +28,30 @@ namespace HubSpot_Sharp
             : base(response.ReasonPhrase)
         {
             string contents = response.Content.ReadAsStringAsync().Result;
-            Contents = Serializer.DeserializeJson<HubSpotExceptionBody>(contents);
+            try
+            {
+                Contents = Serializer.DeserializeJson<HubSpotExceptionBody>(contents);
+            }
+            catch (Exception)
+            {
+                // let's not throw another exception if serialization fails
+            }
+
             StatusCode = response.StatusCode;
             RawJsonResponse = contents;
             Request = response.RequestMessage;
+        }
+
+        public override string Message {
+            get 
+            {
+                if (Contents != null)
+                {
+                    return base.Message + $", {Contents.Message}";
+                }
+
+                return base.Message;
+            }
         }
 
         /// <summary>
@@ -52,11 +72,21 @@ namespace HubSpot_Sharp
         /// <summary>
         /// Gets the information contained in the body of the response.
         /// </summary>
-        public HubSpotExceptionBody Contents { get; }
+        public HubSpotExceptionBody? Contents { get; }
 
         /// <summary>
         /// Gets the serializer.
         /// </summary>
         private static HubSpotSerializer Serializer { get; } = new ();
+
+        public override string ToString()
+        {
+            if (Contents == null)
+            {
+                return base.ToString();
+            }
+            
+            return base.ToString() + $": {Contents.Message}";
+        }
     }
 }

@@ -1,24 +1,47 @@
 ﻿using System.Runtime.Serialization;
 
+using Newtonsoft.Json;
+
 namespace HubSpot_Sharp.AccountActivity
 {
     [DataContract]
     public class AccountDetails
     {
-        public long PortalId { get; set; }
+        [JsonConstructor]
+        internal AccountDetails(long portalId, string timezone, string companyCurrency, IList<string> additionalCurrencies, string utcOffset, long utcOffsetMilliseconds, string uiDomain, string dataHostingLocation)
+        {
+            PortalId = portalId;
+            Timezone = timezone;
+            CompanyCurrency = companyCurrency;
+            AdditionalCurrencies = additionalCurrencies;
+            UtcOffset = utcOffset;
+            UtcOffsetMilliseconds = utcOffsetMilliseconds;
+            UiDomain = uiDomain;
+            DataHostingLocation = dataHostingLocation;
+        }
 
-        public string Timezone { get; set; }
+        [DataMember]
+        public long PortalId { get; }
+        
+        [DataMember]
+        public string Timezone { get; }
+        
+        [DataMember]
+        public string CompanyCurrency { get; }
+        
+        [DataMember]
+        public IList<string> AdditionalCurrencies { get; }
+        
+        [DataMember]
+        public string UtcOffset { get; }
+        
+        [DataMember]
+        public long UtcOffsetMilliseconds { get; }
+        
+        [DataMember]
+        public string UiDomain { get; }
 
-        public string CompanyCurrency { get; set; }
-
-        public IList<string> AdditionalCurrencies { get; set; }
-
-        public string UtcOffset { get; set; }
-
-        public long UtcOffsetMilliseconds { get; set; }
-
-        public string UiDomain { get; set; }
-
-        public string DataHostingLocation { get; set; }
+        [DataMember]
+        public string DataHostingLocation { get; }
     }
 }

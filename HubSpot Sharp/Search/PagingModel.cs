@@ -20,6 +20,7 @@ namespace HubSpot_Sharp.Search
         /// <summary>
         /// Gets or sets the next model that has information about the next page.
         /// </summary>
+        [DataMember]
         public PagingNextModel Next { get; set; }
     }
 }

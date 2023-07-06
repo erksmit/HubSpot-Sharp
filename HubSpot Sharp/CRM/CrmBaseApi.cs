@@ -147,7 +147,7 @@ namespace HubSpot_Sharp.CRM
         {
             var path = "/crm/v3/objects/" + pathSegment;
             var pack = new PropertyBag<T>(obj);
-            return client.Execute<PropertyBag<T>>(path, HttpMethod.Post, pack).Unpack();
+            return client.Execute<PropertyBag<T>>(path, HttpMethod.Post, pack).GetProperties();
         }
 
         /// <summary>
@@ -165,7 +165,7 @@ namespace HubSpot_Sharp.CRM
             where T : THubType, new()
         {
             var path = $"/crm/v3/objects/{pathSegment}/{objectId}";
-            return client.Execute<PropertyBag<T>>(path).Unpack();
+            return client.Execute<PropertyBag<T>>(path).GetProperties();
         }
 
         /// <summary>
@@ -223,7 +223,7 @@ namespace HubSpot_Sharp.CRM
         {
             var path = $"/crm/v3/objects/{pathSegment}/{obj.Id}";
             var pack = new PropertyBag<T>(obj);
-            return client.Execute<PropertyBag<T>>(path, HttpMethod.Patch, pack).Unpack();
+            return client.Execute<PropertyBag<T>>(path, HttpMethod.Patch, pack).GetProperties();
         }
 
         /// <summary>

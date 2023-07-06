@@ -31,8 +31,9 @@ namespace HubSpot_Sharp.Serialization
             {
                 new StringEnumConverter(new CamelCaseNamingStrategy())
             },
-            NullValueHandling = NullValueHandling.Ignore
+            NullValueHandling = NullValueHandling.Ignore,
         };
+
 
         /// <summary>
         /// Serializes an object into its json representation.

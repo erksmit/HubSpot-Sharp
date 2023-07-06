@@ -20,11 +20,13 @@ namespace HubSpot_Sharp.Search
         /// <summary>
         /// Gets or sets the property name that will be sorted.
         /// </summary>
+        [DataMember]
         public string PropertyName { get; set; }
 
         /// <summary>
         /// Gets or sets the direction to sort in.
         /// </summary>
+        [DataMember]
         public SortingDirection Direction { get; set; }
     }
 }

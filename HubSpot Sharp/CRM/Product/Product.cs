@@ -2,11 +2,13 @@
 
 namespace HubSpot_Sharp.CRM.Product
 {
-    [DataContract]
+    
     [AssociationId("PRODUCT")]
     [ApiPathName("products")]
+    [DataContract]
     public class Product : HubSpotObject
     {
+        [DataMember]
         public string Description { get; set; }
         
         [DataMember(Name = "hs_cost_of_goods_sold")]
@@ -18,8 +20,10 @@ namespace HubSpot_Sharp.CRM.Product
         [DataMember(Name = "hs_sku")]
         public long Sku { get; set; }
         
+        [DataMember]
         public string Name { get; set; }
-
+        
+        [DataMember]
         public double Price { get; set; }
     }
 }

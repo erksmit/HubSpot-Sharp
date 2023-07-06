@@ -20,21 +20,25 @@ namespace HubSpot_Sharp.Search
         /// <summary>
         /// Gets or sets the of the filter if the operators requires a value.
         /// </summary>
+        [DataMember]
         public string Value { get; set; }
 
         /// <summary>
         /// Gets or sets the values of the filter if the operator requires multiple values.
         /// </summary>
+        [DataMember]
         public IList<string> Values { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the property to apply the filter to.
         /// </summary>
+        [DataMember]
         public string PropertyName { get; set; }
 
         /// <summary>
         /// Gets or sets the operation the filter performs.
         /// </summary>
+        [DataMember]
         public SearchOperator Operator { get; set; }
     }
 }

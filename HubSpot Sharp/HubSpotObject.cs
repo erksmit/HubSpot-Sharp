@@ -17,9 +17,17 @@ namespace HubSpot_Sharp
     /// <summary>
     /// Represents an object in the HubSpot CRM.
     /// </summary>
-    [DataContract]
+    
     public abstract class HubSpotObject
     {
+        public HubSpotObject(long? id = null, DateTime? createdAt = null, DateTime? lastModified = null)
+        {
+            Id = id;
+            CreatedAt = createdAt;
+            LastModified = lastModified;
+        }
+
+
         /// <summary>
         /// Gets or sets the id of the object.
         /// </summary>
@@ -31,13 +39,13 @@ namespace HubSpot_Sharp
         /// </summary>
         [DataMember(Name = "createdate")]
         [DeserializeOnly]
-        public DateTime? Created { get; set; }
+        public DateTime? CreatedAt { get; }
 
         /// <summary>
         /// Gets or sets the timestamp of when the object was last modified.
         /// </summary>
         [DataMember(Name = "hs_lastmodifieddate")]
         [DeserializeOnly]
-        public DateTime? LastModified { get; set; }
+        public DateTime? LastModified { get; }
     }
 }

@@ -20,11 +20,13 @@ namespace HubSpot_Sharp.Search
         /// <summary>
         /// Gets or sets the filter groups to filter the results.
         /// </summary>
+        [DataMember]
         public IList<FilterGroup> FilterGroups { get; set; }
 
         /// <summary>
         /// Gets or sets the query to filter the results.
         /// </summary>
+        [DataMember]
         public string Query { get; set; }
 
         /// <summary>
@@ -36,16 +38,19 @@ namespace HubSpot_Sharp.Search
         /// <summary>
         /// Gets or sets the sorting options for the results. While this is a list, HubSpot only allows a single sorting rule to be used.
         /// </summary>
+        [DataMember]
         public IList<SortOption> Sorts { get; set; }
 
         /// <summary>
         /// Gets or sets the amount of records to return.
         /// </summary>
+        [DataMember]
         public int Limit { get; set; }
 
         /// <summary>
         /// Gets or sets the offset for the search obtained through a paging object.
         /// </summary>
+        [DataMember]
         public string After { get; set; }
 
         public SearchOptions() 

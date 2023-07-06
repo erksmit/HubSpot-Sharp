@@ -21,11 +21,13 @@ namespace HubSpot_Sharp.CRM.Custom
         /// <summary>
         /// Gets or sets An assigned unique ID for the object, including portal ID and object name.
         /// </summary>
+        [DataMember]
         public string FullyQualifiedName { get; set; }
 
         /// <summary>
         /// Gets or sets The id used to identify the schema in future requests
         /// </summary>
+        [DataMember]
         public string ObjectTypeId { get; set; }
     }
 }

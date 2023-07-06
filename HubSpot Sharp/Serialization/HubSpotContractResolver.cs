@@ -26,6 +26,7 @@ namespace HubSpot_Sharp.Serialization
         public HubSpotContractResolver() : base()
         {
             NamingStrategy = new CamelCaseNamingStrategy();
+           
         }
 
         /// <inheritdoc />
@@ -41,11 +42,6 @@ namespace HubSpot_Sharp.Serialization
             if (member.GetCustomAttribute<HubSpotEnumerationAttribute>() != null)
             {
                 property.Converter = new EnumerationConverter();
-            }
-            
-            if(member.GetCustomAttribute<IgnoreDataMemberAttribute>() == null)
-            {
-                property.Ignored = false;
             }
 
             return property;

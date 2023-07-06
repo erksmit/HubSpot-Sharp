@@ -34,7 +34,7 @@ namespace Tests
         /// <summary>
         /// A list of sample companies.
         /// </summary>
-        private readonly List<Company> sampleCompanyList = new()
+        private readonly List<Company> sampleCompanies = new()
         {
             new Company
             {
@@ -71,7 +71,7 @@ namespace Tests
             }
             catch (HubSpotException e)
             {
-                Assert.Fail("Failed to create company: {0}", e.Contents.Message);
+                Assert.Fail("Failed to create company: {0}", e.Contents?.Message);
             }
             finally
             {
@@ -142,7 +142,7 @@ namespace Tests
         [TestMethod]
         public void BatchCreateAndDelete()
         {
-            var results = api.CreateBatch(sampleCompanyList).Results;
+            var results = api.CreateBatch(sampleCompanies).GetResults();
 
             var options = new ListInputs<IdInput>(results.Select(c => new IdInput(c.Id.ToString())).ToList());
 
@@ -171,22 +171,18 @@ namespace Tests
         [TestMethod]
         public void BatchUpdate()
         {
-            var createResult = api.CreateBatch(sampleCompanyList);
-            var createdCompanies = PropertyBag<Company>.UnpackMany(createResult.Results);
-
+            var createdCompanies = api.CreateBatch(sampleCompanies).GetResults();
             foreach (var company in createdCompanies)
             {
                 company.Name += " updated";
             }
 
-            var updateResult = api.UpdateBatch(createdCompanies);
-
-            var updatedCompanies = PropertyBag<Company>.UnpackMany(updateResult.Results);
+            var updatedCompanies = api.UpdateBatch(createdCompanies).GetResults();
             try
             {
                 foreach (var result in updatedCompanies)
                 {
-                    Assert.IsTrue(sampleCompanyList.Any(c => (c.Name + " updated") == result.Name));
+                    Assert.IsTrue(sampleCompanies.Any(c => (c.Name + " updated") == result.Name), "Company name is not updated as expected");
                 }
             }
             finally
@@ -203,7 +199,7 @@ namespace Tests
         [TestMethod]
         public void Search()
         {
-            var createResults = api.CreateBatch(sampleCompanyList).Results;
+            var createResults = api.CreateBatch(sampleCompanies).GetResults();
             var options = new SearchOptions
             {
                 FilterGroups = new List<FilterGroup>
@@ -224,24 +220,23 @@ namespace Tests
                 Limit = 100
             };
 
-            // lets wait 5 seconds for HubSpot to process the creation
-            Thread.Sleep(5000);
-            var searchResults = api.Search<Company>(options);
-            var results = PropertyBag<Company>.UnpackMany(searchResults.Results);
+            // lets wait 20 seconds for HubSpot to process the creation
+            Thread.Sleep(20000);
+            var results = api.Search<Company>(options).GetResults();
             try
             {
                 foreach (var company in results)
                 {
                     Assert.IsTrue(
-                        sampleCompanyList.Any(c => c.Name == company.Name),
+                        sampleCompanies.Any(c => c.Name == company.Name),
                         "Search result included companies that were not supposed to be found.");
                 }
 
-                foreach (var sampleCompany in sampleCompanyList)
+                foreach (var sampleCompany in sampleCompanies)
                 {
                     Assert.IsTrue(
                         results.Any(c => c.Name == sampleCompany.Name),
-                        "Search result is missing companies that were supposed to be found.");
+                        $"Search result is missing company {sampleCompany.Name} which was supposed to be found.");
                 }
             }
             finally
@@ -258,7 +253,7 @@ namespace Tests
         [TestMethod]
         public void GetByProperties()
         {
-            var createResults = api.CreateBatch(sampleCompanyList).Results;
+            var createResults = api.CreateBatch(sampleCompanies).Results;
             List<IdInput> ids = createResults.Select(c => new IdInput(c.Id.ToString() ?? throw new AssertFailedException("Created company did not have an id."))).ToList();
             var options = new SelectByPropertiesOptions
             {
@@ -273,7 +268,7 @@ namespace Tests
             var result = api.ReadByProperties<Company>(options);
             foreach (var company in PropertyBag<Company>.UnpackMany(result.Results))
             {
-                Assert.IsTrue(sampleCompanyList.Any(c => c.Name == company.Name));
+                Assert.IsTrue(sampleCompanies.Any(c => c.Name == company.Name));
             }
 
             var cleanup = new ListInputs<IdInput>(createResults.Select(c => new IdInput(c.Id.ToString() ?? throw new AssertFailedException("Created company did not have an id."))).ToList());

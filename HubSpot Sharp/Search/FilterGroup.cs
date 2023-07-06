@@ -20,6 +20,7 @@ namespace HubSpot_Sharp.Search
         /// <summary>
         /// Gets or sets the filters of the group.
         /// </summary>
+        [DataMember]
         public IList<Filter> Filters { get; set; }
     }
 }

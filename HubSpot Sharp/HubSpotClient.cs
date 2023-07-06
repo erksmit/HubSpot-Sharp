@@ -175,7 +175,7 @@ namespace HubSpot_Sharp
         /// <returns>
         /// The response object
         /// </returns>
-        public T Execute<T>(RequestOptions options) where T : new()
+        public T Execute<T>(RequestOptions options)
         {
             var json = SendRequest(options);
             return serializer.DeserializeJson<T>(json);
@@ -199,7 +199,7 @@ namespace HubSpot_Sharp
         /// <returns>
         /// The response object
         /// </returns>
-        public T Execute<T>(string path, HttpMethod? method = null, object? entity = null) where T : new()
+        public T Execute<T>(string path, HttpMethod? method = null, object? entity = null)
         {
             method ??= HttpMethod.Get;
             var options = new RequestOptions(path, method, entity);

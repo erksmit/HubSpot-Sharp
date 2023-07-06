@@ -20,11 +20,13 @@ namespace HubSpot_Sharp.CRM.Custom
         /// <summary>
         /// Gets or sets the display name to use for one instance of the object.
         /// </summary>
+        [DataMember]
         public string Singular { get; set; }
 
         /// <summary>
         /// Gets or sets the display name to use for multiple of the object.
         /// </summary>
+        [DataMember]
         public string Plural { get; set; }
     }
 }

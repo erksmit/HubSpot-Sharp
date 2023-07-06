@@ -24,51 +24,61 @@ namespace HubSpot_Sharp.CRM.Contact
         /// <summary>
         /// Gets or sets the email of the contact.
         /// </summary>
+        [DataMember]
         public string Email { get; set; }
 
         /// <summary>
         /// Gets or sets the first name.
         /// </summary>
+        [DataMember]
         public string FirstName { get; set; }
 
         /// <summary>
         /// Gets or sets the last name.
         /// </summary>
+        [DataMember]
         public string LastName { get; set; }
 
         /// <summary>
         /// Gets or sets the website.
         /// </summary>
+        [DataMember]
         public string Website { get; set; }
 
         /// <summary>
         /// Gets or sets the company.
         /// </summary>
+        [DataMember]
         public string Company { get; set; }
 
         /// <summary>
         /// Gets or sets the phone number.
         /// </summary>
+        [DataMember]
         public string Phone { get; set; }
 
         /// <summary>
         /// Gets or sets the address.
         /// </summary>
+        [DataMember]
         public string Address { get; set; }
 
         /// <summary>
         /// Gets or sets the city.
         /// </summary>
+        [DataMember]
         public string City { get; set; }
 
         /// <summary>
         /// Gets or sets the state.
         /// </summary>
+        [DataMember]
         public string State { get; set; }
 
         /// <summary>
         /// Gets or sets the zip code.
         /// </summary>
+        [DataMember]
         public string ZipCode { get; set; }
 
         /// <summary>

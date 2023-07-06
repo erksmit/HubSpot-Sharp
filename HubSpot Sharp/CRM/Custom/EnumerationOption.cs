@@ -42,11 +42,13 @@ namespace HubSpot_Sharp.CRM.Custom
         /// <summary>
         /// Gets or sets the display name for this option.
         /// </summary>
+        [DataMember]
         public string Label { get; set; }
 
         /// <summary>
         /// Gets or sets the internal value used to identify this option
         /// </summary>
+        [DataMember]
         public string Value { get; set; }
 
         /// <summary>

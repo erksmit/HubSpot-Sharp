@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Runtime.Serialization;
+
 namespace HubSpot_Sharp.Intermediates
 {
     /// <summary>
@@ -15,6 +17,7 @@ namespace HubSpot_Sharp.Intermediates
     /// <typeparam name="T">
     /// The type of the inputs
     /// </typeparam>
+    [DataContract]
     public class ListInputs<T>
     {
         /// <summary>
@@ -39,6 +42,7 @@ namespace HubSpot_Sharp.Intermediates
         /// <summary>
         /// Gets or sets the list of input objects.
         /// </summary>
+        [DataMember]
         public IList<T> Inputs { get; set; }
     }
 }

@@ -9,6 +9,8 @@
 
 using System.Runtime.Serialization;
 
+using Newtonsoft.Json;
+
 namespace HubSpot_Sharp.Authentication
 {
     /// <summary>
@@ -17,22 +19,31 @@ namespace HubSpot_Sharp.Authentication
     [DataContract]
     public class TokenExchangeResponse
     {
+        [JsonConstructor]
+        // ReSharper disable once StyleCop.SA1600
+        internal TokenExchangeResponse(string refreshToken, string accessToken, long expiresIn)
+        {
+            RefreshToken = refreshToken;
+            AccessToken = accessToken;
+            ExpiresIn = expiresIn;
+        }
+
         /// <summary>
-        /// Gets or sets the refresh token that can be used to request an access token
+        /// Gets the refresh token that can be used to request an access token
         /// </summary>
         [DataMember(Name = "refresh_token")]
-        public string RefreshToken { get; set; }
+        public string RefreshToken { get; }
 
         /// <summary>
-        /// Gets or sets the access token that can be used to authenticate for HubSpot requests.
+        /// Gets the access token that can be used to authenticate for HubSpot requests.
         /// </summary>
         [DataMember(Name = "access_token")]
-        public string AccessToken { get; set; }
+        public string AccessToken { get; }
 
         /// <summary>
-        /// Gets or sets the time in seconds until the access token expires
+        /// Gets the time in seconds until the access token expires
         /// </summary>
         [DataMember(Name = "expires_in")]
-        public long ExpiresIn { get; set; }
+        public long ExpiresIn { get; }
     }
 }

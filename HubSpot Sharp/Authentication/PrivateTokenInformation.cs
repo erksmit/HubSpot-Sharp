@@ -9,6 +9,8 @@
 
 using System.Runtime.Serialization;
 
+using Newtonsoft.Json;
+
 namespace HubSpot_Sharp.Authentication
 {
     /// <summary>
@@ -17,24 +19,38 @@ namespace HubSpot_Sharp.Authentication
     [DataContract]
     public class PrivateTokenInformation
     {
-        /// <summary>
-        /// Gets or sets the user id.
-        /// </summary>
-        public long UserId { get; set; }
+        [JsonConstructor]
+        // ReSharper disable once StyleCop.SA1600
+        internal PrivateTokenInformation(long userId, long hubId, long appId, IList<string> scopes)
+        {
+            UserId = userId;
+            HubId = hubId;
+            AppId = appId;
+            Scopes = scopes;
+        }
 
         /// <summary>
-        /// Gets or sets the hub id.
+        /// Gets the user id.
         /// </summary>
-        public long HubId { get; set; }
+        [DataMember]
+        public long UserId { get; }
 
         /// <summary>
-        /// Gets or sets the app id.
+        /// Gets the hub id.
         /// </summary>
-        public long AppId { get; set; }
+        [DataMember]
+        public long HubId { get; }
 
         /// <summary>
-        /// Gets or sets the scopes that the application has access to.
+        /// Gets the app id.
         /// </summary>
-        public IList<string> Scopes { get; set; }
+        [DataMember]
+        public long AppId { get; }
+
+        /// <summary>
+        /// Gets the scopes that the application has access to.
+        /// </summary>
+        [DataMember]
+        public IList<string> Scopes { get; }
     }
 }
