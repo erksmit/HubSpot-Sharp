@@ -6,7 +6,7 @@
     using Microsoft.Extensions.Configuration;
 
     [TestClass]
-    internal class Config
+    public class Config
     {
         public static HubSpotApi Api { get; private set; }
         
