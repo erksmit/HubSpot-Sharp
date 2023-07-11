@@ -1,7 +1,7 @@
 # HubSpot-Sharp
 A c# api library for the hubspot crm and other api endpoints.
 
-This library was made because the most up to date library i could find for hubspot [Hubspot.NET](https://github.com/sliceofbytes/Hubspot.NET) was too outdated and limited for my use case.
+This library was made because the most up to date library i could find for hubspot [Hubspot.NET](https://github.com/hubspot-net/HubSpot.NET) was too outdated and limited for my use case.
 I will probably not update this library very regularly, but i'll try to handle any issues and pull requests.
 
 ### Caution
