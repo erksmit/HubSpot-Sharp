@@ -17,7 +17,7 @@
         public static string? RedirectUri { get; private set; }
         public static string? RefreshToken { get; private set; }
 
-        public static HubSpotAuthenticationMode AuthMethod { get; private set; }
+        public static string? AuthMethod { get; private set; }
 
         [AssemblyInitialize]
         public static void SetupTests(TestContext context)
@@ -30,26 +30,30 @@
             ClientSecret = config.GetValue<string>("clientSecret");
             RedirectUri = config.GetValue<string>("redirectUri");
             RefreshToken = config.GetValue<string>("refreshToken");
-            AuthMethod = Enum.Parse<HubSpotAuthenticationMode>(config.GetValue<string>("authMethod"));
+            AuthMethod = config.GetValue<string>("authMethod");
 
             HubSpotToken token = AuthMethod switch
             {
-                HubSpotAuthenticationMode.PrivateAccessToken => new HubSpotToken
+                "private" => new HubSpotToken
                 {
                     AccessToken = PrivateAccessToken,
                     Mode = HubSpotAuthenticationMode.PrivateAccessToken
                 },
-                HubSpotAuthenticationMode.OAuth => new HubSpotToken
+                "oauth" => new HubSpotToken
                 {
                     RefreshToken = RefreshToken,
                     Mode = HubSpotAuthenticationMode.OAuth
+                },
+                "none" => new HubSpotToken
+                {
+                    AccessToken = ""
                 },
                 _ => throw new ArgumentOutOfRangeException("Unknown authentication mode configuration")
             };
 
             Api = new HubSpotApi(token);
 
-            if (AuthMethod == HubSpotAuthenticationMode.OAuth)
+            if (AuthMethod == "oauth")
             {
                 var response =Api.Authentication.ExchangeTokens(
                     new GrantRequestOptions
