@@ -22,7 +22,7 @@ jobs:
     - name: create-json
       uses: jsdaniell/create-json@v1.2.2
       with:
-        name: "appConfig.json"
+        name: "appSettings.json"
         json: ${{ secrets.TEST_APP_SETTINGS_JSON }}
         dir: 'Tests/'
 
