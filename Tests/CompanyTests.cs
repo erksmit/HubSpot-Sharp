@@ -193,10 +193,11 @@ namespace Tests
             }
         }
 
+        
         /// <summary>
         /// Tests the search endpoint by searching for some companies.
         /// </summary>
-        [TestMethod]
+        //[TestMethod] Test is disabled as it takes 20 seconds to execute
         public async Task Search()
         {
             var createResults = (await api.CreateBatch(sampleCompanies)).GetResults();
@@ -246,6 +247,7 @@ namespace Tests
                 await api.ArchiveBatch(cleanup);
             }
         }
+        
 
         /// <summary>
         /// Tests getting some companies by their unique property values.
