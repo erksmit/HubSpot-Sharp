@@ -20,7 +20,7 @@ jobs:
       with:
         name: "appConfig.json"
         json: ${{ secrets.TEST_APP_SETTINGS_JSON }}
-        dir: 'Tests/'
+        dir: '../Tests/'
     - uses: actions/checkout@v3
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
