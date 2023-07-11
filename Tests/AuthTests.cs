@@ -20,7 +20,7 @@ namespace Tests
         /// <summary>
         /// The authentication api.
         /// </summary>
-        private readonly AuthenticationApi api = Config.Api.Authentication;
+        private readonly AuthenticationApi api = new ();
 
         /// <summary>
         /// Tests whether the api is able to retrieve information on the configured private access token.

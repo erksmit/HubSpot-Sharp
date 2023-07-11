@@ -33,6 +33,14 @@ namespace HubSpot_Sharp.Authentication
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="AuthenticationApi"/> class without any authorization.
+        /// </summary>
+        public AuthenticationApi()
+        {
+            client = new HubSpotClient(new HubSpotToken());
+        }
+
+        /// <summary>
         /// Gets information about the private access token of an app.
         /// </summary>
         /// <param name="token">

@@ -28,7 +28,7 @@
         /// <summary>
         /// Gets or sets the HubSpot api that will be used to make the authentication calls.
         /// </summary>
-        public HubSpotApi Api { get; set; }
+        public AuthenticationApi Api { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the refresher is currently running
@@ -40,7 +40,7 @@
         /// </summary>
         private CancellationTokenSource cancellation;
 
-        public OAuthTokenRefresher(HubSpotToken token, HubSpotApi api, string clientId, string clientSecret, string redirectUri)
+        public OAuthTokenRefresher(HubSpotToken token, AuthenticationApi api, string clientId, string clientSecret, string redirectUri)
         {
             Token = token;
             Api = api;
@@ -85,7 +85,7 @@
                 RefreshToken = Token.RefreshToken
             };
 
-            var response = await Api.Authentication.ExchangeTokens(requestForm);
+            var response = await Api.ExchangeTokens(requestForm);
             Token.AccessToken = response.AccessToken;
 
             // let's refresh 30 seconds early to be safe
