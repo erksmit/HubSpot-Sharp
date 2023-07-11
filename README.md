@@ -80,6 +80,8 @@ public class ExtendedCompany : Company
     public string readOnlyField { get; set; }
 }
 ```
+The use of constructors is also allowed as described by [newtonSoft.json](https://www.newtonsoft.com/json), this allows for get only properties and constructor logic.
+
 You can then use this object as such:
 ```csharp
 IList<ExtendedCompany> company = (await Api.Crm.Company.List<ExtendedCompany>()).GetResults();
