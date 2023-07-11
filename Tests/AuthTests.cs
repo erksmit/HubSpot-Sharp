@@ -125,7 +125,7 @@ namespace Tests
             };
             var manager = new OAuthTokenRefresher(
                 token,
-                Config.Api,
+                Config.Api.Authentication,
                 Config.ClientId,
                 Config.ClientSecret,
                 Config.RedirectUri);
