@@ -74,11 +74,12 @@
         /// <summary>
         /// Refreshes the token and runs the function again when the token expires.
         /// </summary>
+        /// <returns>A <see cref="Task"/> that completes when the token is refreshed.</returns>
         private async Task OnRefresh()
         {
             var requestForm = new GrantRequestOptions()
             {
-                GrantType= GrantType.RefreshToken,
+                GrantType = GrantType.RefreshToken,
                 ClientId = ClientId,
                 ClientSecret = ClientSecret,
                 RedirectUri = RedirectUri,
@@ -88,10 +89,10 @@
             var response = await Api.ExchangeTokens(requestForm);
             Token.AccessToken = response.AccessToken;
 
-            // let's refresh 30 seconds early to be safe
-            Token.ExpiresAt = DateTime.Now + TimeSpan.FromSeconds(response.ExpiresIn - 30);
+            Token.ExpiresAt = DateTime.UtcNow + TimeSpan.FromSeconds(response.ExpiresIn);
             
-            _ = Task.Delay(Token.ExpiresAt - DateTime.Now, cancellation.Token).ContinueWith(_ => OnRefresh());
+            // we will refresh again 2 minutes before the token expires
+            _ = Task.Delay(TimeSpan.FromSeconds(response.ExpiresIn - 120), cancellation.Token).ContinueWith(_ => OnRefresh());
         }
     }
 }

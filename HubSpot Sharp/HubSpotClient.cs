@@ -70,7 +70,7 @@ namespace HubSpot_Sharp
         /// </returns>
         private async Task<string> SendRequest(RequestOptions options)
         {
-            var request = new HttpRequestMessage(options.Method, options.EndPointPath);
+            var request = new HttpRequestMessage(options.Method, options.GetFullPath());
             if (options.TokenLess == false)
             {
                 request.Headers.Add("authorization", "Bearer " + Token.AccessToken);
@@ -94,18 +94,20 @@ namespace HubSpot_Sharp
 
             if (response.IsSuccessStatusCode == false)
             {
-                // statuscode 429 indicates a rateLimit error
                 if ((int)response.StatusCode != 429)
                 {
                     throw new HubSpotException(response);
                 }
-
+                
+                // statuscode 429 indicates a rateLimit error
                 switch (options.RateLimit)
                 {
                     case RateLimitOptions.Error:
                     {
                         throw new HubSpotException(response);
                     }
+
+                    // The current method for handling rateLimits is very rudimentary, in the future we should preemptively ensure rateLimits are not hit.
 
                     case RateLimitOptions.RetrySearch:
                     {
@@ -119,14 +121,14 @@ namespace HubSpot_Sharp
 
                     case RateLimitOptions.RetryRolling:
                     {
-                        // the rolling ratelimit is generally not hit, but in the future it would be a good idea to ensure this ratelimit wont ever be hit
+                        // the rolling rateLimit is generally not hit, but in the future it would be a good idea to ensure this rateLimit wont ever be hit
                         Thread.Sleep(10000);
                         options.RateLimit = RateLimitOptions.Error;
                         return await SendRequest(options);
                     }
 
                     default:
-                        throw new NotImplementedException();
+                        throw new NotImplementedException($"RequestOption specifies an unknown method for handling rateLimits: {options.RateLimit}", new HubSpotException(response));
                 }
             }
 

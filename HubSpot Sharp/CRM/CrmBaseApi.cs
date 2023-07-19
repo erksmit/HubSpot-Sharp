@@ -127,7 +127,7 @@ namespace HubSpot_Sharp.CRM
         }
 
         /// <inheritdoc cref="Associate(long, string, long, string)"/>
-        public async Task RemoveAssociation<TToObject>(THubType fromObject, TToObject toObject, string associationType) where TToObject: HubSpotObject
+        public async Task RemoveAssociation<TToObject>(THubType fromObject, TToObject toObject, string associationType) where TToObject : HubSpotObject
         {
             await RemoveAssociation<TToObject>((long)fromObject.Id, (long)toObject.Id, associationType);
         }

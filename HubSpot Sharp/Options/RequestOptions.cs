@@ -127,9 +127,10 @@ namespace HubSpot_Sharp.Options
         {
             if (QueryParams.Count > 0)
             {
-                return EndPointPath + "?" + string.Join(
+                 var dataString = Uri.EscapeDataString(string.Join(
                            "&",
-                           QueryParams.Where(p => !string.IsNullOrEmpty(p.value)).Select(p => $"{p.name}={p.value}"));
+                           QueryParams.Where(p => !string.IsNullOrEmpty(p.value)).Select(p => $"{p.name}={p.value}")));
+                 return EndPointPath + "?" + dataString;
             }
 
             return EndPointPath;
