@@ -9,7 +9,7 @@
 
 using System.Net;
 
-using HubSpot_Sharp.CRM.Company;
+using HubSpot_Sharp.CRM.Object.Company;
 using HubSpot_Sharp.Intermediates;
 using HubSpot_Sharp.Options;
 using HubSpot_Sharp.Search;
@@ -61,6 +61,9 @@ namespace Tests
         /// <summary>
         /// Tests creating a company.
         /// </summary>
+        /// <returns>
+        /// The <see cref="Task"/>.
+        /// </returns>
         [TestMethod]
         public async Task Create()
         {
@@ -76,7 +79,7 @@ namespace Tests
             finally
             {
                 if (createdCompany?.Id != null)
-                { 
+                {
                     await api.Archive((long)createdCompany.Id);
                 }
             }
@@ -85,13 +88,18 @@ namespace Tests
         /// <summary>
         /// Tests deleting a company.
         /// </summary>
+        /// <returns>
+        /// The <see cref="Task"/>.
+        /// </returns>
         [TestMethod]
         public async Task Delete()
         {
             Company createdCompany = await api.Create(sampleCompany);
 
             if (createdCompany.Id == null)
+            {
                 Assert.Fail("Created company did not have an id");
+            }
 
             await api.Archive((long)createdCompany.Id);
 
@@ -109,6 +117,9 @@ namespace Tests
         /// <summary>
         /// Tests updating a company's properties.
         /// </summary>
+        /// <returns>
+        /// The <see cref="Task"/>.
+        /// </returns>
         [TestMethod]
         public async Task Update()
         {
@@ -121,7 +132,10 @@ namespace Tests
             createdCompany.Domain = UpdatedDomain;
 
             if (createdCompany.Id == null)
+            {
                 Assert.Fail("Created company did not have an id");
+            }
+
             long id = (long)createdCompany.Id;
 
             Company updatedCompany = await api.Update(createdCompany);
@@ -139,6 +153,9 @@ namespace Tests
         /// <summary>
         /// Tests batch creation and deletion of companies.
         /// </summary>
+        /// <returns>
+        /// The <see cref="Task"/>.
+        /// </returns>
         [TestMethod]
         public async Task BatchCreateAndDelete()
         {
@@ -154,7 +171,10 @@ namespace Tests
                 try
                 {
                     if (result.Id == null)
+                    {
                         Assert.Fail("Created company did not have an id");
+                    }
+
                     await api.Read<Company>((long)result.Id);
                     Assert.Fail("Retrieved company that was deleted");
                 }
@@ -168,6 +188,9 @@ namespace Tests
         /// <summary>
         /// Tests batch updating a company.
         /// </summary>
+        /// <returns>
+        /// The <see cref="Task"/>.
+        /// </returns>
         [TestMethod]
         public async Task BatchUpdate()
         {
@@ -182,21 +205,24 @@ namespace Tests
             {
                 foreach (var result in updatedCompanies)
                 {
-                    Assert.IsTrue(sampleCompanies.Any(c => (c.Name + " updated") == result.Name), "Company name is not updated as expected");
+                    Assert.IsTrue(
+                        sampleCompanies.Any(c => (c.Name + " updated") == result.Name),
+                        "Company name is not updated as expected");
                 }
             }
             finally
             {
-                var cleanup =
-                    new ListInputs<IdInput>(IdInput.FromEnumerable(updatedCompanies));
+                var cleanup = new ListInputs<IdInput>(IdInput.FromEnumerable(updatedCompanies));
                 await api.ArchiveBatch(cleanup);
             }
         }
 
-        
         /// <summary>
         /// Tests the search endpoint by searching for some companies.
         /// </summary>
+        /// <returns>
+        /// The <see cref="Task"/>.
+        /// </returns>
         [TestMethod]
         [TestCategory("Slow")]
         public async Task Search()
@@ -243,21 +269,25 @@ namespace Tests
             }
             finally
             {
-                var cleanup =
-                    new ListInputs<IdInput>(IdInput.FromEnumerable(createResults));
+                var cleanup = new ListInputs<IdInput>(IdInput.FromEnumerable(createResults));
                 await api.ArchiveBatch(cleanup);
             }
         }
-        
 
         /// <summary>
         /// Tests getting some companies by their unique property values.
         /// </summary>
+        /// <returns>
+        /// The <see cref="Task"/>.
+        /// </returns>
         [TestMethod]
         public async Task GetByProperties()
         {
             var createResults = (await api.CreateBatch(sampleCompanies)).Results;
-            List<IdInput> ids = createResults.Select(c => new IdInput(c.Id.ToString() ?? throw new AssertFailedException("Created company did not have an id."))).ToList();
+            List<IdInput> ids = createResults.Select(
+                    c => new IdInput(
+                        c.Id.ToString() ?? throw new AssertFailedException("Created company did not have an id.")))
+                .ToList();
             var options = new SelectByPropertiesOptions
             {
                 IdProperty = "domain",
@@ -274,13 +304,20 @@ namespace Tests
                 Assert.IsTrue(sampleCompanies.Any(c => c.Name == company.Name));
             }
 
-            var cleanup = new ListInputs<IdInput>(createResults.Select(c => new IdInput(c.Id.ToString() ?? throw new AssertFailedException("Created company did not have an id."))).ToList());
+            var cleanup = new ListInputs<IdInput>(
+                createResults.Select(
+                        c => new IdInput(
+                            c.Id.ToString() ?? throw new AssertFailedException("Created company did not have an id.")))
+                    .ToList());
             await api.ArchiveBatch(cleanup);
         }
 
         /// <summary>
         /// Tests creating a <see cref="HubSpotException"/> and checks if the contents serialized.
         /// </summary>
+        /// <returns>
+        /// The <see cref="Task"/>.
+        /// </returns>
         [TestMethod]
         public async Task Error()
         {

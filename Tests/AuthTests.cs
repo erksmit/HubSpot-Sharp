@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="OAuthTests.cs" company="">
+// <copyright file="AuthTests.cs" company="">
 //   
 // </copyright>
 // <summary>
@@ -20,11 +20,14 @@ namespace Tests
         /// <summary>
         /// The authentication api.
         /// </summary>
-        private readonly AuthenticationApi api = new ();
+        private readonly AuthenticationApi api = new();
 
         /// <summary>
         /// Tests whether the api is able to retrieve information on the configured private access token.
         /// </summary>
+        /// <returns>
+        /// The <see cref="Task"/>.
+        /// </returns>
         [TestMethod]
         public async Task ValidatePrivateAccessToken()
         {
@@ -41,6 +44,9 @@ namespace Tests
         /// <summary>
         /// Tests whether the refresh token is valid and information can be retrieved on it.
         /// </summary>
+        /// <returns>
+        /// The <see cref="Task"/>.
+        /// </returns>
         [TestMethod]
         public async Task ValidateRefreshToken()
         {
@@ -56,6 +62,9 @@ namespace Tests
         /// <summary>
         /// Tests performing a toke exchange request which exchanges a refresh token for an access token
         /// </summary>
+        /// <returns>
+        /// The <see cref="Task"/>.
+        /// </returns>
         [TestMethod]
         public async Task OAuthAuthorize()
         {
@@ -96,6 +105,9 @@ namespace Tests
         /// <summary>
         /// Tests performing OAuth authentication using the <see cref="OAuthTokenRefresher"/>.
         /// </summary>
+        /// <returns>
+        /// The <see cref="Task"/>.
+        /// </returns>
         [TestMethod]
         [TestCategory("Slow")]
         public async Task ManagedOAuth()

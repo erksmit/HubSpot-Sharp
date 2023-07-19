@@ -7,14 +7,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using HubSpot_Sharp.CRM.Object;
-
-namespace HubSpot_Sharp.CRM.Ticket
+namespace HubSpot_Sharp.CRM.Object.Ticket
 {
     /// <summary>
     /// The ticket api.
     /// </summary>
-    public class TicketApi : CrmObjectBaseApi<Ticket>
+    public class TicketApi : CrmObjectApi<Ticket>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TicketApi"/> class.

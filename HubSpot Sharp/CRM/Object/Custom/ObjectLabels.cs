@@ -9,7 +9,7 @@
 
 using System.Runtime.Serialization;
 
-namespace HubSpot_Sharp.CRM.Custom
+namespace HubSpot_Sharp.CRM.Object.Custom
 {
     /// <summary>
     /// Display names of a <see cref="ObjectSchema" />.

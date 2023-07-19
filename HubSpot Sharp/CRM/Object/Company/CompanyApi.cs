@@ -7,14 +7,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using HubSpot_Sharp.CRM.Object;
-
-namespace HubSpot_Sharp.CRM.Company
+namespace HubSpot_Sharp.CRM.Object.Company
 {
     /// <summary>
     /// The company api.
     /// </summary>
-    public class CompanyApi : CrmObjectBaseApi<Company>
+    public class CompanyApi : CrmObjectApi<Company>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CompanyApi"/> class.

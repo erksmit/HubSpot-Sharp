@@ -20,12 +20,11 @@ namespace HubSpot_Sharp.Serialization
     public class HubSpotContractResolver : DefaultContractResolver
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="HubSpotContractResolver"/> class.
+        /// Initializes a new instance of the <see cref="HubSpotContractResolver" /> class.
         /// </summary>
-        public HubSpotContractResolver() : base()
+        public HubSpotContractResolver()
         {
             NamingStrategy = new CamelCaseNamingStrategy();
-
         }
 
         /// <inheritdoc />

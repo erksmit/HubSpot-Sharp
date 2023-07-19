@@ -31,6 +31,9 @@ namespace Tests
         /// <summary>
         /// Tests getting some account information.
         /// </summary>
+        /// <returns>
+        /// The <see cref="void"/>.
+        /// </returns>
         [TestMethod]
         public void AccountTest()
         {

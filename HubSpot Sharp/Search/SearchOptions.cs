@@ -17,6 +17,9 @@ namespace HubSpot_Sharp.Search
     [DataContract]
     public class SearchOptions
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SearchOptions"/> class.
+        /// </summary>
         public SearchOptions()
         {
             Limit = 100;
@@ -41,7 +44,8 @@ namespace HubSpot_Sharp.Search
         public IList<string> PropertiesToInclude { get; set; }
 
         /// <summary>
-        /// Gets or sets the sorting options for the results. While this is a list, HubSpot only allows a single sorting rule to be used.
+        /// Gets or sets the sorting options for the results. While this is a list, HubSpot only allows a single sorting rule to be
+        /// used.
         /// </summary>
         [DataMember]
         public IList<SortOption> Sorts { get; set; }

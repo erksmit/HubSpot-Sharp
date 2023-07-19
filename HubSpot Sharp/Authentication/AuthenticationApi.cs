@@ -33,7 +33,7 @@ namespace HubSpot_Sharp.Authentication
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AuthenticationApi"/> class without any authorization.
+        /// Initializes a new instance of the <see cref="AuthenticationApi" /> class without any authorization.
         /// </summary>
         public AuthenticationApi()
         {
@@ -56,7 +56,7 @@ namespace HubSpot_Sharp.Authentication
             return await client.Execute<PrivateTokenInformation>(options);
         }
 
-        /// <inheritdoc cref="GetPrivateTokenInformation(PrivateTokenInfoOptions)"/>
+        /// <inheritdoc cref="GetPrivateTokenInformation(PrivateTokenInfoOptions)" />
         public async Task<PrivateTokenInformation> GetPrivateTokenInformation(string token)
         {
             return await GetPrivateTokenInformation(new PrivateTokenInfoOptions(token));
@@ -65,8 +65,12 @@ namespace HubSpot_Sharp.Authentication
         /// <summary>
         /// Gets information about an access token of an app
         /// </summary>
-        /// <param name="accessToken">The token to get information on.</param>
-        /// <returns>A <see cref="OAuthTokenInformation"/> containing information about the token.</returns>
+        /// <param name="accessToken">
+        /// The token to get information on.
+        /// </param>
+        /// <returns>
+        /// A <see cref="OAuthTokenInformation"/> containing information about the token.
+        /// </returns>
         public async Task<OAuthTokenInformation> GetAccessTokenInformation(string accessToken)
         {
             var path = $"/oauth/v1/access-tokens/{accessToken}";
@@ -77,8 +81,12 @@ namespace HubSpot_Sharp.Authentication
         /// <summary>
         /// Gets information about a refresh token of an app
         /// </summary>
-        /// <param name="accessToken">The token to get information on.</param>
-        /// <returns>A <see cref="OAuthTokenInformation"/> containing information about the token.</returns>
+        /// <param name="refreshToken">
+        /// The refresh Token.
+        /// </param>
+        /// <returns>
+        /// A <see cref="OAuthTokenInformation"/> containing information about the token.
+        /// </returns>
         public async Task<OAuthTokenInformation> GetRefreshTokenInformation(string refreshToken)
         {
             var path = $"/oauth/v1/refresh-tokens/{refreshToken}";
@@ -108,6 +116,9 @@ namespace HubSpot_Sharp.Authentication
         /// <param name="token">
         /// The token to delete.
         /// </param>
+        /// <returns>
+        /// The <see cref="Task"/>.
+        /// </returns>
         public async Task DeleteRefreshToken(string token)
         {
             var path = $"/oauth/v1/refresh-tokens/{token}";

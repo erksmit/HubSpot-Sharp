@@ -35,7 +35,6 @@ namespace HubSpot_Sharp.Serialization
             NullValueHandling = NullValueHandling.Ignore,
         };
 
-
         /// <summary>
         /// Serializes an object into its json representation.
         /// </summary>
@@ -53,8 +52,12 @@ namespace HubSpot_Sharp.Serialization
         /// <summary>
         /// Serializes an object into a url encoded set of key value pairs. Handles object references with ToString.
         /// </summary>
-        /// <param name="obj">The object to convert.</param>
-        /// <returns>The serialized string.</returns>
+        /// <param name="obj">
+        /// The object to convert.
+        /// </param>
+        /// <returns>
+        /// The serialized string.
+        /// </returns>
         public string SerializeUrlEncoded(object obj)
         {
             var camelCaseNaming = new CamelCaseNamingStrategy();
@@ -102,13 +105,11 @@ namespace HubSpot_Sharp.Serialization
                         finalValue = enumValueName;
                     }
                 }
-
                 else if (propertyType == typeof(DateTime))
                 {
                     var date = (DateTime)propertyValue;
                     finalValue = date.ToString("yyyy-MM-dd");
                 }
-
                 else
                 {
                     finalValue = propertyValue.ToString()!;
@@ -118,12 +119,15 @@ namespace HubSpot_Sharp.Serialization
             }
 
             // format the members and escape the values
-            return string.Join("&", formMembers.Select(m =>
-            {
-                var name = WebUtility.UrlEncode(m.name);
-                var value = WebUtility.UrlEncode(m.value);
-                return $"{name}={value}";
-            }));
+            return string.Join(
+                "&",
+                formMembers.Select(
+                    m =>
+                    {
+                        var name = WebUtility.UrlEncode(m.name);
+                        var value = WebUtility.UrlEncode(m.value);
+                        return $"{name}={value}";
+                    }));
         }
 
         /// <summary>

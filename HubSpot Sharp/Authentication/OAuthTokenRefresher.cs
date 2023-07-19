@@ -1,7 +1,16 @@
-﻿namespace HubSpot_Sharp.Authentication
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="OAuthTokenRefresher.cs" company="">
+//   
+// </copyright>
+// <summary>
+//   Manages a <see cref="HubSpotToken" /> by periodically refreshing the access token.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace HubSpot_Sharp.Authentication
 {
     /// <summary>
-    /// Manages a <see cref="HubSpotToken"/> by periodically refreshing the access token.
+    /// Manages a <see cref="HubSpotToken" /> by periodically refreshing the access token.
     /// </summary>
     public class OAuthTokenRefresher
     {
@@ -40,7 +49,30 @@
         /// </summary>
         private CancellationTokenSource cancellation;
 
-        public OAuthTokenRefresher(HubSpotToken token, AuthenticationApi api, string clientId, string clientSecret, string redirectUri)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OAuthTokenRefresher"/> class.
+        /// </summary>
+        /// <param name="token">
+        /// The token.
+        /// </param>
+        /// <param name="api">
+        /// The api.
+        /// </param>
+        /// <param name="clientId">
+        /// The client id.
+        /// </param>
+        /// <param name="clientSecret">
+        /// The client secret.
+        /// </param>
+        /// <param name="redirectUri">
+        /// The redirect uri.
+        /// </param>
+        public OAuthTokenRefresher(
+            HubSpotToken token,
+            AuthenticationApi api,
+            string clientId,
+            string clientSecret,
+            string redirectUri)
         {
             Token = token;
             Api = api;
@@ -52,10 +84,15 @@
         /// <summary>
         /// Initiates the refresh process and continue refreshing the token when it expires.
         /// </summary>
+        /// <returns>
+        /// The <see cref="void"/>.
+        /// </returns>
         public async void Start()
         {
             if (IsActive)
+            {
                 throw new InvalidOperationException("Token refresher was already running");
+            }
 
             IsActive = true;
             cancellation = new CancellationTokenSource();
@@ -65,6 +102,9 @@
         /// <summary>
         /// Signals that the token should no longer be refreshed anymore
         /// </summary>
+        /// <returns>
+        /// The <see cref="void"/>.
+        /// </returns>
         public void Stop()
         {
             IsActive = false;
@@ -74,10 +114,10 @@
         /// <summary>
         /// Refreshes the token and runs the function again when the token expires.
         /// </summary>
-        /// <returns>A <see cref="Task"/> that completes when the token is refreshed.</returns>
+        /// <returns>A <see cref="Task" /> that completes when the token is refreshed.</returns>
         private async Task OnRefresh()
         {
-            var requestForm = new GrantRequestOptions()
+            var requestForm = new GrantRequestOptions
             {
                 GrantType = GrantType.RefreshToken,
                 ClientId = ClientId,
@@ -89,10 +129,11 @@
             var response = await Api.ExchangeTokens(requestForm);
             Token.AccessToken = response.AccessToken;
 
-            Token.ExpiresAt = DateTime.UtcNow + TimeSpan.FromSeconds(response.ExpiresIn);
+            Token.ExpiresAt = DateTime.UtcNow.AddSeconds(response.ExpiresIn);
 
             // we will refresh again 2 minutes before the token expires
-            _ = Task.Delay(TimeSpan.FromSeconds(response.ExpiresIn - 120), cancellation.Token).ContinueWith(_ => OnRefresh());
+            _ = Task.Delay(TimeSpan.FromSeconds(response.ExpiresIn - 120), cancellation.Token)
+                .ContinueWith(_ => OnRefresh());
         }
     }
 }

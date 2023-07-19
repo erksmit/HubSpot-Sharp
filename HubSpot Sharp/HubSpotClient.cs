@@ -45,7 +45,8 @@ namespace HubSpot_Sharp
             {
                 BaseAddress = new Uri(BaseUrl)
             };
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
+            client.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
             serializer = new HubSpotSerializer();
         }
 
@@ -85,7 +86,10 @@ namespace HubSpot_Sharp
             if (options.FormContent != null)
             {
                 string form = serializer.SerializeUrlEncoded(options.FormContent);
-                request.Content = new StringContent(form, Encoding.UTF8, mediaType: "application/x-www-form-urlencoded");
+                request.Content = new StringContent(
+                    form,
+                    Encoding.UTF8,
+                    mediaType: "application/x-www-form-urlencoded");
             }
 
             var response = await client.SendAsync(request);
@@ -103,32 +107,33 @@ namespace HubSpot_Sharp
                 switch (options.RateLimit)
                 {
                     case RateLimitOptions.Error:
-                        {
-                            throw new HubSpotException(response);
-                        }
+                    {
+                        throw new HubSpotException(response);
+                    }
 
                     // The current method for handling rateLimits is very rudimentary, in the future we should preemptively ensure rateLimits are not hit.
-
                     case RateLimitOptions.RetrySearch:
-                        {
-                            // HubSpot does not say how long until the rateLimit resets, so we must wait a full second
-                            Thread.Sleep(1000);
+                    {
+                        // HubSpot does not say how long until the rateLimit resets, so we must wait a full second
+                        Thread.Sleep(1000);
 
-                            // try again, but error if it times out again
-                            options.RateLimit = RateLimitOptions.Error;
-                            return await SendRequest(options);
-                        }
+                        // try again, but error if it times out again
+                        options.RateLimit = RateLimitOptions.Error;
+                        return await SendRequest(options);
+                    }
 
                     case RateLimitOptions.RetryRolling:
-                        {
-                            // the rolling rateLimit is generally not hit, but in the future it would be a good idea to ensure this rateLimit wont ever be hit
-                            Thread.Sleep(10000);
-                            options.RateLimit = RateLimitOptions.Error;
-                            return await SendRequest(options);
-                        }
+                    {
+                        // the rolling rateLimit is generally not hit, but in the future it would be a good idea to ensure this rateLimit wont ever be hit
+                        Thread.Sleep(10000);
+                        options.RateLimit = RateLimitOptions.Error;
+                        return await SendRequest(options);
+                    }
 
                     default:
-                        throw new NotImplementedException($"RequestOption specifies an unknown method for handling rateLimits: {options.RateLimit}", new HubSpotException(response));
+                        throw new NotImplementedException(
+                            $"RequestOption specifies an unknown method for handling rateLimits: {options.RateLimit}",
+                            new HubSpotException(response));
                 }
             }
 
@@ -141,6 +146,9 @@ namespace HubSpot_Sharp
         /// <param name="options">
         /// The options for the request.
         /// </param>
+        /// <returns>
+        /// The <see cref="Task"/>.
+        /// </returns>
         internal async Task Execute(RequestOptions options)
         {
             await SendRequest(options);
@@ -158,6 +166,9 @@ namespace HubSpot_Sharp
         /// <param name="entity">
         /// The content of the request.
         /// </param>
+        /// <returns>
+        /// The <see cref="Task"/>.
+        /// </returns>
         internal async Task Execute(string path, HttpMethod? method = null, object? entity = null)
         {
             method ??= HttpMethod.Get;
@@ -208,6 +219,12 @@ namespace HubSpot_Sharp
             return await Execute<T>(options);
         }
 
+        /// <summary>
+        /// The dispose.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="void" />.
+        /// </returns>
         void IDisposable.Dispose() => client.Dispose();
     }
 }

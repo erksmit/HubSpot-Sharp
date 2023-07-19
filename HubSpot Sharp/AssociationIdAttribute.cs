@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ObjectTypeIdAttribute.cs" company="">
+// <copyright file="AssociationIdAttribute.cs" company="">
 //   
 // </copyright>
 // <summary>

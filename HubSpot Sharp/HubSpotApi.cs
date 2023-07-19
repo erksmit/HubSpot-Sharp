@@ -57,10 +57,19 @@ namespace HubSpot_Sharp
         /// </summary>
         public CrmApi Crm { get; }
 
+        /// <summary>
+        /// Gets the webhook.
+        /// </summary>
         public WebhookApi Webhook { get; }
 
+        /// <summary>
+        /// Gets the account activity.
+        /// </summary>
         public AccountActivityApi AccountActivity { get; }
 
+        /// <summary>
+        /// Gets the user provisioning.
+        /// </summary>
         public UserProvisioningApi UserProvisioning { get; }
     }
 }

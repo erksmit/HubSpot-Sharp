@@ -41,7 +41,21 @@ namespace HubSpot_Sharp.Intermediates
         [DataMember]
         public string Id { get; set; }
 
-        public static List<IdInput> FromEnumerable<T>(IEnumerable<T> enumerable) where T : HubSpotObject
+        /// <summary>
+        /// The from enumerable.
+        /// </summary>
+        /// <param name="enumerable">
+        /// The enumerable.
+        /// </param>
+        /// <typeparam name="T">
+        /// </typeparam>
+        /// <returns>
+        /// The <see cref="List"/>.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// </exception>
+        public static List<IdInput> FromEnumerable<T>(IEnumerable<T> enumerable)
+            where T : HubSpotObject
         {
             return enumerable.Select(
                     o =>

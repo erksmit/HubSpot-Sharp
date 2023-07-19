@@ -9,7 +9,7 @@
 
 using System.Runtime.Serialization;
 
-namespace HubSpot_Sharp.CRM.Custom
+namespace HubSpot_Sharp.CRM.Object.Custom
 {
     /// <summary>
     /// Enum describing the input method users can use to input values for the property

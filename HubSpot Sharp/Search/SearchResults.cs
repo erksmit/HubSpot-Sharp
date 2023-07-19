@@ -23,6 +23,18 @@ namespace HubSpot_Sharp.Search
     public class SearchResults<T>
         where T : HubSpotObject, new()
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SearchResults{T}"/> class.
+        /// </summary>
+        /// <param name="total">
+        /// The total.
+        /// </param>
+        /// <param name="results">
+        /// The results.
+        /// </param>
+        /// <param name="paging">
+        /// The paging.
+        /// </param>
         public SearchResults(int total, IList<PropertyBag<T>> results, PagingModel? paging = null)
         {
             Total = total;

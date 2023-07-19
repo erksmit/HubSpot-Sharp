@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TokenInfoOptions.cs" company="">
+// <copyright file="PrivateTokenInfoOptions.cs" company="">
 //   
 // </copyright>
 // <summary>
@@ -17,11 +17,20 @@ namespace HubSpot_Sharp.Authentication
     [DataContract]
     public class PrivateTokenInfoOptions
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PrivateTokenInfoOptions"/> class.
+        /// </summary>
+        /// <param name="token">
+        /// The token.
+        /// </param>
         public PrivateTokenInfoOptions(string token)
         {
             Token = token;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PrivateTokenInfoOptions"/> class.
+        /// </summary>
         public PrivateTokenInfoOptions()
         {
         }

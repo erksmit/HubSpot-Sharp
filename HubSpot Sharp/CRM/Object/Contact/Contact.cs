@@ -11,7 +11,7 @@ using System.Runtime.Serialization;
 
 using HubSpot_Sharp.Serialization;
 
-namespace HubSpot_Sharp.CRM.Contact
+namespace HubSpot_Sharp.CRM.Object.Contact
 {
     /// <summary>
     /// The base class model for a contact in HubSpot.

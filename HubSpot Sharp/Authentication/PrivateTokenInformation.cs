@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TokenInformation.cs" company="">
+// <copyright file="PrivateTokenInformation.cs" company="">
 //   
 // </copyright>
 // <summary>
@@ -19,7 +19,23 @@ namespace HubSpot_Sharp.Authentication
     [DataContract]
     public class PrivateTokenInformation
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PrivateTokenInformation"/> class.
+        /// </summary>
+        /// <param name="userId">
+        /// The user id.
+        /// </param>
+        /// <param name="hubId">
+        /// The hub id.
+        /// </param>
+        /// <param name="appId">
+        /// The app id.
+        /// </param>
+        /// <param name="scopes">
+        /// The scopes.
+        /// </param>
         [JsonConstructor]
+
         // ReSharper disable once StyleCop.SA1600
         internal PrivateTokenInformation(long userId, long hubId, long appId, IList<string> scopes)
         {

@@ -9,7 +9,7 @@
 
 using System.Runtime.Serialization;
 
-using HubSpot_Sharp.CRM.Custom;
+using HubSpot_Sharp.CRM.Object.Custom;
 
 namespace HubSpot_Sharp.CRM.Property
 {
@@ -56,7 +56,9 @@ namespace HubSpot_Sharp.CRM.Property
         public IList<EnumerationOption> Options { get; set; }
 
         /// <summary>
-        /// Gets or sets the Calculationformula which describes the formula of a calculated field. See <see href="https://developers.hubspot.com/docs/api/crm/properties#calculation-property-syntax">here</see> for more information.
+        /// Gets or sets the Calculationformula which describes the formula of a calculated field. See
+        /// <see href="https://developers.hubspot.com/docs/api/crm/properties#calculation-property-syntax">here</see> for more
+        /// information.
         /// </summary>
         [DataMember]
         public string CalculationFormula { get; set; }

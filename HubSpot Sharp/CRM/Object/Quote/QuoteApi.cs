@@ -7,14 +7,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using HubSpot_Sharp.CRM.Object;
-
-namespace HubSpot_Sharp.CRM.Quote
+namespace HubSpot_Sharp.CRM.Object.Quote
 {
     /// <summary>
     /// The quote api.
     /// </summary>
-    public class QuoteApi : CrmObjectBaseApi<Quote>
+    public class QuoteApi : CrmObjectApi<Quote>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="QuoteApi"/> class.

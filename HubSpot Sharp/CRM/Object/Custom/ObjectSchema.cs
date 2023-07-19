@@ -11,7 +11,7 @@ using System.Runtime.Serialization;
 
 using HubSpot_Sharp.CRM.Property;
 
-namespace HubSpot_Sharp.CRM.Custom
+namespace HubSpot_Sharp.CRM.Object.Custom
 {
     /// <summary>
     /// Represents a schema used to create a custom HubSpot object.

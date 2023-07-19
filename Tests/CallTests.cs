@@ -1,35 +1,37 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EngagementApi.cs" company="">
+// <copyright file="CallTests.cs" company="">
 //   
 // </copyright>
 // <summary>
-//   The engagement api.
+//   The call tests.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 using HubSpot_Sharp.CRM.Engagement.Call;
 
-namespace HubSpot_Sharp.CRM.Engagement
+namespace Tests
 {
     /// <summary>
-    /// The engagement api.
+    /// The call tests.
     /// </summary>
-    public class EngagementApi
+    [TestClass]
+    public class CallTests
     {
         /// <summary>
-        /// Gets the call.
+        /// The api.
         /// </summary>
-        public CallApi Call { get; }
+        private readonly CallApi api = Config.Api.Crm.Engagement.Call;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EngagementApi"/> class.
+        /// The read.
         /// </summary>
-        /// <param name="client">
-        /// The client.
-        /// </param>
-        public EngagementApi(HubSpotClient client)
+        /// <returns>
+        /// The <see cref="Task"/>.
+        /// </returns>
+        [TestMethod]
+        public async Task Read()
         {
-            Call = new CallApi(client);
+            var call = await api.Read<Call>(18986306249);
         }
     }
 }

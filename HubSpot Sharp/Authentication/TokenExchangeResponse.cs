@@ -19,7 +19,20 @@ namespace HubSpot_Sharp.Authentication
     [DataContract]
     public class TokenExchangeResponse
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TokenExchangeResponse"/> class.
+        /// </summary>
+        /// <param name="refreshToken">
+        /// The refresh token.
+        /// </param>
+        /// <param name="accessToken">
+        /// The access token.
+        /// </param>
+        /// <param name="expiresIn">
+        /// The expires in.
+        /// </param>
         [JsonConstructor]
+
         // ReSharper disable once StyleCop.SA1600
         internal TokenExchangeResponse(string refreshToken, string accessToken, long expiresIn)
         {

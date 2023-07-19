@@ -9,7 +9,7 @@
 
 using HubSpot_Sharp.Intermediates;
 
-namespace HubSpot_Sharp.CRM.Custom
+namespace HubSpot_Sharp.CRM.Object.Custom
 {
     /// <summary>
     /// Contains functions for interacting with custom schema endpoints.
@@ -97,6 +97,9 @@ namespace HubSpot_Sharp.CRM.Custom
         /// <param name="objectType">
         /// The object type id for the schema.
         /// </param>
+        /// <returns>
+        /// The <see cref="Task"/>.
+        /// </returns>
         public async Task Archive(string objectType)
         {
             var path = "/crm/v3/schemas/" + objectType;
@@ -109,6 +112,9 @@ namespace HubSpot_Sharp.CRM.Custom
         /// <param name="objectType">
         /// The object type id for the schema.
         /// </param>
+        /// <returns>
+        /// The <see cref="Task"/>.
+        /// </returns>
         public async Task Purge(string objectType)
         {
             var path = $"/crm/v3/schemas/{objectType}/purge";

@@ -22,6 +22,15 @@ namespace HubSpot_Sharp.Intermediates
     [DataContract]
     public class ListResult<T>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ListResult{T}"/> class.
+        /// </summary>
+        /// <param name="results">
+        /// The results.
+        /// </param>
+        /// <param name="paging">
+        /// The paging.
+        /// </param>
         public ListResult(IList<T> results, PagingModel paging)
         {
             Results = results;
@@ -41,9 +50,24 @@ namespace HubSpot_Sharp.Intermediates
         public PagingModel Paging { get; }
     }
 
+    /// <summary>
+    /// The list result extensions.
+    /// </summary>
     public static class ListResultExtensions
     {
-        public static IList<T> GetResults<T>(this ListResult<PropertyBag<T>> result) where T : HubSpotObject
+        /// <summary>
+        /// The get results.
+        /// </summary>
+        /// <param name="result">
+        /// The result.
+        /// </param>
+        /// <typeparam name="T">
+        /// </typeparam>
+        /// <returns>
+        /// The <see cref="IList"/>.
+        /// </returns>
+        public static IList<T> GetResults<T>(this ListResult<PropertyBag<T>> result)
+            where T : HubSpotObject
         {
             return result.Results.UnpackMany();
         }

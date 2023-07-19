@@ -17,6 +17,15 @@ namespace HubSpot_Sharp.Intermediates
     /// </typeparam>
     public class BatchResult<T>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BatchResult{T}"/> class.
+        /// </summary>
+        /// <param name="status">
+        /// The status.
+        /// </param>
+        /// <param name="results">
+        /// The results.
+        /// </param>
         public BatchResult(string status, IList<T> results)
         {
             Status = status;
@@ -34,9 +43,24 @@ namespace HubSpot_Sharp.Intermediates
         public IList<T> Results { get; }
     }
 
+    /// <summary>
+    /// The batch result extensions.
+    /// </summary>
     public static class BatchResultExtensions
     {
-        public static IList<T> GetResults<T>(this BatchResult<PropertyBag<T>> result) where T : HubSpotObject
+        /// <summary>
+        /// The get results.
+        /// </summary>
+        /// <param name="result">
+        /// The result.
+        /// </param>
+        /// <typeparam name="T">
+        /// </typeparam>
+        /// <returns>
+        /// The <see cref="IList"/>.
+        /// </returns>
+        public static IList<T> GetResults<T>(this BatchResult<PropertyBag<T>> result)
+            where T : HubSpotObject
         {
             return result.Results.UnpackMany();
         }

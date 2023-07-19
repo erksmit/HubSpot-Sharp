@@ -19,7 +19,47 @@ namespace HubSpot_Sharp.Authentication
     [DataContract]
     public class OAuthTokenInformation
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OAuthTokenInformation"/> class.
+        /// </summary>
+        /// <param name="token">
+        /// The token.
+        /// </param>
+        /// <param name="user">
+        /// The user.
+        /// </param>
+        /// <param name="hubDomain">
+        /// The hub domain.
+        /// </param>
+        /// <param name="scopes">
+        /// The scopes.
+        /// </param>
+        /// <param name="scopeToScopeGroupPks">
+        /// The scope to scope group pks.
+        /// </param>
+        /// <param name="hubId">
+        /// The hub id.
+        /// </param>
+        /// <param name="appId">
+        /// The app id.
+        /// </param>
+        /// <param name="expiresIn">
+        /// The expires in.
+        /// </param>
+        /// <param name="userId">
+        /// The user id.
+        /// </param>
+        /// <param name="tokenType">
+        /// The token type.
+        /// </param>
+        /// <param name="trailScopes">
+        /// The trail scopes.
+        /// </param>
+        /// <param name="trailScopeToScopeGroupPks">
+        /// The trail scope to scope group pks.
+        /// </param>
         [JsonConstructor]
+
         // ReSharper disable once StyleCop.SA1600 Type will only be constructed via deserialization.
         internal OAuthTokenInformation(
             string token,

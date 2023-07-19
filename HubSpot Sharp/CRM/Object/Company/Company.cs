@@ -9,7 +9,7 @@
 
 using System.Runtime.Serialization;
 
-namespace HubSpot_Sharp.CRM.Company
+namespace HubSpot_Sharp.CRM.Object.Company
 {
     /// <summary>
     /// The base class for a company in HubSpot.

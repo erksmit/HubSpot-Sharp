@@ -38,6 +38,9 @@ namespace HubSpot_Sharp.Options
         /// <param name="entity">
         /// The entity that makes up the request's body.
         /// </param>
+        /// <param name="formContent">
+        /// The form Content.
+        /// </param>
         /// <param name="rateLimit">
         /// specifies what to do when a rateLimit is hit.
         /// </param>
@@ -109,6 +112,9 @@ namespace HubSpot_Sharp.Options
         /// <param name="value">
         /// The value of the parameter.
         /// </param>
+        /// <returns>
+        /// The <see cref="void"/>.
+        /// </returns>
         public void AddParam(string name, object value)
         {
             QueryParams.Add((name, value.ToString()!));
@@ -124,9 +130,10 @@ namespace HubSpot_Sharp.Options
         {
             if (QueryParams.Count > 0)
             {
-                var dataString = Uri.EscapeDataString(string.Join(
-                          "&",
-                          QueryParams.Where(p => !string.IsNullOrEmpty(p.value)).Select(p => $"{p.name}={p.value}")));
+                var dataString = Uri.EscapeDataString(
+                    string.Join(
+                        "&",
+                        QueryParams.Where(p => !string.IsNullOrEmpty(p.value)).Select(p => $"{p.name}={p.value}")));
                 return EndPointPath + "?" + dataString;
             }
 

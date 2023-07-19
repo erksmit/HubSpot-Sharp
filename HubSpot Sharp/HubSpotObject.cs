@@ -19,13 +19,24 @@ namespace HubSpot_Sharp
     [DataContract]
     public abstract class HubSpotObject
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HubSpotObject"/> class.
+        /// </summary>
+        /// <param name="id">
+        /// The id.
+        /// </param>
+        /// <param name="createdAt">
+        /// The created at.
+        /// </param>
+        /// <param name="lastModified">
+        /// The last modified.
+        /// </param>
         public HubSpotObject(long? id = null, DateTime? createdAt = null, DateTime? lastModified = null)
         {
             Id = id;
             CreatedAt = createdAt;
             LastModified = lastModified;
         }
-
 
         /// <summary>
         /// Gets or sets the id of the object.
