@@ -96,7 +96,8 @@ namespace Tests
         /// <summary>
         /// Tests performing OAuth authentication using the <see cref="OAuthTokenRefresher"/>.
         /// </summary>
-        //[TestMethod] Test is disabled as it takes 5 seconds to execute
+        [TestMethod]
+        [TestCategory("Slow")]
         public async Task ManagedOAuth()
         {
             if (Config.RefreshToken == null)

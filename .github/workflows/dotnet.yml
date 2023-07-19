@@ -33,4 +33,4 @@ jobs:
 
 
     - name: Test
-      run: dotnet test --no-build --verbosity normal --logger GitHubActions
+      run: dotnet test --no-build --verbosity normal --logger GitHubActions --filter TestCategory!=slow

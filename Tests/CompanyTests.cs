@@ -197,7 +197,8 @@ namespace Tests
         /// <summary>
         /// Tests the search endpoint by searching for some companies.
         /// </summary>
-        //[TestMethod] Test is disabled as it takes 20 seconds to execute
+        [TestMethod]
+        [TestCategory("Slow")]
         public async Task Search()
         {
             var createResults = (await api.CreateBatch(sampleCompanies)).GetResults();
