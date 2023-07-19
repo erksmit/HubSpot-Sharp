@@ -42,8 +42,9 @@ namespace HubSpot_Sharp
             Request = response.RequestMessage;
         }
 
-        public override string Message {
-            get 
+        public override string Message
+        {
+            get
             {
                 if (Contents != null)
                 {
@@ -77,7 +78,7 @@ namespace HubSpot_Sharp
         /// <summary>
         /// Gets the serializer.
         /// </summary>
-        private static HubSpotSerializer Serializer { get; } = new ();
+        private static HubSpotSerializer Serializer { get; } = new();
 
         public override string ToString()
         {
@@ -85,7 +86,7 @@ namespace HubSpot_Sharp
             {
                 return base.ToString();
             }
-            
+
             return base.ToString() + $": {Contents.Message}";
         }
     }

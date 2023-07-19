@@ -5,10 +5,16 @@ namespace HubSpot_Sharp.UserProvisioning
     [DataContract]
     public class Role
     {
+        public Role(string id, string name)
+        {
+            Id = id;
+            Name = name;
+        }
+
         [DataMember]
-        public string Id { get; set; }
-        
+        public string Id { get; }
+
         [DataMember]
-        public string Name { get; set; }
+        public string Name { get; }
     }
 }

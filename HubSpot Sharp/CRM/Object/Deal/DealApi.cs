@@ -1,26 +1,26 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="QuoteApi.cs" contact="" company="">
+// <copyright file="DealApi.cs" contact="" company="">
 //   
 // </copyright>
 // <summary>
-//   The quote api.
+//   The deal api.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace HubSpot_Sharp.CRM.Quote
+namespace HubSpot_Sharp.CRM.Object.Deal
 {
     /// <summary>
-    /// The quote api.
+    /// The deal api.
     /// </summary>
-    public class QuoteApi : CrmBaseApi<Quote>
+    public class DealApi : CrmObjectBaseApi<Deal>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="QuoteApi"/> class.
+        /// Initializes a new instance of the <see cref="DealApi"/> class.
         /// </summary>
         /// <param name="client">
         /// The client.
         /// </param>
-        public QuoteApi(HubSpotClient client)
+        public DealApi(HubSpotClient client)
             : base(client)
         {
         }

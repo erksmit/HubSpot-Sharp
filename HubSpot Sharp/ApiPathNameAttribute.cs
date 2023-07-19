@@ -27,7 +27,7 @@ namespace HubSpot_Sharp
         {
             Segment = segment;
         }
-        
+
         /// <summary>
         /// Gets the segment.
         /// </summary>

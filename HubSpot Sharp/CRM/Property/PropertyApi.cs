@@ -1,6 +1,5 @@
 ﻿namespace HubSpot_Sharp.CRM.Property
 {
-    using HubSpot_Sharp.CRM.Custom;
     using HubSpot_Sharp.Intermediates;
 
     public class PropertyApi

@@ -36,12 +36,12 @@
             {
                 "private" => new HubSpotToken
                 {
-                    AccessToken = PrivateAccessToken,
+                    AccessToken = PrivateAccessToken ?? throw new Exception("Private access token authorization is configured but no pat is specified."),
                     Mode = HubSpotAuthenticationMode.PrivateAccessToken
                 },
                 "oauth" => new HubSpotToken
                 {
-                    RefreshToken = RefreshToken,
+                    RefreshToken = RefreshToken ?? throw new Exception("OAuth authorization is configured but no refresh token is specified."),
                     Mode = HubSpotAuthenticationMode.OAuth
                 },
                 "none" => new HubSpotToken
@@ -58,10 +58,10 @@
                 var response =Api.Authentication.ExchangeTokens(
                     new GrantRequestOptions
                     {
-                        ClientId = ClientId,
-                        ClientSecret = ClientSecret,
-                        RedirectUri = RedirectUri,
-                        RefreshToken = RefreshToken,
+                        ClientId = ClientId ?? throw new Exception("OAuth authorization is configured but no ClientId is configured"),
+                        ClientSecret = ClientSecret ?? throw new Exception("OAuth authorization is configured but no client secret is configured"),
+                        RedirectUri = RedirectUri ?? throw new Exception("OAuth authorization is configured but no redirect uri is configured"),
+                        RefreshToken = RefreshToken ?? throw new Exception("OAuth authorization is configured but no refresh token is configured"),
                         GrantType = GrantType.RefreshToken
                     }).GetAwaiter().GetResult();
                 token.AccessToken = response.AccessToken;

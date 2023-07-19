@@ -4,7 +4,7 @@ using HubSpot_Sharp.Search;
 
 namespace HubSpot_Sharp.CRM
 {
-    public abstract class CrmBaseApi<THubType> where THubType : HubSpotObject, new()
+    public abstract class CrudBaseApi<THubType> where THubType : HubSpotObject, new()
     {
         /// <summary>
         /// The HubSpot client to make requests with.
@@ -13,16 +13,19 @@ namespace HubSpot_Sharp.CRM
 
         private readonly string pathSegment;
 
+        private readonly string crmPathSegment;
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="CrmBaseApi{THubType}"/> class with the specified type.
+        /// Initializes a new instance of the <see cref="CrmObjectBaseApi{THubType}"/> class with the specified type.
         /// </summary>
         /// <param name="client">
         /// The HubSpot client to make requests with.
         /// </param>
-        internal CrmBaseApi(HubSpotClient client)
+        internal CrudBaseApi(HubSpotClient client, string crmPathSegment)
         {
             this.client = client;
-            pathSegment = ApiPathNameAttribute.GetSegment<THubType>();
+            pathSegment = ApiPathNameAttribute.GetSegment<THubType>() ?? throw new Exception("Attempt to create a object api without an api path attribute.");
+            this.crmPathSegment = crmPathSegment;
         }
 
         /// <summary>
@@ -39,7 +42,7 @@ namespace HubSpot_Sharp.CRM
         /// </returns>
         public async Task<ListResult<Association>> GetAssociations(long objectId, string toObjectType)
         {
-            var path = $"/crm/v3/objects/{pathSegment}/{objectId}/associations/{toObjectType}";
+            var path = $"/crm/v3/{crmPathSegment}/{pathSegment}/{objectId}/associations/{toObjectType}";
             return await client.Execute<ListResult<Association>>(path);
         }
 
@@ -71,7 +74,7 @@ namespace HubSpot_Sharp.CRM
             string associationType)
         {
             var path =
-                $"/crm/v3/objects/{pathSegment}/{objectId}/associations/{toObjectType}/{toObjectId}/{associationType}";
+                $"/crm/v3/{crmPathSegment}/{pathSegment}/{objectId}/associations/{toObjectType}/{toObjectId}/{associationType}";
             await client.Execute(path, HttpMethod.Put);
         }
 
@@ -83,9 +86,9 @@ namespace HubSpot_Sharp.CRM
         {
             await Associate(objectId, AssociationIdAttribute.GetId<TToObject>(), toObjectId, associationType);
         }
-        
+
         /// <inheritdoc cref="Associate(long, string, long, string)"/>
-        public async Task Associate<TToObject>(THubType fromObject, TToObject toObject, string associationType) where TToObject: HubSpotObject
+        public async Task Associate<TToObject>(THubType fromObject, TToObject toObject, string associationType) where TToObject : HubSpotObject
         {
             await Associate<TToObject>((long)fromObject.Id, (long)toObject.Id, associationType);
         }
@@ -113,7 +116,7 @@ namespace HubSpot_Sharp.CRM
             string associationType)
         {
             var path =
-                $"/crm/v3/objects/{pathSegment}/{objectId}/associations/{toObjectType}/{toObjectId}/{associationType}";
+                $"/crm/v3/{crmPathSegment}/{pathSegment}/{objectId}/associations/{toObjectType}/{toObjectId}/{associationType}";
             await client.Execute(path, HttpMethod.Delete);
         }
 
@@ -145,7 +148,7 @@ namespace HubSpot_Sharp.CRM
         /// </returns>
         public async Task<T> Create<T>(T obj) where T : THubType, new()
         {
-            var path = "/crm/v3/objects/" + pathSegment;
+            var path = $"/crm/v3/{crmPathSegment}/{pathSegment}";
             var pack = new PropertyBag<T>(obj);
             return (await client.Execute<PropertyBag<T>>(path, HttpMethod.Post, pack)).GetProperties();
         }
@@ -164,7 +167,7 @@ namespace HubSpot_Sharp.CRM
         public async Task<T> Read<T>(long objectId)
             where T : THubType, new()
         {
-            var path = $"/crm/v3/objects/{pathSegment}/{objectId}";
+            var path = $"/crm/v3/{crmPathSegment}/{pathSegment}/{objectId}";
             return (await client.Execute<PropertyBag<T>>(path)).GetProperties();
         }
 
@@ -191,7 +194,7 @@ namespace HubSpot_Sharp.CRM
             IList<string>? properties = null)
             where T : THubType, new()
         {
-            var path = $"/crm/v3/objects/{pathSegment}";
+            var path = $"/crm/v3/{crmPathSegment}/{pathSegment}";
             var options = new RequestOptions(path);
             options.AddParam("limit", limit);
             if (after != null)
@@ -221,7 +224,7 @@ namespace HubSpot_Sharp.CRM
         public async Task<T> Update<T>(T obj)
             where T : THubType, new()
         {
-            var path = $"/crm/v3/objects/{pathSegment}/{obj.Id}";
+            var path = $"/crm/v3/{crmPathSegment}/{pathSegment}/{obj.Id}";
             var pack = new PropertyBag<T>(obj);
             return (await client.Execute<PropertyBag<T>>(path, HttpMethod.Patch, pack)).GetProperties();
         }
@@ -234,7 +237,7 @@ namespace HubSpot_Sharp.CRM
         /// </param>
         public async Task Archive(long objectId)
         {
-            var path = $"/crm/v3/objects/{pathSegment}/{objectId}";
+            var path = $"/crm/v3/{crmPathSegment}/{pathSegment}/{objectId}";
             await client.Execute(path, HttpMethod.Delete);
         }
 
@@ -246,7 +249,7 @@ namespace HubSpot_Sharp.CRM
         /// </param>
         public async Task ArchiveBatch(ListInputs<IdInput> inputs)
         {
-            var path = $"/crm/v3/objects/{pathSegment}/batch/archive";
+            var path = $"/crm/v3/{crmPathSegment}/{pathSegment}/batch/archive";
             await client.Execute(path, HttpMethod.Post, inputs);
         }
 
@@ -265,7 +268,7 @@ namespace HubSpot_Sharp.CRM
         public async Task<BatchResult<PropertyBag<T>>> CreateBatch<T>(ListInputs<PropertyBag<T>> objects)
             where T : THubType, new()
         {
-            var path = $"/crm/v3/objects/{pathSegment}/batch/create";
+            var path = $"/crm/v3/{crmPathSegment}/{pathSegment}/batch/create";
             return await client.Execute<BatchResult<PropertyBag<T>>>(path, HttpMethod.Post, objects);
         }
         /// <summary>
@@ -299,7 +302,7 @@ namespace HubSpot_Sharp.CRM
         public async Task<BatchResult<PropertyBag<T>>> ReadByProperties<T>(SelectByPropertiesOptions options)
             where T : THubType, new()
         {
-            var path = $"/crm/v3/objects/{pathSegment}/batch/read";
+            var path = $"/crm/v3/{crmPathSegment}/{pathSegment}/batch/read";
             return await client.Execute<BatchResult<PropertyBag<T>>>(path, HttpMethod.Post, options);
         }
 
@@ -317,7 +320,7 @@ namespace HubSpot_Sharp.CRM
         public async Task<BatchResult<PropertyBag<T>>> UpdateBatch<T>(ListInputs<PropertyBag<T>> objects)
             where T : THubType, new()
         {
-            var path = $"/crm/v3/objects/{pathSegment}/batch/update";
+            var path = $"/crm/v3/{crmPathSegment}/{pathSegment}/batch/update";
             return await client.Execute<BatchResult<PropertyBag<T>>>(path, HttpMethod.Post, objects);
         }
 
@@ -342,7 +345,7 @@ namespace HubSpot_Sharp.CRM
         public async Task<SearchResults<T>> Search<T>(SearchOptions options)
             where T : THubType, new()
         {
-            var path = $"/crm/v3/objects/{pathSegment}/search";
+            var path = $"/crm/v3/{crmPathSegment}/{pathSegment}/search";
             var requestOptions = new RequestOptions(path, HttpMethod.Post, options, rateLimit: RateLimitOptions.RetrySearch);
             return await client.Execute<SearchResults<T>>(requestOptions);
         }

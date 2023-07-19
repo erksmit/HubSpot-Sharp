@@ -8,7 +8,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Reflection;
-using System.Runtime.Serialization;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -26,7 +25,7 @@ namespace HubSpot_Sharp.Serialization
         public HubSpotContractResolver() : base()
         {
             NamingStrategy = new CamelCaseNamingStrategy();
-           
+
         }
 
         /// <inheritdoc />

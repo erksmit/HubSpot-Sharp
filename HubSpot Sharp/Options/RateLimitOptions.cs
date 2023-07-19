@@ -12,7 +12,7 @@ namespace HubSpot_Sharp.Options
     /// <summary>
     /// Specifies what to do when a rateLimit is hit
     /// </summary>
-    public enum RateLimitOptions
+    internal enum RateLimitOptions
     {
         /// <summary>
         /// Throw an error when the rateLimit is hit

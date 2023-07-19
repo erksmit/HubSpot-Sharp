@@ -1,26 +1,28 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FeedbackSubmissionApi.cs" contact="" company="">
+// <copyright file="QuoteApi.cs" contact="" company="">
 //   
 // </copyright>
 // <summary>
-//   The FeedbackSubmission api.
+//   The quote api.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace HubSpot_Sharp.CRM.FeedbackSubmission
+using HubSpot_Sharp.CRM.Object;
+
+namespace HubSpot_Sharp.CRM.Quote
 {
     /// <summary>
-    /// The FeedbackSubmission api.
+    /// The quote api.
     /// </summary>
-    public class FeedbackSubmissionApi : CrmBaseApi<FeedbackSubmission>
+    public class QuoteApi : CrmObjectBaseApi<Quote>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="FeedbackSubmissionApi"/> class.
+        /// Initializes a new instance of the <see cref="QuoteApi"/> class.
         /// </summary>
         /// <param name="client">
         /// The client.
         /// </param>
-        public FeedbackSubmissionApi(HubSpotClient client)
+        public QuoteApi(HubSpotClient client)
             : base(client)
         {
         }

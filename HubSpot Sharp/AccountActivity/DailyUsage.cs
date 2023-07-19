@@ -20,19 +20,19 @@ namespace HubSpot_Sharp.AccountActivity
 
         [DataMember]
         public string Name { get; }
-        
+
         [DataMember]
         public long UsageLimit { get; }
-        
+
         [DataMember]
         public long CurrentUsage { get; }
-        
+
         [DataMember]
         public DateTime CollectedAt { get; }
-        
+
         [DataMember]
         public string FetchStatus { get; }
-        
+
         [DataMember]
         public DateTime ResetsAt { get; }
     }

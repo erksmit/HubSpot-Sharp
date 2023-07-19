@@ -91,7 +91,7 @@ namespace HubSpot_Sharp.Intermediates
 
     public static class PropertyBagEnumerableExtensions
     {
-        
+
         public static IList<T> UnpackMany<T>(this IEnumerable<PropertyBag<T>> bag) where T : HubSpotObject
         {
             return PropertyBag<T>.UnpackMany(bag);

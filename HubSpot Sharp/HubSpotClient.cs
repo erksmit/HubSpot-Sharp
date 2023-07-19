@@ -87,7 +87,7 @@ namespace HubSpot_Sharp
                 string form = serializer.SerializeUrlEncoded(options.FormContent);
                 request.Content = new StringContent(form, Encoding.UTF8, mediaType: "application/x-www-form-urlencoded");
             }
-            
+
             var response = await client.SendAsync(request);
 
             string responseData = await response.Content.ReadAsStringAsync();
@@ -98,34 +98,34 @@ namespace HubSpot_Sharp
                 {
                     throw new HubSpotException(response);
                 }
-                
+
                 // statuscode 429 indicates a rateLimit error
                 switch (options.RateLimit)
                 {
                     case RateLimitOptions.Error:
-                    {
-                        throw new HubSpotException(response);
-                    }
+                        {
+                            throw new HubSpotException(response);
+                        }
 
                     // The current method for handling rateLimits is very rudimentary, in the future we should preemptively ensure rateLimits are not hit.
 
                     case RateLimitOptions.RetrySearch:
-                    {
-                        // HubSpot does not say how long until the rateLimit resets, so we must wait a full second
-                        Thread.Sleep(1000);
+                        {
+                            // HubSpot does not say how long until the rateLimit resets, so we must wait a full second
+                            Thread.Sleep(1000);
 
-                        // try again, but error if it times out again
-                        options.RateLimit = RateLimitOptions.Error;
-                        return await SendRequest(options);
-                    }
+                            // try again, but error if it times out again
+                            options.RateLimit = RateLimitOptions.Error;
+                            return await SendRequest(options);
+                        }
 
                     case RateLimitOptions.RetryRolling:
-                    {
-                        // the rolling rateLimit is generally not hit, but in the future it would be a good idea to ensure this rateLimit wont ever be hit
-                        Thread.Sleep(10000);
-                        options.RateLimit = RateLimitOptions.Error;
-                        return await SendRequest(options);
-                    }
+                        {
+                            // the rolling rateLimit is generally not hit, but in the future it would be a good idea to ensure this rateLimit wont ever be hit
+                            Thread.Sleep(10000);
+                            options.RateLimit = RateLimitOptions.Error;
+                            return await SendRequest(options);
+                        }
 
                     default:
                         throw new NotImplementedException($"RequestOption specifies an unknown method for handling rateLimits: {options.RateLimit}", new HubSpotException(response));
@@ -141,7 +141,7 @@ namespace HubSpot_Sharp
         /// <param name="options">
         /// The options for the request.
         /// </param>
-        public async Task Execute(RequestOptions options)
+        internal async Task Execute(RequestOptions options)
         {
             await SendRequest(options);
         }
@@ -158,7 +158,7 @@ namespace HubSpot_Sharp
         /// <param name="entity">
         /// The content of the request.
         /// </param>
-        public async Task Execute(string path, HttpMethod? method = null, object? entity = null)
+        internal async Task Execute(string path, HttpMethod? method = null, object? entity = null)
         {
             method ??= HttpMethod.Get;
             var options = new RequestOptions(path, method, entity);
@@ -177,7 +177,7 @@ namespace HubSpot_Sharp
         /// <returns>
         /// The response object
         /// </returns>
-        public async Task<T> Execute<T>(RequestOptions options)
+        internal async Task<T> Execute<T>(RequestOptions options)
         {
             var json = await SendRequest(options);
             return serializer.DeserializeJson<T>(json);
@@ -201,7 +201,7 @@ namespace HubSpot_Sharp
         /// <returns>
         /// The response object
         /// </returns>
-        public async Task<T> Execute<T>(string path, HttpMethod? method = null, object? entity = null)
+        internal async Task<T> Execute<T>(string path, HttpMethod? method = null, object? entity = null)
         {
             method ??= HttpMethod.Get;
             var options = new RequestOptions(path, method, entity);

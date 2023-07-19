@@ -10,6 +10,7 @@
 using System.Net;
 using System.Reflection;
 using System.Runtime.Serialization;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
@@ -57,24 +58,24 @@ namespace HubSpot_Sharp.Serialization
         public string SerializeUrlEncoded(object obj)
         {
             var camelCaseNaming = new CamelCaseNamingStrategy();
-            List<(string name, string value)> formMembers =  new List<(string name, string value)>();
+            List<(string name, string value)> formMembers = new List<(string name, string value)>();
 
             var type = obj.GetType();
             var properties = type.GetProperties();
-            foreach(var property in properties)
+            foreach (var property in properties)
             {
                 var propertyType = property.PropertyType;
                 var propertyValue = property.GetValue(obj);
-                if(propertyValue == null)
+                if (propertyValue == null)
                 {
                     continue;
                 }
-                
+
                 var dataAttr = property.GetCustomAttribute<DataMemberAttribute>();
-                
+
                 string propertyName;
                 string finalValue;
-                if(dataAttr != null && string.IsNullOrEmpty(dataAttr.Name) == false)
+                if (dataAttr != null && string.IsNullOrEmpty(dataAttr.Name) == false)
                 {
                     propertyName = dataAttr.Name;
                 }
@@ -84,7 +85,7 @@ namespace HubSpot_Sharp.Serialization
                     propertyName = camelCaseNaming.GetPropertyName(property.Name, false);
                 }
 
-                if(propertyType.IsEnum)
+                if (propertyType.IsEnum)
                 {
                     // get the name of the enum field
                     var enumValueName = Enum.GetName(propertyType, propertyValue)!;
@@ -92,7 +93,7 @@ namespace HubSpot_Sharp.Serialization
                     var enumMemberAttribute = enumField.GetCustomAttribute<EnumMemberAttribute>();
 
                     // use the enum member attribute's value if it is defined
-                    if(enumMemberAttribute != null && string.IsNullOrEmpty(enumMemberAttribute.Value) == false)
+                    if (enumMemberAttribute != null && string.IsNullOrEmpty(enumMemberAttribute.Value) == false)
                     {
                         finalValue = enumMemberAttribute.Value;
                     }

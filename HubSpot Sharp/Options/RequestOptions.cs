@@ -7,15 +7,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Runtime.Serialization;
-
 namespace HubSpot_Sharp.Options
 {
     /// <summary>
     /// The request options.
     /// </summary>
-    
-    public class RequestOptions
+    internal class RequestOptions
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RequestOptions" /> class.
@@ -127,10 +124,10 @@ namespace HubSpot_Sharp.Options
         {
             if (QueryParams.Count > 0)
             {
-                 var dataString = Uri.EscapeDataString(string.Join(
-                           "&",
-                           QueryParams.Where(p => !string.IsNullOrEmpty(p.value)).Select(p => $"{p.name}={p.value}")));
-                 return EndPointPath + "?" + dataString;
+                var dataString = Uri.EscapeDataString(string.Join(
+                          "&",
+                          QueryParams.Where(p => !string.IsNullOrEmpty(p.value)).Select(p => $"{p.name}={p.value}")));
+                return EndPointPath + "?" + dataString;
             }
 
             return EndPointPath;

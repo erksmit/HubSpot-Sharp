@@ -7,10 +7,10 @@ namespace HubSpot_Sharp.CRM.Property
     {
         [DataMember]
         public string Name { get; set; }
-        
+
         [DataMember]
         public int DisplayOrder { get; set; }
-        
+
         [DataMember]
         public string Label { get; set; }
     }

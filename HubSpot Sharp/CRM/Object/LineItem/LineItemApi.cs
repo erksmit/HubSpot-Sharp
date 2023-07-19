@@ -1,26 +1,28 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DealApi.cs" contact="" company="">
+// <copyright file="LineItemApi.cs" contact="" company="">
 //   
 // </copyright>
 // <summary>
-//   The deal api.
+//   The LineItem api.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace HubSpot_Sharp.CRM.Deal
+using HubSpot_Sharp.CRM.Object;
+
+namespace HubSpot_Sharp.CRM.LineItem
 {
     /// <summary>
-    /// The deal api.
+    /// The LineItem api.
     /// </summary>
-    public class DealApi : CrmBaseApi<Deal>
+    public class LineItemApi : CrmObjectBaseApi<LineItem>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DealApi"/> class.
+        /// Initializes a new instance of the <see cref="LineItemApi"/> class.
         /// </summary>
         /// <param name="client">
         /// The client.
         /// </param>
-        public DealApi(HubSpotClient client)
+        public LineItemApi(HubSpotClient client)
             : base(client)
         {
         }

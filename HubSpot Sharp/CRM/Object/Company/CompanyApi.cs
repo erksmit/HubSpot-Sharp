@@ -1,26 +1,28 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TicketApi.cs" contact="" company="">
+// <copyright file="CompanyApi.cs" company="">
 //   
 // </copyright>
 // <summary>
-//   The ticket api.
+//   The company api.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace HubSpot_Sharp.CRM.Ticket
+using HubSpot_Sharp.CRM.Object;
+
+namespace HubSpot_Sharp.CRM.Company
 {
     /// <summary>
-    /// The ticket api.
+    /// The company api.
     /// </summary>
-    public class TicketApi : CrmBaseApi<Ticket>
+    public class CompanyApi : CrmObjectBaseApi<Company>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="TicketApi"/> class.
+        /// Initializes a new instance of the <see cref="CompanyApi"/> class.
         /// </summary>
         /// <param name="client">
         /// The client.
         /// </param>
-        public TicketApi(HubSpotClient client)
+        public CompanyApi(HubSpotClient client)
             : base(client)
         {
         }

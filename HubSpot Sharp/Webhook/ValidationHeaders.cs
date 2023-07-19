@@ -7,16 +7,16 @@ namespace HubSpot_Sharp.Webhook
     {
         [DataMember]
         public string Signature { get; set; }
-        
+
         [DataMember]
         public DateTime TimeStamp { get; set; }
-        
+
         [DataMember]
         public string Method { get; set; }
-        
+
         [DataMember]
         public string Uri { get; set; }
-        
+
         [DataMember]
         public string Body { get; set; }
     }

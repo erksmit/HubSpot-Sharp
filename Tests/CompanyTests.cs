@@ -56,7 +56,7 @@ namespace Tests
         /// <summary>
         /// The company await api.
         /// </summary>
-        private readonly CompanyApi api = Config.Api.Crm.Company;
+        private readonly CompanyApi api = Config.Api.Crm.Object.Company;
 
         /// <summary>
         /// Tests creating a company.
@@ -144,7 +144,7 @@ namespace Tests
         {
             var results = (await api.CreateBatch(sampleCompanies)).GetResults();
 
-            var options = new ListInputs<IdInput>(results.Select(c => new IdInput(c.Id.ToString())).ToList());
+            var options = new ListInputs<IdInput>(IdInput.FromEnumerable(results));
 
             await api.ArchiveBatch(options);
 
@@ -188,7 +188,7 @@ namespace Tests
             finally
             {
                 var cleanup =
-                    new ListInputs<IdInput>(updatedCompanies.Select(c => new IdInput(c.Id.ToString())).ToList());
+                    new ListInputs<IdInput>(IdInput.FromEnumerable(updatedCompanies));
                 await api.ArchiveBatch(cleanup);
             }
         }
@@ -214,7 +214,7 @@ namespace Tests
                             {
                                 PropertyName = "hs_object_id",
                                 Operator = SearchOperator.In,
-                                Values = createResults.Select(c => c.Id.ToString()).ToList()
+                                Values = createResults.Select(c => c.Id.ToString()!).ToList()
                             }
                         }
                     }
@@ -244,7 +244,7 @@ namespace Tests
             finally
             {
                 var cleanup =
-                    new ListInputs<IdInput>(createResults.Select(c => new IdInput(c.Id.ToString())).ToList());
+                    new ListInputs<IdInput>(IdInput.FromEnumerable(createResults));
                 await api.ArchiveBatch(cleanup);
             }
         }

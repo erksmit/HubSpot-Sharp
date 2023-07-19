@@ -22,22 +22,22 @@ namespace HubSpot_Sharp.AccountActivity
 
         [DataMember]
         public long PortalId { get; }
-        
+
         [DataMember]
         public string Timezone { get; }
-        
+
         [DataMember]
         public string CompanyCurrency { get; }
-        
+
         [DataMember]
         public IList<string> AdditionalCurrencies { get; }
-        
+
         [DataMember]
         public string UtcOffset { get; }
-        
+
         [DataMember]
         public long UtcOffsetMilliseconds { get; }
-        
+
         [DataMember]
         public string UiDomain { get; }
 

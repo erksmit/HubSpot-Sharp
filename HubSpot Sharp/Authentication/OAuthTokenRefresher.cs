@@ -54,7 +54,7 @@
         /// </summary>
         public async void Start()
         {
-            if(IsActive)
+            if (IsActive)
                 throw new InvalidOperationException("Token refresher was already running");
 
             IsActive = true;
@@ -90,7 +90,7 @@
             Token.AccessToken = response.AccessToken;
 
             Token.ExpiresAt = DateTime.UtcNow + TimeSpan.FromSeconds(response.ExpiresIn);
-            
+
             // we will refresh again 2 minutes before the token expires
             _ = Task.Delay(TimeSpan.FromSeconds(response.ExpiresIn - 120), cancellation.Token).ContinueWith(_ => OnRefresh());
         }

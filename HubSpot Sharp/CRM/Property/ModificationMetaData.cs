@@ -7,13 +7,13 @@ namespace HubSpot_Sharp.CRM.Property
     {
         [DataMember]
         public bool ReadOnlyOptions { get; set; }
-        
+
         [DataMember]
         public bool ReadOnlyValue { get; set; }
-        
+
         [DataMember]
         public bool ReadOnlyDefinition { get; set; }
-        
+
         [DataMember]
         public bool Archivable { get; set; }
     }

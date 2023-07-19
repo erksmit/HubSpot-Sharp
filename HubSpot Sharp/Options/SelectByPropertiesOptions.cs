@@ -37,6 +37,7 @@ namespace HubSpot_Sharp.Options
         /// </param>
         public SelectByPropertiesOptions(string idProperty, IEnumerable<string> inputs)
         {
+            IdProperty = idProperty;
             Inputs = inputs.Select(i => new IdInput(i)).ToList();
         }
 

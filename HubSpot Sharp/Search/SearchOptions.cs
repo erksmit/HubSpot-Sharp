@@ -17,6 +17,11 @@ namespace HubSpot_Sharp.Search
     [DataContract]
     public class SearchOptions
     {
+        public SearchOptions()
+        {
+            Limit = 100;
+        }
+
         /// <summary>
         /// Gets or sets the filter groups to filter the results.
         /// </summary>
@@ -52,10 +57,5 @@ namespace HubSpot_Sharp.Search
         /// </summary>
         [DataMember]
         public string After { get; set; }
-
-        public SearchOptions() 
-        {
-            Limit = 100;
-        }
     }
 }

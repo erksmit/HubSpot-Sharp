@@ -1,6 +1,4 @@
-﻿using System.Runtime.Serialization;
-
-using HubSpot_Sharp.Intermediates;
+﻿using HubSpot_Sharp.Intermediates;
 using HubSpot_Sharp.Options;
 
 namespace HubSpot_Sharp.UserProvisioning
@@ -19,7 +17,7 @@ namespace HubSpot_Sharp.UserProvisioning
             const string Path = "/settings/v3/users/";
             var options = new RequestOptions(Path);
             options.AddParam("limit", limit);
-            if(after != null)
+            if (after != null)
             {
                 options.AddParam("after", after);
             }
@@ -37,22 +35,22 @@ namespace HubSpot_Sharp.UserProvisioning
         {
             var path = $"/settings/v3/users/{id}";
             var options = new RequestOptions(path);
-            if(isEmail)
+            if (isEmail)
                 options.AddParam("idProperty", "EMAIL");
             return await client.Execute<User>(options);
         }
 
-        public async Task<User> Modify(User user, string id, bool isEmail = false) 
+        public async Task<User> Modify(User user, string id, bool isEmail = false)
         {
             var path = $"/settings/v3/users/{id}";
             var options = new RequestOptions(path, HttpMethod.Put, user);
-            if(isEmail)
+            if (isEmail)
                 options.AddParam("idProperty", "EMAIL");
             return await client.Execute<User>(options);
 
         }
 
-        public async Task Remove(string id, bool isEmail = false) 
+        public async Task Remove(string id, bool isEmail = false)
         {
             var path = $"/settings/v3/users/{id}";
             var options = new RequestOptions(path, HttpMethod.Delete);
@@ -61,7 +59,7 @@ namespace HubSpot_Sharp.UserProvisioning
             await client.Execute(options);
         }
 
-        public async Task<ListResult<T>> GetRoles<T>() where T : Role, new()
+        public async Task<ListResult<T>> GetRoles<T>() where T : Role
         {
             const string Path = "/settings/v3/users/roles";
             return await client.Execute<ListResult<T>>(Path);

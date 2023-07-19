@@ -20,7 +20,7 @@ namespace HubSpot_Sharp.Serialization
 
         public override IList<string>? ReadJson(JsonReader reader, Type objectType, IList<string>? existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
-            
+
             string? json = (string?)reader.Value;
             if (string.IsNullOrEmpty(json))
             {

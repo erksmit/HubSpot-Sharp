@@ -7,7 +7,7 @@ namespace HubSpot_Sharp.Webhook
     {
         [DataMember]
         public int MaxConcurrentRequests { get; set; }
-        
+
         [DataMember]
         public string Period { get; set; }
     }

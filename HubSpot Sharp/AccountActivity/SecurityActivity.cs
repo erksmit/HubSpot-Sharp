@@ -24,31 +24,31 @@ namespace HubSpot_Sharp.AccountActivity
 
         [DataMember]
         public string Id { get; }
-        
+
         [DataMember]
         public DateTime CreatedAt { get; }
-        
+
         [DataMember]
         public long UserId { get; }
-        
+
         [DataMember]
         public string Type { get; }
-        
+
         [DataMember]
         public string ActingUser { get; }
-        
+
         [DataMember]
         public string ObjectId { get; }
-        
+
         [DataMember]
         public string InfoUrl { get; }
-        
+
         [DataMember]
         public string IpAddress { get; }
-        
+
         [DataMember]
         public string CountryCode { get; }
-        
+
         [DataMember]
         public string RegionCode { get; }
     }

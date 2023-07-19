@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace HubSpot_Sharp.AccountActivity
 {
-    
+
     [DataContract]
     public class LoginActivity
     {
@@ -24,28 +24,28 @@ namespace HubSpot_Sharp.AccountActivity
 
         [DataMember]
         public string Id { get; }
-        
+
         [DataMember]
         public DateTime LoginAt { get; }
-        
+
         [DataMember]
         public long UserId { get; }
-        
+
         [DataMember]
         public string Email { get; }
-        
+
         [DataMember]
         public string CountryCode { get; }
-        
+
         [DataMember]
         public string RegionCode { get; }
-        
+
         [DataMember]
         public string IpAddress { get; }
-        
+
         [DataMember]
         public string UserAgent { get; }
-  
+
         [DataMember]
         public bool LoginSucceeded { get; }
     }

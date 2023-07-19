@@ -9,6 +9,8 @@
 
 using System.Runtime.Serialization;
 
+using HubSpot_Sharp.CRM.Property;
+
 namespace HubSpot_Sharp.CRM.Custom
 {
     /// <summary>

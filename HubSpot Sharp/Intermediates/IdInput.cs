@@ -40,5 +40,22 @@ namespace HubSpot_Sharp.Intermediates
         /// </summary>
         [DataMember]
         public string Id { get; set; }
+
+        public static List<IdInput> FromEnumerable<T>(IEnumerable<T> enumerable) where T : HubSpotObject
+        {
+            return enumerable.Select(
+                    o =>
+                    {
+                        if (o.Id == null)
+                        {
+                            throw new ArgumentException(
+                                "One of more hubspot objects do not have an id defined.",
+                                nameof(enumerable));
+                        }
+
+                        return new IdInput(o.Id.ToString()!);
+                    })
+                .ToList();
+        }
     }
 }

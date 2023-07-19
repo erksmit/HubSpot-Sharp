@@ -39,7 +39,7 @@ namespace HubSpot_Sharp.Webhook
             return await client.Execute<ListResult<WebhookSubscription>>(path);
         }
 
-        public async Task<WebhookSubscription> UpdateSubScription(int appId, WebhookSubscription subscription)
+        public async Task<WebhookSubscription> UpdateSubscription(int appId, WebhookSubscription subscription)
         {
             var path = $"/webhooks/v3/{appId}/subscriptions";
             return await client.Execute<WebhookSubscription>(path, HttpMethod.Post, subscription);
@@ -72,9 +72,12 @@ namespace HubSpot_Sharp.Webhook
             var secretUtf8 = Encoding.UTF8.GetString(secret16Bytes);
             var secret8Bytes = Encoding.UTF8.GetBytes(secretUtf8);
 
-            using var sha = new HMACSHA256(secret8Bytes);
-            var hashBytes = sha.ComputeHash(bytes8);
-            var hashString = Convert.ToBase64String(hashBytes);
+            string hashString;
+            using (var sha = new HMACSHA256(secret8Bytes))
+            {
+                var hashBytes = sha.ComputeHash(bytes8);
+                hashString = Convert.ToBase64String(hashBytes);
+            }
             return headers.Signature == hashString;
         }
     }
