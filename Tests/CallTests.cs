@@ -29,7 +29,7 @@ namespace Tests
         /// The <see cref="Task"/>.
         /// </returns>
         [TestMethod]
-        public async Task Read()
+        public void Read()
         {
 
         }
