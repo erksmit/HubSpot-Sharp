@@ -94,7 +94,7 @@ namespace Tests
                 {
                     AccessToken = string.Empty
                 },
-                _ => throw new ArgumentOutOfRangeException("Unknown authentication mode configuration")
+                _ => throw new ArgumentOutOfRangeException(nameof(token), "Unknown authentication mode configuration")
             };
 
             Api = new HubSpotApi(token);

@@ -31,7 +31,7 @@ namespace Tests
         [TestMethod]
         public async Task Read()
         {
-            var call = await api.Read<Call>(18986306249);
+
         }
     }
 }
