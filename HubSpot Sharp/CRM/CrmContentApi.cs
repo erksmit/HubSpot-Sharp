@@ -7,6 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using HubSpot_Sharp.CRM.Associations;
 using HubSpot_Sharp.Intermediates;
 using HubSpot_Sharp.Options;
 using HubSpot_Sharp.Search;
@@ -19,7 +20,7 @@ namespace HubSpot_Sharp.CRM
     /// <typeparam name="THubType">
     /// The object type the api works on.
     /// </typeparam>
-    public abstract class CrmObjectApi<THubType>
+    public abstract class CrmContentApi<THubType>
         where THubType : HubSpotObject, new()
     {
         /// <summary>
@@ -33,12 +34,12 @@ namespace HubSpot_Sharp.CRM
         private readonly string pathSegment;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CrmObjectApi{THubType}"/> class with the specified type.
+        /// Initializes a new instance of the <see cref="CrmContentApi{THubType}"/> class with the specified type.
         /// </summary>
         /// <param name="client">
         /// The HubSpot client to make requests with.
         /// </param>
-        internal CrmObjectApi(HubSpotClient client)
+        internal CrmContentApi(HubSpotClient client)
         {
             this.client = client;
             pathSegment = ApiPathNameAttribute.GetSegment<THubType>()

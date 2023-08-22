@@ -1,32 +1,32 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Association.cs" company="">
+// <copyright file="CreateAssociationSchemaOptions.cs" company="">
 //   
 // </copyright>
 // <summary>
-//   The association.
+//   The create association schema options.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Runtime.Serialization;
 
-namespace HubSpot_Sharp
+namespace HubSpot_Sharp.CRM.Associations.Schema
 {
     /// <summary>
-    /// An association between two objects in HubSpot.
+    /// The body for creating a new association type.
     /// </summary>
     [DataContract]
-    public class Association
+    public class CreateAssociationSchemaOptions
     {
         /// <summary>
-        /// Gets or sets the id of the association.
+        /// Gets or sets the label of the association.
         /// </summary>
         [DataMember]
-        public string Id { get; set; }
+        public string Label { get; set; }
 
         /// <summary>
-        /// Gets or sets the association type name.
+        /// Gets or sets the display name for the association, this cannot be edited later.
         /// </summary>
         [DataMember]
-        public string Type { get; set; }
+        public string Name { get; set; }
     }
 }

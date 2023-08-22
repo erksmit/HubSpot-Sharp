@@ -9,7 +9,7 @@
 
 using System.Runtime.Serialization;
 
-namespace HubSpot_Sharp.CRM.Object.Custom
+namespace HubSpot_Sharp.CRM.Property
 {
     /// <summary>
     /// Represents an option for a field of the <see cref="PropertyFieldTypeEnum" />.Enumeration type

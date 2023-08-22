@@ -12,7 +12,7 @@ namespace HubSpot_Sharp.CRM.Object.LineItem
     /// <summary>
     /// The LineItem api.
     /// </summary>
-    public class LineItemApi : CrmObjectApi<LineItem>
+    public class LineItemApi : CrmContentApi<LineItem>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="LineItemApi"/> class.

@@ -7,6 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using HubSpot_Sharp.CRM.Associations;
 using HubSpot_Sharp.Intermediates;
 using HubSpot_Sharp.Options;
 using HubSpot_Sharp.Search;

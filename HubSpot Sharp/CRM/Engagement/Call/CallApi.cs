@@ -12,7 +12,7 @@ namespace HubSpot_Sharp.CRM.Engagement.Call
     /// <summary>
     /// The call api.
     /// </summary>
-    public class CallApi : CrmObjectApi<Call>
+    public class CallApi : CrmContentApi<Call>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CallApi"/> class.

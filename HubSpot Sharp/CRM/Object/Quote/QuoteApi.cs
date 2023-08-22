@@ -12,7 +12,7 @@ namespace HubSpot_Sharp.CRM.Object.Quote
     /// <summary>
     /// The quote api.
     /// </summary>
-    public class QuoteApi : CrmObjectApi<Quote>
+    public class QuoteApi : CrmContentApi<Quote>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="QuoteApi"/> class.

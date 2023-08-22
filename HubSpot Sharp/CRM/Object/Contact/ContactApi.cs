@@ -12,7 +12,7 @@ namespace HubSpot_Sharp.CRM.Object.Contact
     /// <summary>
     /// The contact api.
     /// </summary>
-    public class ContactApi : CrmObjectApi<Contact>
+    public class ContactApi : CrmContentApi<Contact>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ContactApi"/> class.

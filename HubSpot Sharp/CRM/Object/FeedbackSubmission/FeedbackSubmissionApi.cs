@@ -12,7 +12,7 @@ namespace HubSpot_Sharp.CRM.Object.FeedbackSubmission
     /// <summary>
     /// The FeedbackSubmission api.
     /// </summary>
-    public class FeedbackSubmissionApi : CrmObjectApi<FeedbackSubmission>
+    public class FeedbackSubmissionApi : CrmContentApi<FeedbackSubmission>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="FeedbackSubmissionApi"/> class.

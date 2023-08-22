@@ -38,11 +38,15 @@ namespace HubSpot_Sharp
         /// </summary>
         /// <typeparam name="T">The type to get the association id for.</typeparam>
         /// <returns>The association id, or null if it was not defined.</returns>
-        public static string? GetId<T>()
+        public static string GetId<T>()
         {
             var type = typeof(T);
             var attribute = type.GetCustomAttribute<AssociationIdAttribute>();
-            return attribute?.Value;
+            if (attribute == null)
+            {
+                throw new ArgumentException("Type argument does not have an AssociationIdAttribute", nameof(T));
+            }
+            return attribute.Value;
         }
     }
 }

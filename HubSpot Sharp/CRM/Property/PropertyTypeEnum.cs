@@ -9,7 +9,7 @@
 
 using System.Runtime.Serialization;
 
-namespace HubSpot_Sharp.CRM.Object.Custom
+namespace HubSpot_Sharp.CRM.Property
 {
     /// <summary>
     /// Enum describing the data type of a property.

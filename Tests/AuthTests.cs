@@ -31,7 +31,7 @@ namespace Tests
         [TestMethod]
         public async Task ValidatePrivateAccessToken()
         {
-            // TODO: request returns 404, does this endpoint still exist???
+            // TODO: this endpoint returns incorrect information, for some reason
             if (Config.PrivateAccessToken == null)
             {
                 Assert.Fail("Private Access Token is not configured");

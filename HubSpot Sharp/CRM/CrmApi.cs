@@ -7,6 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using HubSpot_Sharp.CRM.Associations;
 using HubSpot_Sharp.CRM.Engagement;
 using HubSpot_Sharp.CRM.Object;
 using HubSpot_Sharp.CRM.Property;
@@ -19,21 +20,6 @@ namespace HubSpot_Sharp.CRM
     public class CrmApi
     {
         /// <summary>
-        /// Gets the object.
-        /// </summary>
-        public CrmObjectApi Object { get; }
-
-        /// <summary>
-        /// Gets the engagement.
-        /// </summary>
-        public EngagementApi Engagement { get; }
-
-        /// <summary>
-        /// Gets the property.
-        /// </summary>
-        public PropertyApi Property { get; }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="CrmApi"/> class.
         /// </summary>
         /// <param name="client">
@@ -44,6 +30,27 @@ namespace HubSpot_Sharp.CRM
             Object = new CrmObjectApi(client);
             Property = new PropertyApi(client);
             Engagement = new EngagementApi(client);
+            Association = new AssociationApi(client);
         }
+
+        /// <summary>
+        /// Gets the objects api.
+        /// </summary>
+        public CrmObjectApi Object { get; }
+
+        /// <summary>
+        /// Gets the engagements api.
+        /// </summary>
+        public EngagementApi Engagement { get; }
+
+        /// <summary>
+        /// Gets the property api.
+        /// </summary>
+        public PropertyApi Property { get; }
+
+        /// <summary>
+        /// Gets the association api
+        /// </summary>
+        public AssociationApi Association { get; }
     }
 }

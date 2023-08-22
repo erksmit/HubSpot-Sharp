@@ -12,7 +12,7 @@ namespace HubSpot_Sharp.CRM.Object.Deal
     /// <summary>
     /// The deal api.
     /// </summary>
-    public class DealApi : CrmObjectApi<Deal>
+    public class DealApi : CrmContentApi<Deal>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DealApi"/> class.
