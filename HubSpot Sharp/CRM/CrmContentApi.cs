@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Data;
+
 using HubSpot_Sharp.Intermediates;
 using HubSpot_Sharp.Options;
 using HubSpot_Sharp.Search;
@@ -20,7 +22,7 @@ namespace HubSpot_Sharp.CRM
     /// The object type the api works on.
     /// </typeparam>
     public abstract class CrmContentApi<THubType>
-        where THubType : HubSpotObject, new()
+        where THubType : HubSpotObject
     {
         /// <summary>
         /// The HubSpot client to make requests with.
@@ -62,15 +64,6 @@ namespace HubSpot_Sharp.CRM
         {
             var path = $"/crm/v3/objects/{pathSegment}";
             return (await Client.Execute<PropertyBag<T>>(path, HttpMethod.Post, options)).GetProperties();
-        }
-        
-        /// <inheritdoc cref="Create{T}(AssociatedProperties{T})" />
-        /// <param name="obj">
-        /// The object to create.
-        /// </param>
-        public async Task<T> Create<T>(T obj) where T : THubType
-        {
-            return await Create(new AssociatedProperties<T>(obj));
         }
 
         /// <summary>
@@ -194,29 +187,11 @@ namespace HubSpot_Sharp.CRM
         /// <returns>
         /// A list of the created objects.
         /// </returns>
-        public async Task<BatchResult<PropertyBag<T>>> CreateBatch<T>(ListInputs<PropertyBag<T>> objects)
+        public async Task<BatchResult<PropertyBag<T>>> CreateBatch<T>(ListInputs<AssociatedProperties<T>> objects)
             where T : THubType
         {
             var path = $"/crm/v3/objects/{pathSegment}/batch/create";
             return await Client.Execute<BatchResult<PropertyBag<T>>>(path, HttpMethod.Post, objects);
-        }
-
-        /// <summary>
-        /// Creates a batch of <typeparamref name="T"/> objects.
-        /// </summary>
-        /// <param name="objects">
-        /// The objects to create.
-        /// </param>
-        /// <typeparam name="T">
-        /// The type of the objects.
-        /// </typeparam>
-        /// <returns>
-        /// A list of the created objects.
-        /// </returns>
-        public async Task<BatchResult<PropertyBag<T>>> CreateBatch<T>(IList<T> objects)
-            where T : THubType
-        {
-            return await CreateBatch(new ListInputs<PropertyBag<T>>(PropertyBag<T>.PackMany(objects)));
         }
 
         /// <summary>
@@ -257,13 +232,6 @@ namespace HubSpot_Sharp.CRM
             return await Client.Execute<BatchResult<PropertyBag<T>>>(path, HttpMethod.Post, objects);
         }
 
-        /// <inheritdoc cref="UpdateBatch{T}(ListInputs{PropertyBag{T}})" />
-        public async Task<BatchResult<PropertyBag<T>>> UpdateBatch<T>(IList<T> objects)
-            where T : THubType
-        {
-            return await UpdateBatch(new ListInputs<PropertyBag<T>>(PropertyBag<T>.PackMany(objects)));
-        }
-
         /// <summary>
         /// Searches for <typeparamref name="T"/> objects.
         /// </summary>
@@ -287,5 +255,31 @@ namespace HubSpot_Sharp.CRM
                 rateLimit: RateLimitOptions.RetrySearch);
             return await Client.Execute<SearchResults<T>>(requestOptions);
         }
+    }
+
+    /// <summary>
+    /// Contains overloads for the crm content api.
+    /// </summary>
+    public static class CrmContentApiExtensions
+    {
+        /// <inheritdoc cref="CrmContentApi{THubType}.Create{T}(AssociatedProperties{T})"/>
+        public static async Task<T> Create<THubType, T>(this CrmContentApi<THubType> api, T obj) where THubType : HubSpotObject where T : THubType
+        {
+            return await api.Create(new AssociatedProperties<T>(obj));
+        }
+
+        /// <inheritdoc cref="CrmContentApi{THubType}.CreateBatch{T}(ListInputs{AssociatedProperties{T}})"/>
+        public static async Task<BatchResult<PropertyBag<T>>> CreateBatch<THubType, T>(this CrmContentApi<THubType> api, IList<T> objects) where THubType : HubSpotObject where T : THubType
+        {
+            var body = new ListInputs<AssociatedProperties<T>>(objects.Select(p => new AssociatedProperties<T>(p)).ToList());
+            return await api.CreateBatch(body);
+        }
+
+        /// <inheritdoc cref="CrmContentApi{THubType}.UpdateBatch{T}(ListInputs{PropertyBag{T}})" />
+        public static async Task<BatchResult<PropertyBag<T>>> UpdateBatch<THubType, T>(this CrmContentApi<THubType> api, IList<T> objects) where THubType : HubSpotObject where T : THubType
+        {
+            return await api.UpdateBatch(new ListInputs<PropertyBag<T>>(PropertyBag<T>.PackMany(objects)));
+        }
+
     }
 }

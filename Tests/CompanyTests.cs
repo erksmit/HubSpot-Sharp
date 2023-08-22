@@ -9,6 +9,7 @@
 
 using System.Net;
 
+using HubSpot_Sharp.CRM;
 using HubSpot_Sharp.CRM.Object.Company;
 using HubSpot_Sharp.Intermediates;
 using HubSpot_Sharp.Options;
