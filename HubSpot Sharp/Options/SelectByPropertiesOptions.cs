@@ -38,7 +38,7 @@ namespace HubSpot_Sharp.Options
         public SelectByPropertiesOptions(string idProperty, IEnumerable<string> inputs)
         {
             IdProperty = idProperty;
-            Inputs = inputs.Select(i => new IdInput(i)).ToList();
+            Inputs = inputs.Select(i => new IdObject(i)).ToList();
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace HubSpot_Sharp.Options
         public SelectByPropertiesOptions(string idProperty, IEnumerable<string> inputs, IList<string> propertiesToRead)
         {
             IdProperty = idProperty;
-            Inputs = inputs.Select(i => new IdInput(i)).ToList();
+            Inputs = inputs.Select(i => new IdObject(i)).ToList();
             PropertiesToRead = propertiesToRead;
         }
 
@@ -76,6 +76,6 @@ namespace HubSpot_Sharp.Options
         /// Gets or sets the unique property values to read the records of.
         /// </summary>
         [DataMember]
-        public IList<IdInput> Inputs { get; set; }
+        public IList<IdObject> Inputs { get; set; }
     }
 }

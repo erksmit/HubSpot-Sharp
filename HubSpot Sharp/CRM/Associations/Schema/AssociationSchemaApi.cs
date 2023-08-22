@@ -44,10 +44,10 @@ namespace HubSpot_Sharp.CRM.Associations.Schema
         /// <returns>
         /// The <see cref="Task"/> containing a list of defined associations.
         /// </returns>
-        public async Task<IList<AssociationSchema>> Read(string fromObjectType, string toObjectType)
+        public async Task<IList<AssociationType>> Read(string fromObjectType, string toObjectType)
         {
             var path = $"/crm/v4/associations/{fromObjectType}/{toObjectType}/labels";
-            var results = await client.Execute<ListResult<AssociationSchema>>(path);
+            var results = await client.Execute<ListResult<AssociationType>>(path);
             return results.Results;
         }
 
@@ -58,7 +58,7 @@ namespace HubSpot_Sharp.CRM.Associations.Schema
         /// <typeparam name="TToHubType">
         /// A hubspot object type.
         /// </typeparam>
-        public async Task<IList<AssociationSchema>> Read<TFromHubType, TToHubType>()
+        public async Task<IList<AssociationType>> Read<TFromHubType, TToHubType>()
             where TFromHubType : HubSpotObject where TToHubType : HubSpotObject
         {
             var fromId = AssociationIdAttribute.GetId<TFromHubType>();
@@ -81,13 +81,13 @@ namespace HubSpot_Sharp.CRM.Associations.Schema
         /// <returns>
         /// The <see cref="Task"/>.
         /// </returns>
-        public async Task<AssociationSchema> Create(
+        public async Task<AssociationType> Create(
             CreateAssociationSchemaOptions schema,
             string fromObjectType,
             string toObjectType)
         {
             string path = $"/crm/v4/associations/{fromObjectType}/{toObjectType}/labels";
-            var results = await client.Execute<ListResult<AssociationSchema>>(path, HttpMethod.Post, schema);
+            var results = await client.Execute<ListResult<AssociationType>>(path, HttpMethod.Post, schema);
             return results.Results.First();
         }
 
@@ -98,7 +98,7 @@ namespace HubSpot_Sharp.CRM.Associations.Schema
         /// <typeparam name="TToHubType">
         /// A hubspot object type.
         /// </typeparam>
-        public async Task<AssociationSchema> Create<TFromHubType, TToHubType>(CreateAssociationSchemaOptions schema)
+        public async Task<AssociationType> Create<TFromHubType, TToHubType>(CreateAssociationSchemaOptions schema)
             where TFromHubType : HubSpotObject where TToHubType : HubSpotObject
         {
             var fromId = AssociationIdAttribute.GetId<TFromHubType>();
@@ -109,7 +109,7 @@ namespace HubSpot_Sharp.CRM.Associations.Schema
         /// <summary>
         /// The update.
         /// </summary>
-        /// <param name="schema">
+        /// <param name="type">
         /// The schema.
         /// </param>
         /// <param name="fromObjectType">
@@ -121,25 +121,25 @@ namespace HubSpot_Sharp.CRM.Associations.Schema
         /// <returns>
         /// The <see cref="Task"/> that completes when the request has finished.
         /// </returns>
-        public async Task Update(AssociationSchema schema, string fromObjectType, string toObjectType)
+        public async Task Update(AssociationType type, string fromObjectType, string toObjectType)
         {
             string path = $"/crm/v4/associations/{fromObjectType}/{toObjectType}/labels";
-            await client.Execute(path, HttpMethod.Put, schema);
+            await client.Execute(path, HttpMethod.Put, type);
         }
 
-        /// <inheritdoc cref="Update(AssociationSchema, string, string)"/>
+        /// <inheritdoc cref="Update(AssociationType, string, string)"/>
         /// <typeparam name="TFromHubType">
         /// A hubspot object type.
         /// </typeparam>
         /// <typeparam name="TToHubType">
         /// A hubspot object type.
         /// </typeparam>
-        public async Task Update<TFromHubType, TToHubType>(AssociationSchema schema)
+        public async Task Update<TFromHubType, TToHubType>(AssociationType type)
             where TFromHubType : HubSpotObject where TToHubType : HubSpotObject
         {
             var fromId = AssociationIdAttribute.GetId<TFromHubType>();
             var toId = AssociationIdAttribute.GetId<TToHubType>();
-            await Update(schema, fromId, toId);
+            await Update(type, fromId, toId);
         }
 
         /// <summary>

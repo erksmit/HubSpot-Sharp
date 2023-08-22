@@ -162,7 +162,7 @@ namespace Tests
         {
             var results = (await api.CreateBatch(sampleCompanies)).GetResults();
 
-            var options = new ListInputs<IdInput>(IdInput.FromEnumerable(results));
+            var options = new ListInputs<IdObject>(IdObject.FromEnumerable(results));
 
             await api.ArchiveBatch(options);
 
@@ -213,7 +213,7 @@ namespace Tests
             }
             finally
             {
-                var cleanup = new ListInputs<IdInput>(IdInput.FromEnumerable(updatedCompanies));
+                var cleanup = new ListInputs<IdObject>(IdObject.FromEnumerable(updatedCompanies));
                 await api.ArchiveBatch(cleanup);
             }
         }
@@ -270,7 +270,7 @@ namespace Tests
             }
             finally
             {
-                var cleanup = new ListInputs<IdInput>(IdInput.FromEnumerable(createResults));
+                var cleanup = new ListInputs<IdObject>(IdObject.FromEnumerable(createResults));
                 await api.ArchiveBatch(cleanup);
             }
         }
@@ -285,8 +285,8 @@ namespace Tests
         public async Task GetByProperties()
         {
             var createResults = (await api.CreateBatch(sampleCompanies)).Results;
-            List<IdInput> ids = createResults.Select(
-                    c => new IdInput(
+            List<IdObject> ids = createResults.Select(
+                    c => new IdObject(
                         c.Id.ToString() ?? throw new AssertFailedException("Created company did not have an id.")))
                 .ToList();
             var options = new SelectByPropertiesOptions
@@ -305,9 +305,9 @@ namespace Tests
                 Assert.IsTrue(sampleCompanies.Any(c => c.Name == company.Name));
             }
 
-            var cleanup = new ListInputs<IdInput>(
+            var cleanup = new ListInputs<IdObject>(
                 createResults.Select(
-                        c => new IdInput(
+                        c => new IdObject(
                             c.Id.ToString() ?? throw new AssertFailedException("Created company did not have an id.")))
                     .ToList());
             await api.ArchiveBatch(cleanup);

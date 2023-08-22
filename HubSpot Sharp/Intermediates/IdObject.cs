@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IdInput.cs" company="">
+// <copyright file="IdObject.cs" company="">
 //   
 // </copyright>
 // <summary>
@@ -15,22 +15,22 @@ namespace HubSpot_Sharp.Intermediates
     /// A string id input for a request
     /// </summary>
     [DataContract]
-    public class IdInput
+    public class IdObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="IdInput" /> class.
+        /// Initializes a new instance of the <see cref="IdObject" /> class.
         /// </summary>
-        public IdInput()
+        public IdObject()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="IdInput"/> class with the provided id.
+        /// Initializes a new instance of the <see cref="IdObject"/> class with the provided id.
         /// </summary>
         /// <param name="id">
         /// The id to use.
         /// </param>
-        public IdInput(string id)
+        public IdObject(string id)
         {
             Id = id;
         }
@@ -54,7 +54,7 @@ namespace HubSpot_Sharp.Intermediates
         /// </returns>
         /// <exception cref="ArgumentException">
         /// </exception>
-        public static List<IdInput> FromEnumerable<T>(IEnumerable<T> enumerable)
+        public static List<IdObject> FromEnumerable<T>(IEnumerable<T> enumerable)
             where T : HubSpotObject
         {
             return enumerable.Select(
@@ -67,7 +67,7 @@ namespace HubSpot_Sharp.Intermediates
                                 nameof(enumerable));
                         }
 
-                        return new IdInput(o.Id.ToString()!);
+                        return new IdObject(o.Id.ToString()!);
                     })
                 .ToList();
         }

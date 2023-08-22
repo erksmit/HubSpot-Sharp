@@ -5,17 +5,17 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-using HubSpot_Sharp.CRM.Associations.Schema;
+using HubSpot_Sharp.Intermediates;
 
-namespace HubSpot_Sharp.Intermediates
+namespace HubSpot_Sharp.CRM.Associations
 {
     [DataContract]
-    public class AssociatedPropertiesAssociation
+    public class AssociationIdInput
     {
         [DataMember]
-        public IdObject To { get; set; }
+        public IdObject From { get; set; }
         
         [DataMember]
-        public IList<AssociationType> types { get; set; }
+        public IdObject To { get; set; }
     }
 }

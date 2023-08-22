@@ -169,7 +169,7 @@ namespace HubSpot_Sharp.CRM
         /// <returns>
         /// A <see cref="Task"/> that completes when the objects are archived.
         /// </returns>
-        public async Task ArchiveBatch(ListInputs<IdInput> inputs)
+        public async Task ArchiveBatch(ListInputs<IdObject> inputs)
         {
             var path = $"/crm/v3/objects/{pathSegment}/batch/archive";
             await Client.Execute(path, HttpMethod.Post, inputs);

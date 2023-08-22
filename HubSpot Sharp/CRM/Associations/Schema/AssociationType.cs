@@ -3,7 +3,7 @@
 namespace HubSpot_Sharp.CRM.Associations.Schema
 {
     [DataContract]
-    public class AssociationSchema
+    public class AssociationType
     {
         /// <summary>
         /// Gets or sets whether the association type was created by HubSpot (HUBSPOT_DEFINED) or by a user (USER_DEFINED).
