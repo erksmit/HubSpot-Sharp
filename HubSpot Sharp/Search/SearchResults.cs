@@ -21,7 +21,7 @@ namespace HubSpot_Sharp.Search
     /// </typeparam>
     [DataContract]
     public class SearchResults<T>
-        where T : HubSpotObject, new()
+        where T : HubSpotObject
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SearchResults{T}"/> class.

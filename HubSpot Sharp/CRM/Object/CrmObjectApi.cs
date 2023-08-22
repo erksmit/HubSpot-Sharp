@@ -15,6 +15,7 @@ using HubSpot_Sharp.CRM.Object.FeedbackSubmission;
 using HubSpot_Sharp.CRM.Object.LineItem;
 using HubSpot_Sharp.CRM.Object.Product;
 using HubSpot_Sharp.CRM.Object.Quote;
+using HubSpot_Sharp.CRM.Object.Tax;
 using HubSpot_Sharp.CRM.Object.Ticket;
 
 namespace HubSpot_Sharp.CRM.Object
@@ -74,6 +75,8 @@ namespace HubSpot_Sharp.CRM.Object
         /// </summary>
         public SchemaApi Schema { get; }
 
+        public TaxApi Tax { get; }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="CrmObjectApi"/> class.
         /// </summary>
@@ -92,6 +95,7 @@ namespace HubSpot_Sharp.CRM.Object
             Schema = new SchemaApi(client);
             FeedbackSubmission = new FeedbackSubmissionApi(client);
             Quote = new QuoteApi(client);
+            Tax = new TaxApi(client);
         }
     }
 }

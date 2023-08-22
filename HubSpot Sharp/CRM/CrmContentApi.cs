@@ -7,7 +7,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using HubSpot_Sharp.CRM.Associations;
 using HubSpot_Sharp.Intermediates;
 using HubSpot_Sharp.Options;
 using HubSpot_Sharp.Search;
@@ -26,7 +25,7 @@ namespace HubSpot_Sharp.CRM
         /// <summary>
         /// The HubSpot client to make requests with.
         /// </summary>
-        private readonly HubSpotClient client;
+        protected readonly HubSpotClient Client;
 
         /// <summary>
         /// The url path extension used to access the object in the api.
@@ -41,141 +40,9 @@ namespace HubSpot_Sharp.CRM
         /// </param>
         internal CrmContentApi(HubSpotClient client)
         {
-            this.client = client;
+            this.Client = client;
             pathSegment = ApiPathNameAttribute.GetSegment<THubType>()
                           ?? throw new Exception("Attempt to create a object api without an api path attribute.");
-        }
-
-        /// <summary>
-        /// Gets the associations of a <typeparamref name="THubType"/>.
-        /// </summary>
-        /// <param name="objectId">
-        /// The id of the <typeparamref name="THubType"/>.
-        /// </param>
-        /// <param name="toObjectType">
-        /// The type id of the associated object.
-        /// </param>
-        /// <returns>
-        /// A list of associations for the <typeparamref name="THubType"/> instance.
-        /// </returns>
-        public async Task<ListResult<Association>> GetAssociations(long objectId, string toObjectType)
-        {
-            var path = $"/crm/v3/objects/{pathSegment}/{objectId}/associations/{toObjectType}";
-            return await client.Execute<ListResult<Association>>(path);
-        }
-
-        /// <inheritdoc cref="GetAssociations(long, string)" />
-        public async Task<ListResult<Association>> GetAssociations<T>(long objectId)
-            where T : HubSpotObject
-        {
-            string associationId = AssociationIdAttribute.GetId<T>() ?? throw new ArgumentException(
-                                       "Type argument does not have an association id attribute defined.",
-                                       nameof(T));
-            return await GetAssociations(objectId, associationId);
-        }
-
-        /// <summary>
-        /// Associate a <typeparamref name="THubType"/> with another object
-        /// </summary>
-        /// <param name="objectId">
-        /// The id of the object.
-        /// </param>
-        /// <param name="toObjectType">
-        /// The type of the object to associate to.
-        /// </param>
-        /// <param name="toObjectId">
-        /// The id of the object to associate to.
-        /// </param>
-        /// <param name="associationType">
-        /// The name of the association.
-        /// </param>
-        /// <returns>
-        /// A <see cref="Task"/> that completes when the association is created.
-        /// </returns>
-        public async Task Associate(long objectId, string toObjectType, long toObjectId, string associationType)
-        {
-            var path =
-                $"/crm/v3/objects/{pathSegment}/{objectId}/associations/{toObjectType}/{toObjectId}/{associationType}";
-            await client.Execute(path, HttpMethod.Put);
-        }
-
-        /// <inheritdoc cref="Associate(long, string, long, string)" />
-        public async Task Associate<TToObject>(long objectId, long toObjectId, string associationType)
-            where TToObject : HubSpotObject
-        {
-            string associationId = AssociationIdAttribute.GetId<TToObject>() ?? throw new ArgumentException(
-                                       "Type argument does not have an association id attribute defined.",
-                                       nameof(TToObject));
-            await Associate(objectId, associationId, toObjectId, associationType);
-        }
-
-        /// <inheritdoc cref="Associate(long, string, long, string)" />
-        public async Task Associate<TToObject>(THubType fromObject, TToObject toObject, string associationType)
-            where TToObject : HubSpotObject
-        {
-            if (fromObject.Id == null)
-            {
-                throw new ArgumentException("fromObject's id is null", nameof(fromObject));
-            }
-
-            if (toObject.Id == null)
-            {
-                throw new ArgumentException("toObject's id is null", nameof(toObject));
-            }
-
-            await Associate<TToObject>((long)fromObject.Id, (long)toObject.Id, associationType);
-        }
-
-        /// <summary>
-        /// Removes an association between a <typeparamref name="THubType"/> and another object.
-        /// </summary>
-        /// <param name="objectId">
-        /// The id of the object.
-        /// </param>
-        /// <param name="toObjectType">
-        /// The type of the object to associate to.
-        /// </param>
-        /// <param name="toObjectId">
-        /// The id of the object to associate to.
-        /// </param>
-        /// <param name="associationType">
-        /// The name of the association.
-        /// </param>
-        /// <returns>
-        /// A <see cref="Task"/> that completes when the association is removed.
-        /// </returns>
-        public async Task RemoveAssociation(long objectId, string toObjectType, long toObjectId, string associationType)
-        {
-            var path =
-                $"/crm/v3/objects/{pathSegment}/{objectId}/associations/{toObjectType}/{toObjectId}/{associationType}";
-            await client.Execute(path, HttpMethod.Delete);
-        }
-
-        /// <inheritdoc cref="RemoveAssociation(long, string, long, string)" />
-        public async Task RemoveAssociation<TToObject>(long objectId, long toObjectId, string associationType)
-            where TToObject : HubSpotObject
-        {
-            string associationId = AssociationIdAttribute.GetId<TToObject>() ?? throw new ArgumentException(
-                                       "Type argument does not have an association id attribute defined.",
-                                       nameof(TToObject));
-            await RemoveAssociation(objectId, associationId, toObjectId, associationType);
-        }
-
-        /// <inheritdoc cref="Associate(long, string, long, string)" />
-        public async Task RemoveAssociation<TToObject>(THubType fromObject, TToObject toObject, string associationType)
-            where TToObject : HubSpotObject
-        {
-            if (fromObject.Id == null)
-            {
-                throw new ArgumentException("fromObject's id is null", nameof(fromObject));
-            }
-
-            if (toObject.Id == null)
-            {
-                throw new ArgumentException("toObject's id is null", nameof(toObject));
-            }
-
-            await RemoveAssociation<TToObject>((long)fromObject.Id, (long)toObject.Id, associationType);
         }
 
         /// <summary>
@@ -184,18 +51,26 @@ namespace HubSpot_Sharp.CRM
         /// <typeparam name="T">
         /// The <typeparamref name="THubType"/>'s specific type
         /// </typeparam>
-        /// <param name="obj">
+        /// <param name="options">
         /// The object to create.
         /// </param>
         /// <returns>
         /// The created <typeparamref name="T"/>
         /// </returns>
-        public async Task<T> Create<T>(T obj)
-            where T : THubType, new()
+        public async Task<T> Create<T>(AssociatedProperties<T> options)
+            where T : THubType
         {
             var path = $"/crm/v3/objects/{pathSegment}";
-            var pack = new PropertyBag<T>(obj);
-            return (await client.Execute<PropertyBag<T>>(path, HttpMethod.Post, pack)).GetProperties();
+            return (await Client.Execute<PropertyBag<T>>(path, HttpMethod.Post, options)).GetProperties();
+        }
+        
+        /// <inheritdoc cref="Create{T}(AssociatedProperties{T})" />
+        /// <param name="obj">
+        /// The object to create.
+        /// </param>
+        public async Task<T> Create<T>(T obj) where T : THubType
+        {
+            return await Create(new AssociatedProperties<T>(obj));
         }
 
         /// <summary>
@@ -211,10 +86,10 @@ namespace HubSpot_Sharp.CRM
         /// The retrieved <typeparamref name="T"/>
         /// </returns>
         public async Task<T> Read<T>(long objectId)
-            where T : THubType, new()
+            where T : THubType
         {
             var path = $"/crm/v3/objects/{pathSegment}/{objectId}";
-            return (await client.Execute<PropertyBag<T>>(path)).GetProperties();
+            return (await Client.Execute<PropertyBag<T>>(path)).GetProperties();
         }
 
         /// <summary>
@@ -239,7 +114,7 @@ namespace HubSpot_Sharp.CRM
             int limit = 100,
             string? after = null,
             IList<string>? properties = null)
-            where T : THubType, new()
+            where T : THubType
         {
             var path = $"/crm/v3/objects/{pathSegment}";
             var options = new RequestOptions(path);
@@ -254,7 +129,7 @@ namespace HubSpot_Sharp.CRM
                 options.AddParam("properties", string.Join(",", properties));
             }
 
-            return await client.Execute<ListResult<PropertyBag<T>>>(options);
+            return await Client.Execute<ListResult<PropertyBag<T>>>(options);
         }
 
         /// <summary>
@@ -270,11 +145,11 @@ namespace HubSpot_Sharp.CRM
         /// The updated object.
         /// </returns>
         public async Task<T> Update<T>(T obj)
-            where T : THubType, new()
+            where T : THubType
         {
             var path = $"/crm/v3/objects/{pathSegment}/{obj.Id}";
             var pack = new PropertyBag<T>(obj);
-            return (await client.Execute<PropertyBag<T>>(path, HttpMethod.Patch, pack)).GetProperties();
+            return (await Client.Execute<PropertyBag<T>>(path, HttpMethod.Patch, pack)).GetProperties();
         }
 
         /// <summary>
@@ -289,7 +164,7 @@ namespace HubSpot_Sharp.CRM
         public async Task Archive(long objectId)
         {
             var path = $"/crm/v3/objects/{pathSegment}/{objectId}";
-            await client.Execute(path, HttpMethod.Delete);
+            await Client.Execute(path, HttpMethod.Delete);
         }
 
         /// <summary>
@@ -304,7 +179,7 @@ namespace HubSpot_Sharp.CRM
         public async Task ArchiveBatch(ListInputs<IdInput> inputs)
         {
             var path = $"/crm/v3/objects/{pathSegment}/batch/archive";
-            await client.Execute(path, HttpMethod.Post, inputs);
+            await Client.Execute(path, HttpMethod.Post, inputs);
         }
 
         /// <summary>
@@ -320,10 +195,10 @@ namespace HubSpot_Sharp.CRM
         /// A list of the created objects.
         /// </returns>
         public async Task<BatchResult<PropertyBag<T>>> CreateBatch<T>(ListInputs<PropertyBag<T>> objects)
-            where T : THubType, new()
+            where T : THubType
         {
             var path = $"/crm/v3/objects/{pathSegment}/batch/create";
-            return await client.Execute<BatchResult<PropertyBag<T>>>(path, HttpMethod.Post, objects);
+            return await Client.Execute<BatchResult<PropertyBag<T>>>(path, HttpMethod.Post, objects);
         }
 
         /// <summary>
@@ -339,7 +214,7 @@ namespace HubSpot_Sharp.CRM
         /// A list of the created objects.
         /// </returns>
         public async Task<BatchResult<PropertyBag<T>>> CreateBatch<T>(IList<T> objects)
-            where T : THubType, new()
+            where T : THubType
         {
             return await CreateBatch(new ListInputs<PropertyBag<T>>(PropertyBag<T>.PackMany(objects)));
         }
@@ -357,10 +232,10 @@ namespace HubSpot_Sharp.CRM
         /// A list of the retrieved objects.
         /// </returns>
         public async Task<BatchResult<PropertyBag<T>>> ReadByProperties<T>(SelectByPropertiesOptions options)
-            where T : THubType, new()
+            where T : THubType
         {
             var path = $"/crm/v3/objects/{pathSegment}/batch/read";
-            return await client.Execute<BatchResult<PropertyBag<T>>>(path, HttpMethod.Post, options);
+            return await Client.Execute<BatchResult<PropertyBag<T>>>(path, HttpMethod.Post, options);
         }
 
         /// <summary>
@@ -376,15 +251,15 @@ namespace HubSpot_Sharp.CRM
         /// A list of the updated objects.
         /// </returns>
         public async Task<BatchResult<PropertyBag<T>>> UpdateBatch<T>(ListInputs<PropertyBag<T>> objects)
-            where T : THubType, new()
+            where T : THubType
         {
             var path = $"/crm/v3/objects/{pathSegment}/batch/update";
-            return await client.Execute<BatchResult<PropertyBag<T>>>(path, HttpMethod.Post, objects);
+            return await Client.Execute<BatchResult<PropertyBag<T>>>(path, HttpMethod.Post, objects);
         }
 
         /// <inheritdoc cref="UpdateBatch{T}(ListInputs{PropertyBag{T}})" />
         public async Task<BatchResult<PropertyBag<T>>> UpdateBatch<T>(IList<T> objects)
-            where T : THubType, new()
+            where T : THubType
         {
             return await UpdateBatch(new ListInputs<PropertyBag<T>>(PropertyBag<T>.PackMany(objects)));
         }
@@ -402,7 +277,7 @@ namespace HubSpot_Sharp.CRM
         /// A list of search results.
         /// </returns>
         public async Task<SearchResults<T>> Search<T>(SearchOptions options)
-            where T : THubType, new()
+            where T : THubType
         {
             var path = $"/crm/v3/objects/{pathSegment}/search";
             var requestOptions = new RequestOptions(
@@ -410,7 +285,7 @@ namespace HubSpot_Sharp.CRM
                 HttpMethod.Post,
                 options,
                 rateLimit: RateLimitOptions.RetrySearch);
-            return await client.Execute<SearchResults<T>>(requestOptions);
+            return await Client.Execute<SearchResults<T>>(requestOptions);
         }
     }
 }
