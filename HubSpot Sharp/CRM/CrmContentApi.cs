@@ -40,7 +40,7 @@ namespace HubSpot_Sharp.CRM
         /// <param name="client">
         /// The HubSpot client to make requests with.
         /// </param>
-        internal CrmContentApi(HubSpotClient client)
+        public CrmContentApi(HubSpotClient client)
         {
             this.Client = client;
             pathSegment = ApiPathNameAttribute.GetSegment<THubType>()
@@ -280,6 +280,11 @@ namespace HubSpot_Sharp.CRM
         {
             return await api.UpdateBatch(new ListInputs<PropertyBag<T>>(PropertyBag<T>.PackMany(objects)));
         }
-
+        
+        /// <inheritdoc cref="CrmContentApi{THubType}.ArchiveBatch(ListInputs{IdObject})" />
+        public static async Task ArchiveBatch<THubType, T>(this CrmContentApi<THubType> api, IList<T> objects) where THubType : HubSpotObject where T : THubType
+        {
+            await api.ArchiveBatch(new ListInputs<IdObject>(IdObject.FromEnumerable(objects)));
+        }
     }
 }

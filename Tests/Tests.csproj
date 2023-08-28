@@ -48,10 +48,4 @@
     <ProjectReference Include="..\HubSpot Sharp\HubSpot Sharp.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="CompanyTests.cs">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Compile>
-  </ItemGroup>
-
 </Project>

@@ -24,6 +24,8 @@ namespace Tests
         /// </summary>
         public static HubSpotApi Api { get; private set; }
 
+        public static HubSpotClient Client { get; private set; }
+
         /// <summary>
         /// Gets the private access token.
         /// </summary>
@@ -97,7 +99,8 @@ namespace Tests
                 _ => throw new ArgumentOutOfRangeException(nameof(token), "Unknown authentication mode configuration")
             };
 
-            Api = new HubSpotApi(token);
+            Client = new HubSpotClient(token);
+            Api = new HubSpotApi(Client);
 
             if (AuthMethod == "oauth")
             {

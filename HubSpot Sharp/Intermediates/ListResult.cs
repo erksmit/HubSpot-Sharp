@@ -47,7 +47,7 @@ namespace HubSpot_Sharp.Intermediates
         /// Gets the paging object if there are more results available.
         /// </summary>
         [DataMember]
-        public PagingModel Paging { get; }
+        public PagingModel? Paging { get; }
     }
 
     /// <summary>
