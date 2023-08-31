@@ -30,13 +30,13 @@ namespace HubSpot_Sharp.CRM.Object.Contact
         /// <summary>
         /// Gets or sets the first name.
         /// </summary>
-        [DataMember]
+        [DataMember(Name = "firstname")]
         public string FirstName { get; set; }
 
         /// <summary>
         /// Gets or sets the last name.
         /// </summary>
-        [DataMember]
+        [DataMember(Name = "lastname")]
         public string LastName { get; set; }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace HubSpot_Sharp.CRM.Object.Contact
         /// <summary>
         /// Gets or sets the zip code.
         /// </summary>
-        [DataMember]
+        [DataMember(Name = "zipcode")]
         public string ZipCode { get; set; }
 
         /// <summary>
